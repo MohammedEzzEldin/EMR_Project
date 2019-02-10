@@ -1,0 +1,1669 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EMR_GP_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Child_FollowUp_Form">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Age_In_Month" Type="int" Nullable="false" />
+          <Property Name="Feed_Type" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Vaccination_Type" Type="nchar" MaxLength="100" />
+          <Property Name="Vaccination_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Department_Id" />
+          </Key>
+          <Property Name="Department_Name" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Medical_Org_Id" Type="bigint" Nullable="false" />
+          <Property Name="Department_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Diseases' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Diseases">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Disease_Name" />
+            <PropertyRef Name="Disease_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Disease_Name" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Disease_Type" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Doctor_Id" />
+          </Key>
+          <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
+          <Property Name="Medium_Rate" Type="float" />
+          <Property Name="Acadimic_Degree" Type="nchar" MaxLength="50" />
+          <Property Name="Functional_Degree" Type="nchar" MaxLength="50" />
+          <Property Name="Spacialization" Type="nchar" MaxLength="50" />
+          <Property Name="Medical_Org_Id" Type="bigint" Nullable="false" />
+          <Property Name="Department_Id" Type="bigint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Evaluation_Doctor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Evaluation_Doctor">
+          <Key>
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Rate" />
+          </Key>
+          <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Rate" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Evaluation_Medical_Org' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Evaluation_Medical_Org">
+          <Key>
+            <PropertyRef Name="Medical_Org_Id" />
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Rate" />
+          </Key>
+          <Property Name="Medical_Org_Id" Type="bigint" Nullable="false" />
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Rate" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Examination' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Examination">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Medical_Org_Id" />
+            <PropertyRef Name="exm_date" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
+          <Property Name="Medical_Org_Id" Type="bigint" Nullable="false" />
+          <Property Name="exm_date" Type="date" Nullable="false" />
+          <Property Name="exm_description_result" Type="nchar" MaxLength="500" />
+          <Property Name="exm_midicine" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Family_History' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Family_History">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Disease_Name" />
+            <PropertyRef Name="Disease_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Disease_Name" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Disease_Type" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="General_Examination">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Length" Type="int" />
+          <Property Name="Weight" Type="float" />
+          <Property Name="Blood_Type" Type="nchar" MaxLength="3" />
+          <Property Name="Blood_Pressure" Type="nchar" MaxLength="50" />
+          <Property Name="Diabetes" Type="int" />
+          <Property Name="Habits" Type="nchar" MaxLength="200" />
+          <Property Name="Temperature" Type="int" />
+          <Property Name="Allergies" Type="nchar" MaxLength="200" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Labs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Labs">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Org_Id" />
+            <PropertyRef Name="Lab_Name" />
+            <PropertyRef Name="Lab_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Org_Id" Type="bigint" Nullable="false" />
+          <Property Name="Lab_Name" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Lab_Description_Result" Type="nchar" MaxLength="500" />
+          <Property Name="Lab_Type" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lab_Date" Type="date" />
+          <Property Name="Lab_File" Type="nchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Medical_Organization">
+          <Key>
+            <PropertyRef Name="Medical_Org_Id" />
+          </Key>
+          <Property Name="Medical_Org_Id" Type="bigint" Nullable="false" />
+          <Property Name="Medical_Org_Name" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Medium_Rate" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Operations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Operations">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Op_Name" />
+            <PropertyRef Name="Op_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Op_Name" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Op_Type" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Op_Date" Type="date" />
+          <Property Name="Doctor_Id" Type="bigint" />
+          <Property Name="Organization_Id" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Learning_Status" Type="nchar" MaxLength="90" />
+          <Property Name="Social_Status" Type="nchar" MaxLength="90" />
+          <Property Name="Death_Date" Type="date" />
+          <Property Name="Alternative_Phone" Type="nchar" MaxLength="14" />
+          <Property Name="Job" Type="nchar" MaxLength="50" />
+          <Property Name="Reason_Death" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Permission' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Permission" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
+          <Property Name="Permission" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Person_Id" />
+          </Key>
+          <Property Name="Person_Id" Type="bigint" Nullable="false" />
+          <Property Name="First_Name" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Last_Name" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Birth_Date" Type="date" Nullable="false" />
+          <Property Name="National_Id" Type="nchar" MaxLength="14" Nullable="false" />
+          <Property Name="Nationality" Type="nchar" MaxLength="50" />
+          <Property Name="Gender" Type="nchar" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Organization_Id" />
+            <PropertyRef Name="rev_date" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
+          <Property Name="Organization_Id" Type="bigint" Nullable="false" />
+          <Property Name="rev_date" Type="date" Nullable="false" />
+          <Property Name="rev_midicine" Type="nchar" MaxLength="500" />
+          <Property Name="rev_description_result" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address" Type="nchar" MaxLength="200" />
+          <Property Name="Phone" Type="nchar" MaxLength="15" />
+          <Property Name="Last_Date_Of_Login" Type="date" />
+          <Property Name="User_Type" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="Status_Of_Account" Type="int" Nullable="false" />
+          <Property Name="City" Type="nchar" MaxLength="20" />
+          <Property Name="Photo_Url" Type="nchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_Child_FollowUp_Form_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Child_FollowUp_Form" Type="Self.Child_FollowUp_Form" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Child_FollowUp_Form">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Department_Medical_Org">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Department" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Department">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Diseases_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Diseases" Type="Self.Diseases" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Diseases">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Department_Id" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="Department_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Person_Id" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Doctor_DoctorId">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Evaluation_Doctor" Type="Self.Evaluation_Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Doctor_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Evaluation_Doctor" Type="Self.Evaluation_Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Doctor">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Medical_Org_Org_Id">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Evaluation_Medical_Org" Type="Self.Evaluation_Medical_Org" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Medical_Org">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Medical_Org_Patient_Id">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Evaluation_Medical_Org" Type="Self.Evaluation_Medical_Org" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Medical_Org">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Examination_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Examination_Medical_Org">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Examination_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Family_History_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Family_History" Type="Self.Family_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Family_History">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_General_Examination_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="General_Examination" Type="Self.General_Examination" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="General_Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Labs_Org">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Labs" Type="Self.Labs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Labs">
+              <PropertyRef Name="Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Labs_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Labs" Type="Self.Labs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Labs">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Medical_Organization_UserId">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Operations_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="Operations" Type="Self.Operations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Operations">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Operations_Medical_Org_Id">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="0..1" />
+          <End Role="Operations" Type="Self.Operations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Operations">
+              <PropertyRef Name="Organization_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Operations_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Operations" Type="Self.Operations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Operations">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Person_Id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permission_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Permission" Type="Self.Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permission_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Permission" Type="Self.Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="Person_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Doctor_Id">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Medical_Org_Id">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Organization_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Patient_Id">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EMR_GP_DBModelStoreContainer">
+          <EntitySet Name="Child_FollowUp_Form" EntityType="Self.Child_FollowUp_Form" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="General_Examination" EntityType="Self.General_Examination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Medical_Organization" EntityType="Self.Medical_Organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Diseases" EntityType="Self.Diseases" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Diseases].[Patient_Id] AS [Patient_Id], 
+    [Diseases].[Disease_Name] AS [Disease_Name], 
+    [Diseases].[Disease_Type] AS [Disease_Type]
+    FROM [dbo].[Diseases] AS [Diseases]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Evaluation_Doctor" EntityType="Self.Evaluation_Doctor" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Evaluation_Doctor].[Doctor_Id] AS [Doctor_Id], 
+    [Evaluation_Doctor].[Patient_Id] AS [Patient_Id], 
+    [Evaluation_Doctor].[Rate] AS [Rate]
+    FROM [dbo].[Evaluation_Doctor] AS [Evaluation_Doctor]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Evaluation_Medical_Org" EntityType="Self.Evaluation_Medical_Org" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Evaluation_Medical_Org].[Medical_Org_Id] AS [Medical_Org_Id], 
+    [Evaluation_Medical_Org].[Patient_Id] AS [Patient_Id], 
+    [Evaluation_Medical_Org].[Rate] AS [Rate]
+    FROM [dbo].[Evaluation_Medical_Org] AS [Evaluation_Medical_Org]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Examination" EntityType="Self.Examination" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Examination].[Patient_Id] AS [Patient_Id], 
+    [Examination].[Doctor_Id] AS [Doctor_Id], 
+    [Examination].[Medical_Org_Id] AS [Medical_Org_Id], 
+    [Examination].[exm_date] AS [exm_date], 
+    [Examination].[exm_description_result] AS [exm_description_result], 
+    [Examination].[exm_midicine] AS [exm_midicine]
+    FROM [dbo].[Examination] AS [Examination]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Family_History" EntityType="Self.Family_History" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Family_History].[Patient_Id] AS [Patient_Id], 
+    [Family_History].[Disease_Name] AS [Disease_Name], 
+    [Family_History].[Disease_Type] AS [Disease_Type]
+    FROM [dbo].[Family_History] AS [Family_History]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Labs" EntityType="Self.Labs" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Labs].[Patient_Id] AS [Patient_Id], 
+    [Labs].[Org_Id] AS [Org_Id], 
+    [Labs].[Lab_Name] AS [Lab_Name], 
+    [Labs].[Lab_Description_Result] AS [Lab_Description_Result], 
+    [Labs].[Lab_Type] AS [Lab_Type], 
+    [Labs].[Lab_Date] AS [Lab_Date], 
+    [Labs].[Lab_File] AS [Lab_File]
+    FROM [dbo].[Labs] AS [Labs]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Operations" EntityType="Self.Operations" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Operations].[Patient_Id] AS [Patient_Id], 
+    [Operations].[Op_Name] AS [Op_Name], 
+    [Operations].[Op_Type] AS [Op_Type], 
+    [Operations].[Op_Date] AS [Op_Date], 
+    [Operations].[Doctor_Id] AS [Doctor_Id], 
+    [Operations].[Organization_Id] AS [Organization_Id]
+    FROM [dbo].[Operations] AS [Operations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Permission" EntityType="Self.Permission" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Permission].[Patient_Id] AS [Patient_Id], 
+    [Permission].[Doctor_Id] AS [Doctor_Id], 
+    [Permission].[Permission] AS [Permission]
+    FROM [dbo].[Permission] AS [Permission]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Reviews].[Patient_Id] AS [Patient_Id], 
+    [Reviews].[Doctor_Id] AS [Doctor_Id], 
+    [Reviews].[Organization_Id] AS [Organization_Id], 
+    [Reviews].[rev_date] AS [rev_date], 
+    [Reviews].[rev_midicine] AS [rev_midicine], 
+    [Reviews].[rev_description_result] AS [rev_description_result]
+    FROM [dbo].[Reviews] AS [Reviews]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Child_FollowUp_Form_Patient" Association="Self.FK_Child_FollowUp_Form_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Child_FollowUp_Form" EntitySet="Child_FollowUp_Form" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Department_Medical_Org" Association="Self.FK_Department_Medical_Org">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Department" EntitySet="Department" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diseases_Patient" Association="Self.FK_Diseases_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Diseases" EntitySet="Diseases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Department" Association="Self.FK_Doctor_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Person" Association="Self.FK_Doctor_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Doctor_DoctorId" Association="Self.FK_Evaluation_Doctor_DoctorId">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Evaluation_Doctor" EntitySet="Evaluation_Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Doctor_PatientId" Association="Self.FK_Evaluation_Doctor_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Evaluation_Doctor" EntitySet="Evaluation_Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Medical_Org_Org_Id" Association="Self.FK_Evaluation_Medical_Org_Org_Id">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Evaluation_Medical_Org" EntitySet="Evaluation_Medical_Org" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Medical_Org_Patient_Id" Association="Self.FK_Evaluation_Medical_Org_Patient_Id">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Evaluation_Medical_Org" EntitySet="Evaluation_Medical_Org" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Examination_Doctor" Association="Self.FK_Examination_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Examination" EntitySet="Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Examination_Medical_Org" Association="Self.FK_Examination_Medical_Org">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Examination" EntitySet="Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Examination_Patient" Association="Self.FK_Examination_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Examination" EntitySet="Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Family_History_Patient" Association="Self.FK_Family_History_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Family_History" EntitySet="Family_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_General_Examination_Patient" Association="Self.FK_General_Examination_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="General_Examination" EntitySet="General_Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Labs_Org" Association="Self.FK_Labs_Org">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Labs" EntitySet="Labs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Labs_Patient" Association="Self.FK_Labs_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Labs" EntitySet="Labs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Medical_Organization_UserId" Association="Self.FK_Medical_Organization_UserId">
+            <End Role="User" EntitySet="User" />
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operations_Doctor" Association="Self.FK_Operations_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Operations" EntitySet="Operations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operations_Medical_Org_Id" Association="Self.FK_Operations_Medical_Org_Id">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Operations" EntitySet="Operations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operations_PatientId" Association="Self.FK_Operations_PatientId">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Operations" EntitySet="Operations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Person" Association="Self.FK_Patient_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permission_Doctor" Association="Self.FK_Permission_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Permission" EntitySet="Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permission_Patient" Association="Self.FK_Permission_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Permission" EntitySet="Permission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_User" Association="Self.FK_Person_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Doctor_Id" Association="Self.FK_Reviews_Doctor_Id">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Medical_Org_Id" Association="Self.FK_Reviews_Medical_Org_Id">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Patient_Id" Association="Self.FK_Reviews_Patient_Id">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EMR_GP_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Child_FollowUp_Form">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Age_In_Month" Type="Int32" Nullable="false" />
+          <Property Name="Feed_Type" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Vaccination_Type" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Vaccination_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Child_FollowUp_Form_Patient" FromRole="Child_FollowUp_Form" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Department_Id" />
+          </Key>
+          <Property Name="Department_Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Medical_Org_Id" Type="Int64" Nullable="false" />
+          <Property Name="Department_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Department_Medical_Org" FromRole="Department" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_Department" FromRole="Department" ToRole="Doctor" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Doctor_Id" />
+          </Key>
+          <Property Name="Doctor_Id" Type="Int64" Nullable="false" />
+          <Property Name="Medium_Rate" Type="Double" />
+          <Property Name="Acadimic_Degree" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Functional_Degree" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Spacialization" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Medical_Org_Id" Type="Int64" Nullable="false" />
+          <Property Name="Department_Id" Type="Int64" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Doctor_Department" FromRole="Doctor" ToRole="Department" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Doctor_Person" FromRole="Doctor" ToRole="Person" />
+          <NavigationProperty Name="Evaluation_Doctor" Relationship="Self.FK_Evaluation_Doctor_DoctorId" FromRole="Doctor" ToRole="Evaluation_Doctor" />
+          <NavigationProperty Name="Examinations" Relationship="Self.FK_Examination_Doctor" FromRole="Doctor" ToRole="Examination" />
+          <NavigationProperty Name="Operations" Relationship="Self.FK_Operations_Doctor" FromRole="Doctor" ToRole="Operations" />
+          <NavigationProperty Name="Permissions" Relationship="Self.FK_Permission_Doctor" FromRole="Doctor" ToRole="Permission" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Doctor_Id" FromRole="Doctor" ToRole="Reviews" />
+        </EntityType>
+        <EntityType Name="General_Examination">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Length" Type="Int32" />
+          <Property Name="Weight" Type="Double" />
+          <Property Name="Blood_Type" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="Blood_Pressure" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Diabetes" Type="Int32" />
+          <Property Name="Habits" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Temperature" Type="Int32" />
+          <Property Name="Allergies" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_General_Examination_Patient" FromRole="General_Examination" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Medical_Organization">
+          <Key>
+            <PropertyRef Name="Medical_Org_Id" />
+          </Key>
+          <Property Name="Medical_Org_Id" Type="Int64" Nullable="false" />
+          <Property Name="Medical_Org_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Medium_Rate" Type="Double" />
+          <NavigationProperty Name="Departments" Relationship="Self.FK_Department_Medical_Org" FromRole="Medical_Organization" ToRole="Department" />
+          <NavigationProperty Name="Evaluation_Medical_Org" Relationship="Self.FK_Evaluation_Medical_Org_Org_Id" FromRole="Medical_Organization" ToRole="Evaluation_Medical_Org" />
+          <NavigationProperty Name="Examinations" Relationship="Self.FK_Examination_Medical_Org" FromRole="Medical_Organization" ToRole="Examination" />
+          <NavigationProperty Name="Labs" Relationship="Self.FK_Labs_Org" FromRole="Medical_Organization" ToRole="Labs" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Medical_Organization_UserId" FromRole="Medical_Organization" ToRole="User" />
+          <NavigationProperty Name="Operations" Relationship="Self.FK_Operations_Medical_Org_Id" FromRole="Medical_Organization" ToRole="Operations" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Medical_Org_Id" FromRole="Medical_Organization" ToRole="Reviews" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Learning_Status" Type="String" MaxLength="90" FixedLength="true" Unicode="true" />
+          <Property Name="Social_Status" Type="String" MaxLength="90" FixedLength="true" Unicode="true" />
+          <Property Name="Death_Date" Type="DateTime" Precision="0" />
+          <Property Name="Alternative_Phone" Type="String" MaxLength="14" FixedLength="true" Unicode="true" />
+          <Property Name="Job" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Reason_Death" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Child_FollowUp_Form" Relationship="Self.FK_Child_FollowUp_Form_Patient" FromRole="Patient" ToRole="Child_FollowUp_Form" />
+          <NavigationProperty Name="General_Examination" Relationship="Self.FK_General_Examination_Patient" FromRole="Patient" ToRole="General_Examination" />
+          <NavigationProperty Name="Diseases" Relationship="Self.FK_Diseases_Patient" FromRole="Patient" ToRole="Diseases" />
+          <NavigationProperty Name="Evaluation_Doctor" Relationship="Self.FK_Evaluation_Doctor_PatientId" FromRole="Patient" ToRole="Evaluation_Doctor" />
+          <NavigationProperty Name="Evaluation_Medical_Org" Relationship="Self.FK_Evaluation_Medical_Org_Patient_Id" FromRole="Patient" ToRole="Evaluation_Medical_Org" />
+          <NavigationProperty Name="Examinations" Relationship="Self.FK_Examination_Patient" FromRole="Patient" ToRole="Examination" />
+          <NavigationProperty Name="Family_History" Relationship="Self.FK_Family_History_Patient" FromRole="Patient" ToRole="Family_History" />
+          <NavigationProperty Name="Labs" Relationship="Self.FK_Labs_Patient" FromRole="Patient" ToRole="Labs" />
+          <NavigationProperty Name="Operations" Relationship="Self.FK_Operations_PatientId" FromRole="Patient" ToRole="Operations" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Patient_Person" FromRole="Patient" ToRole="Person" />
+          <NavigationProperty Name="Permissions" Relationship="Self.FK_Permission_Patient" FromRole="Patient" ToRole="Permission" />
+          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Patient_Id" FromRole="Patient" ToRole="Reviews" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Person_Id" />
+          </Key>
+          <Property Name="Person_Id" Type="Int64" Nullable="false" />
+          <Property Name="First_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Last_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Birth_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="National_Id" Type="String" MaxLength="14" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Nationality" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Doctor_Person" FromRole="Person" ToRole="Doctor" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Patient_Person" FromRole="Person" ToRole="Patient" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Person_User" FromRole="Person" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Last_Date_Of_Login" Type="DateTime" Precision="0" />
+          <Property Name="User_Type" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Status_Of_Account" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Photo_Url" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Medical_Organization_UserId" FromRole="User" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Person_User" FromRole="User" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Disease">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Disease_Name" />
+            <PropertyRef Name="Disease_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Disease_Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Disease_Type" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Diseases_Patient" FromRole="Diseases" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Evaluation_Doctor">
+          <Key>
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Rate" />
+          </Key>
+          <Property Name="Doctor_Id" Type="Int64" Nullable="false" />
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Rate" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Evaluation_Doctor_DoctorId" FromRole="Evaluation_Doctor" ToRole="Doctor" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Evaluation_Doctor_PatientId" FromRole="Evaluation_Doctor" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Evaluation_Medical_Org">
+          <Key>
+            <PropertyRef Name="Medical_Org_Id" />
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Rate" />
+          </Key>
+          <Property Name="Medical_Org_Id" Type="Int64" Nullable="false" />
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Rate" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Evaluation_Medical_Org_Org_Id" FromRole="Evaluation_Medical_Org" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Evaluation_Medical_Org_Patient_Id" FromRole="Evaluation_Medical_Org" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Examination">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Medical_Org_Id" />
+            <PropertyRef Name="exm_date" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Doctor_Id" Type="Int64" Nullable="false" />
+          <Property Name="Medical_Org_Id" Type="Int64" Nullable="false" />
+          <Property Name="exm_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="exm_description_result" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <Property Name="exm_midicine" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Examination_Doctor" FromRole="Examination" ToRole="Doctor" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Examination_Medical_Org" FromRole="Examination" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Examination_Patient" FromRole="Examination" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Family_History">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Disease_Name" />
+            <PropertyRef Name="Disease_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Disease_Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Disease_Type" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Family_History_Patient" FromRole="Family_History" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Lab">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Org_Id" />
+            <PropertyRef Name="Lab_Name" />
+            <PropertyRef Name="Lab_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Org_Id" Type="Int64" Nullable="false" />
+          <Property Name="Lab_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Lab_Description_Result" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <Property Name="Lab_Type" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Lab_Date" Type="DateTime" Precision="0" />
+          <Property Name="Lab_File" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Labs_Org" FromRole="Labs" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Labs_Patient" FromRole="Labs" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Operation">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Op_Name" />
+            <PropertyRef Name="Op_Type" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Op_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Op_Type" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Op_Date" Type="DateTime" Precision="0" />
+          <Property Name="Doctor_Id" Type="Int64" />
+          <Property Name="Organization_Id" Type="Int64" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Operations_Doctor" FromRole="Operations" ToRole="Doctor" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Operations_Medical_Org_Id" FromRole="Operations" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Operations_PatientId" FromRole="Operations" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Permission1" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Doctor_Id" Type="Int64" Nullable="false" />
+          <Property Name="Permission1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Permission_Doctor" FromRole="Permission" ToRole="Doctor" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Permission_Patient" FromRole="Permission" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Patient_Id" />
+            <PropertyRef Name="Doctor_Id" />
+            <PropertyRef Name="Organization_Id" />
+            <PropertyRef Name="rev_date" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Doctor_Id" Type="Int64" Nullable="false" />
+          <Property Name="Organization_Id" Type="Int64" Nullable="false" />
+          <Property Name="rev_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="rev_midicine" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <Property Name="rev_description_result" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Reviews_Doctor_Id" FromRole="Reviews" ToRole="Doctor" />
+          <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Reviews_Medical_Org_Id" FromRole="Reviews" ToRole="Medical_Organization" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Reviews_Patient_Id" FromRole="Reviews" ToRole="Patient" />
+        </EntityType>
+        <Association Name="FK_Child_FollowUp_Form_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Child_FollowUp_Form" Type="Self.Child_FollowUp_Form" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Child_FollowUp_Form">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Department_Medical_Org">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Department" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Department">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Department_Id" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="Department_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Person_Id" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Doctor_DoctorId">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Evaluation_Doctor" Type="Self.Evaluation_Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Examination_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Operations_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="Operations" Type="Self.Operation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Operations">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permission_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Permission" Type="Self.Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Doctor_Id">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_General_Examination_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="General_Examination" Type="Self.General_Examination" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="General_Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Medical_Org_Org_Id">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Evaluation_Medical_Org" Type="Self.Evaluation_Medical_Org" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Medical_Org">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Examination_Medical_Org">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Labs_Org">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Labs" Type="Self.Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Labs">
+              <PropertyRef Name="Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Medical_Organization_UserId">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Operations_Medical_Org_Id">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="0..1" />
+          <End Role="Operations" Type="Self.Operation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Operations">
+              <PropertyRef Name="Organization_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Medical_Org_Id">
+          <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medical_Organization">
+              <PropertyRef Name="Medical_Org_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Organization_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Diseases_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Diseases" Type="Self.Disease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Diseases">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Doctor_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Evaluation_Doctor" Type="Self.Evaluation_Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Doctor">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Medical_Org_Patient_Id">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Evaluation_Medical_Org" Type="Self.Evaluation_Medical_Org" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Evaluation_Medical_Org">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Examination_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Family_History_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Family_History" Type="Self.Family_History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Family_History">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Labs_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Labs" Type="Self.Lab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Labs">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Operations_PatientId">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Operations" Type="Self.Operation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Operations">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Person_Id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permission_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Permission" Type="Self.Permission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Permission">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reviews_Patient_Id">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Person_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Person">
+              <PropertyRef Name="Person_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EMR_GP_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Child_FollowUp_Form" EntityType="Self.Child_FollowUp_Form" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+          <EntitySet Name="General_Examination" EntityType="Self.General_Examination" />
+          <EntitySet Name="Medical_Organization" EntityType="Self.Medical_Organization" />
+          <EntitySet Name="Patients" EntityType="Self.Patient" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Diseases" EntityType="Self.Disease" />
+          <EntitySet Name="Evaluation_Doctor" EntityType="Self.Evaluation_Doctor" />
+          <EntitySet Name="Evaluation_Medical_Org" EntityType="Self.Evaluation_Medical_Org" />
+          <EntitySet Name="Examinations" EntityType="Self.Examination" />
+          <EntitySet Name="Family_History" EntityType="Self.Family_History" />
+          <EntitySet Name="Labs" EntityType="Self.Lab" />
+          <EntitySet Name="Operations" EntityType="Self.Operation" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="Reviews" EntityType="Self.Review" />
+          <AssociationSet Name="FK_Child_FollowUp_Form_Patient" Association="Self.FK_Child_FollowUp_Form_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Child_FollowUp_Form" EntitySet="Child_FollowUp_Form" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Department_Medical_Org" Association="Self.FK_Department_Medical_Org">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Department" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Department" Association="Self.FK_Doctor_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Doctor" EntitySet="Doctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Person" Association="Self.FK_Doctor_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Doctor" EntitySet="Doctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Doctor_DoctorId" Association="Self.FK_Evaluation_Doctor_DoctorId">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Evaluation_Doctor" EntitySet="Evaluation_Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Examination_Doctor" Association="Self.FK_Examination_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Examination" EntitySet="Examinations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operations_Doctor" Association="Self.FK_Operations_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Operations" EntitySet="Operations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permission_Doctor" Association="Self.FK_Permission_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Doctor_Id" Association="Self.FK_Reviews_Doctor_Id">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_General_Examination_Patient" Association="Self.FK_General_Examination_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="General_Examination" EntitySet="General_Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Medical_Org_Org_Id" Association="Self.FK_Evaluation_Medical_Org_Org_Id">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Evaluation_Medical_Org" EntitySet="Evaluation_Medical_Org" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Examination_Medical_Org" Association="Self.FK_Examination_Medical_Org">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Examination" EntitySet="Examinations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Labs_Org" Association="Self.FK_Labs_Org">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Labs" EntitySet="Labs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Medical_Organization_UserId" Association="Self.FK_Medical_Organization_UserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operations_Medical_Org_Id" Association="Self.FK_Operations_Medical_Org_Id">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Operations" EntitySet="Operations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Medical_Org_Id" Association="Self.FK_Reviews_Medical_Org_Id">
+            <End Role="Medical_Organization" EntitySet="Medical_Organization" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diseases_Patient" Association="Self.FK_Diseases_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Diseases" EntitySet="Diseases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Doctor_PatientId" Association="Self.FK_Evaluation_Doctor_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Evaluation_Doctor" EntitySet="Evaluation_Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Medical_Org_Patient_Id" Association="Self.FK_Evaluation_Medical_Org_Patient_Id">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Evaluation_Medical_Org" EntitySet="Evaluation_Medical_Org" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Examination_Patient" Association="Self.FK_Examination_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Examination" EntitySet="Examinations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Family_History_Patient" Association="Self.FK_Family_History_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Family_History" EntitySet="Family_History" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Labs_Patient" Association="Self.FK_Labs_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Labs" EntitySet="Labs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operations_PatientId" Association="Self.FK_Operations_PatientId">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Operations" EntitySet="Operations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Person" Association="Self.FK_Patient_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permission_Patient" Association="Self.FK_Permission_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Permission" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Patient_Id" Association="Self.FK_Reviews_Patient_Id">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Person_User" Association="Self.FK_Person_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Person" EntitySet="People" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EMR_GP_DBModelStoreContainer" CdmEntityContainer="EMR_GP_DBEntities">
+          <EntitySetMapping Name="Child_FollowUp_Form">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Child_FollowUp_Form">
+              <MappingFragment StoreEntitySet="Child_FollowUp_Form">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Age_In_Month" ColumnName="Age_In_Month" />
+                <ScalarProperty Name="Feed_Type" ColumnName="Feed_Type" />
+                <ScalarProperty Name="Vaccination_Type" ColumnName="Vaccination_Type" />
+                <ScalarProperty Name="Vaccination_Date" ColumnName="Vaccination_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Department_Name" ColumnName="Department_Name" />
+                <ScalarProperty Name="Medical_Org_Id" ColumnName="Medical_Org_Id" />
+                <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
+                <ScalarProperty Name="Medium_Rate" ColumnName="Medium_Rate" />
+                <ScalarProperty Name="Acadimic_Degree" ColumnName="Acadimic_Degree" />
+                <ScalarProperty Name="Functional_Degree" ColumnName="Functional_Degree" />
+                <ScalarProperty Name="Spacialization" ColumnName="Spacialization" />
+                <ScalarProperty Name="Medical_Org_Id" ColumnName="Medical_Org_Id" />
+                <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="General_Examination">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.General_Examination">
+              <MappingFragment StoreEntitySet="General_Examination">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Blood_Type" ColumnName="Blood_Type" />
+                <ScalarProperty Name="Blood_Pressure" ColumnName="Blood_Pressure" />
+                <ScalarProperty Name="Diabetes" ColumnName="Diabetes" />
+                <ScalarProperty Name="Habits" ColumnName="Habits" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Medical_Organization">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Medical_Organization">
+              <MappingFragment StoreEntitySet="Medical_Organization">
+                <ScalarProperty Name="Medical_Org_Id" ColumnName="Medical_Org_Id" />
+                <ScalarProperty Name="Medical_Org_Name" ColumnName="Medical_Org_Name" />
+                <ScalarProperty Name="Medium_Rate" ColumnName="Medium_Rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Learning_Status" ColumnName="Learning_Status" />
+                <ScalarProperty Name="Social_Status" ColumnName="Social_Status" />
+                <ScalarProperty Name="Death_Date" ColumnName="Death_Date" />
+                <ScalarProperty Name="Alternative_Phone" ColumnName="Alternative_Phone" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="Reason_Death" ColumnName="Reason_Death" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Person_Id" ColumnName="Person_Id" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Birth_Date" ColumnName="Birth_Date" />
+                <ScalarProperty Name="National_Id" ColumnName="National_Id" />
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Last_Date_Of_Login" ColumnName="Last_Date_Of_Login" />
+                <ScalarProperty Name="User_Type" ColumnName="User_Type" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status_Of_Account" ColumnName="Status_Of_Account" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Photo_Url" ColumnName="Photo_Url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Diseases">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Disease">
+              <MappingFragment StoreEntitySet="Diseases">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Disease_Name" ColumnName="Disease_Name" />
+                <ScalarProperty Name="Disease_Type" ColumnName="Disease_Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evaluation_Doctor">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Evaluation_Doctor">
+              <MappingFragment StoreEntitySet="Evaluation_Doctor">
+                <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evaluation_Medical_Org">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Evaluation_Medical_Org">
+              <MappingFragment StoreEntitySet="Evaluation_Medical_Org">
+                <ScalarProperty Name="Medical_Org_Id" ColumnName="Medical_Org_Id" />
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Examinations">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Examination">
+              <MappingFragment StoreEntitySet="Examination">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
+                <ScalarProperty Name="Medical_Org_Id" ColumnName="Medical_Org_Id" />
+                <ScalarProperty Name="exm_date" ColumnName="exm_date" />
+                <ScalarProperty Name="exm_description_result" ColumnName="exm_description_result" />
+                <ScalarProperty Name="exm_midicine" ColumnName="exm_midicine" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Family_History">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Family_History">
+              <MappingFragment StoreEntitySet="Family_History">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Disease_Name" ColumnName="Disease_Name" />
+                <ScalarProperty Name="Disease_Type" ColumnName="Disease_Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Labs">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Lab">
+              <MappingFragment StoreEntitySet="Labs">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Org_Id" ColumnName="Org_Id" />
+                <ScalarProperty Name="Lab_Name" ColumnName="Lab_Name" />
+                <ScalarProperty Name="Lab_Description_Result" ColumnName="Lab_Description_Result" />
+                <ScalarProperty Name="Lab_Type" ColumnName="Lab_Type" />
+                <ScalarProperty Name="Lab_Date" ColumnName="Lab_Date" />
+                <ScalarProperty Name="Lab_File" ColumnName="Lab_File" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operations">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Operation">
+              <MappingFragment StoreEntitySet="Operations">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Op_Name" ColumnName="Op_Name" />
+                <ScalarProperty Name="Op_Type" ColumnName="Op_Type" />
+                <ScalarProperty Name="Op_Date" ColumnName="Op_Date" />
+                <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
+                <ScalarProperty Name="Organization_Id" ColumnName="Organization_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Permission">
+              <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
+                <ScalarProperty Name="Permission1" ColumnName="Permission" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Review">
+              <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+                <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
+                <ScalarProperty Name="Organization_Id" ColumnName="Organization_Id" />
+                <ScalarProperty Name="rev_date" ColumnName="rev_date" />
+                <ScalarProperty Name="rev_midicine" ColumnName="rev_midicine" />
+                <ScalarProperty Name="rev_description_result" ColumnName="rev_description_result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

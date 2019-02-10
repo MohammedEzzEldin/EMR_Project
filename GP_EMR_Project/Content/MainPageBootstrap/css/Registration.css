@@ -1,0 +1,139 @@
+@charset "utf-8";
+
+a.nav-link.reg{
+	margin-right:35px;
+	font-weight:bold;
+	}
+	
+	
+.activee{	
+	background-color:#CCC;}	
+	
+.patient_register_con{
+	background-image:url(../pic/text_image.img.jpeg);
+	opacity:1;
+	background-size:cover;
+	background-attachment:fixed;
+
+	}
+
+.hospital_register_con{
+	
+		background-image:url(../pic/lg_umc_east_08.jpg);
+	opacity:1;
+	background-size:cover;
+	background-attachment:fixed;}	
+
+	
+	
+	
+.patient_register_con h1{
+	font-size:40px;
+	font-weight:bolder;
+	margin-top:270px;
+}
+
+.hospital_register_con  h1{
+	font-size:40px;
+	font-weight:bolder;
+	margin-top:270px;
+		color:#F00;
+}
+
+.patient_register_con p{
+	font-size:20px;
+	margin-bottom:250px;
+
+}
+
+.hospital_register_con p{
+	font-size:20px;
+	margin-bottom:250px;
+	color:#FFF;
+}
+
+.col-md-5{
+	margin-top:80px;
+	box-shadow: -1px 1px 60px 10px black;
+	background: rgba(0,0,0,0.4);
+	
+	height:1050px;
+	margin-bottom:80px;
+}
+.hos{height:800px;}
+
+
+.col-md-5 h3{
+	color:#FFF;
+	font-weight:bold;
+	margin-top:30px;}
+
+.form_con{
+	margin-top:10px;}	
+
+.Label{
+	margin-top:8px;
+	font-weight:normal;
+	color:#FFF;
+	font-size:20px;}
+
+.col-md-5 input{
+
+	margin-bottom:25px;
+	margin-top:10px;}	
+	
+input[type="radio"]{
+	
+	width:15px;}
+	
+.gender	{
+	margin-top:11px;}
+	
+.gender span{
+	color:#FFF;
+	font-size:17px;
+	margin-right:10px;
+	}	
+
+.stat{margin-top:23	px;}	
+	
+	
+.btn-primary{
+	margin-top:40px;
+	margin-left:160px;
+	font-size:20px;
+	width:120px;	
+}
+	@media(max-width: 768px){
+		.register_con h1{
+			margin-top:50px;
+			margin-bottom:0px;
+			font-size:35px;}
+		.col-md-7{
+			max-height:300px;}	
+			
+
+		.col-md-5{
+	margin-top:0px;
+	min-height:900px;}
+	
+		.register_con{
+		min-height:3000px;}
+		
+	}
+	
+	.patient_register_con{
+		min-height:1100px;}
+	
+	.hospital_register_con	{
+		min-height:1100px;}
+		
+	.upload{margin-top:30px;}	
+
+
+.footer{
+
+	margin-top:1px;
+
+	
+}

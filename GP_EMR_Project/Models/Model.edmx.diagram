@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e9d8eddc1c94428da6ac7c3abc3ea892" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Child_FollowUp_Form" Width="1.5" PointX="7.5" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Department" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Doctor" Width="1.5" PointX="10.5" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.General_Examination" Width="1.5" PointX="7.5" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Medical_Organization" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Patient" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Person" Width="1.5" PointX="3" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.User" Width="1.5" PointX="0.75" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Disease" Width="1.5" PointX="7.5" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Evaluation_Doctor" Width="1.5" PointX="12.75" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Evaluation_Medical_Org" Width="1.5" PointX="7.5" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Examination" Width="1.5" PointX="12.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Family_History" Width="1.5" PointX="7.5" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Lab" Width="1.5" PointX="10.5" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Operation" Width="1.5" PointX="15.75" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Permission" Width="1.5" PointX="12.75" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Review" Width="1.5" PointX="15.75" PointY="12.125" IsExpanded="true" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Child_FollowUp_Form_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Department_Medical_Org" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Doctor_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Doctor_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Evaluation_Doctor_DoctorId" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Examination_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Operations_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Permission_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Reviews_Doctor_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_General_Examination_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Evaluation_Medical_Org_Org_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Examination_Medical_Org" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Labs_Org" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Medical_Organization_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Operations_Medical_Org_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Reviews_Medical_Org_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Diseases_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Evaluation_Doctor_PatientId" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Evaluation_Medical_Org_Patient_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Examination_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Family_History_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Labs_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Operations_PatientId" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Patient_Person" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Permission_Patient" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Reviews_Patient_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Person_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

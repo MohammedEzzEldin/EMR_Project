@@ -1,0 +1,191 @@
+body{
+background-color:}
+.upper-bar{
+	padding-top:15px;
+	padding-bottom:10px;
+	}
+	
+.navbar-brand {
+	    font-size: 40px;
+    line-height: 32px;
+	margin:auto;}
+
+.d-inline-block  {
+	max-width:100%;
+	height:auto;
+    
+}	
+
+.h{
+	font-weight:bold;
+	color:#03C;}
+.c{
+	font-weight:bold;
+	color:#093;}	
+
+
+
+
+	
+.w{max-width:100%}	
+
+.f{padding-top:5px;}	
+	
+.form-inline{
+	line-height:30px;}
+
+.form-inline .form-control {
+	border-radius: 15px;}	
+		
+
+.btn:not(:disabled):not(.disabled) {
+	background-color:#FFF;
+	color:#03C;
+	 border-radius: 15px;
+  }
+  
+  .btn:not(:disabled):not(.disabled):active {
+  background-color:#03C;
+}
+			
+.btn-outline-success{
+	color:#03C;
+	border-color:#03C;}
+	
+	
+
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active
+{color:#03C;
+font-weight:bold;}
+
+.bg-light{
+	background-color:#CCC;}
+
+.nav-link {
+	padding:15px;
+	font-size:18px;}
+
+/** soial midea icons**/	
+.fa {
+  padding: 9px;
+  font-size: 25px;
+  width: 40px;
+  text-align: center;
+  text-decoration:none;
+  margin: 5px;
+  border-radius: 50%;
+	
+}
+
+.fa:hover {
+    opacity: 0.7;
+	color:#FFF;
+	text-decoration:none;
+}
+
+
+.fa-facebook {
+  background: #3B5998;
+  color:#FFF;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color:#FFF;
+}
+
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
+
+
+
+/**--------**/
+
+.item{
+	margin:0px 20px auto;}
+.card-body{
+	text-align:center;}	
+
+	
+
+
+
+.content{
+	background-color:#f8f9fa;
+	padding-top:30px;
+	padding-bottom:30px;}
+
+.content h1{
+	padding-bottom:20px;
+	font-weight:bold;
+	color:#039;
+	max-width:100%}
+	
+.content a{
+	margin:20px;}	
+
+.carousel{
+	margin:0px 40px auto;}	
+.content a img{
+
+	width:100%;
+	min-height:300px;
+	max-height:300px;
+	opacity:0.9;
+}
+.content a img:hover{
+	opacity:1;}
+
+	
+.hospital{
+	max-width:100%;
+	min-width:100%;
+	width:100%;}
+	
+	
+.footer{
+	background-color:#f8f9fa;
+	margin-top:60px;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+	
+.footer h3{
+	color:#03F;
+	margin:30px 0 20px;}
+	
+
+	
+.split{overflow:hidden}
+
+.split li{
+	float:left	}	
+	
+.soiallist{overflow:hidden;}
+
+.soiallist li{
+	float:left;}
+	
+.footer .icon:before{
+	font-family:'FontAwesome';
+	content:"\f054";
+	margin-right:5px;
+	color:#03C;
+	font-size:12px; }
+	
+.copyright{
+	background-color:#CCC;}
+		
+	@media(max-width: 768px){
+	.footer .vi	{
+		font-size:20px;
+	
+	}		

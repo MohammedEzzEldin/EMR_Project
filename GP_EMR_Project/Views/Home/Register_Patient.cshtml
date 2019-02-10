@@ -1,0 +1,96 @@
+﻿@model GP_EMR_Project.Models.Patient
+
+@{
+    ViewBag.Title = "Register Patient";
+}
+    <!-- patient registration -->
+<div>
+    <!-- patient registration -->
+    <div class="patient_register_con" id="tab1-content">
+        <div class="container ">
+            <div class="row">
+                <div class="col-md-7">
+                    <h1 class="text-left">Register Notes:</h1>
+                    <p class="text-left">
+                        You Can Register as Patient for Create Your Health Record. <br />
+                        Or You Can Register as Medical Organization for
+                        Enjoy by Our Service to Hospitals and Medical Labs and Other Medical Organizations
+                    </p>
+                </div>
+                <div class="col-md-5" style="height:700px;">
+
+                    <div class="row">
+                        <div class="col-md">
+                            <h3 class="text-center">Registration Form</h3>
+                        </div>
+                    </div>
+                    <hr color="#FFFFFF" />
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                    <div class="row form_con ">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        
+                        @Html.LabelFor(model=>model.Alternative_Phone, htmlAttributes: new { @class = "col - md - 3 Label " })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Alternative_Phone, new { htmlAttributes = new { @class = "form-control", type = "tel", placeholder = "Type your Phone" } })
+                            @Html.ValidationMessageFor(model => model.Alternative_Phone, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-9">
+                            @Html.LabelFor(model => model.Job, htmlAttributes: new { @class = "col - md - 3 Label" })
+                            @Html.EditorFor(model => model.Job, new { htmlAttributes = new { @class = "form-control", placeholder = "Type the Job" } })
+                            @Html.ValidationMessageFor(model => model.Job, "", new { @class = "text-danger" })
+                        </div>
+
+
+                        <div class="col-md-9">
+                            @Html.LabelFor(model=>model.Learning_Status, htmlAttributes: new { @class = "col - md - 3 Label" })
+
+                            @Html.DropDownListFor(model => model.Learning_Status,
+                           new SelectList( new List<SelectListItem>{
+                           new SelectListItem{Value = "Illiterate",  Text = "He does not read and he does not write" },
+                           new SelectListItem{Value = "literate",  Text = "He reads and writes" },
+                           new SelectListItem{Value = "Elementary",  Text = "Elementary" },
+                           new SelectListItem{Value = "Intermediate",  Text = "Intermediate" },
+                           new SelectListItem{Value = "Upper Intermediate",  Text = "Upper Intermediate" },
+                           new SelectListItem{Value = "Secondary",  Text = "Secondary" },
+                           new SelectListItem{Value = "Diploma",  Text = "Diploma" },
+                           new SelectListItem{Value = "Bachelor",  Text = "Bachelor" },
+                           new SelectListItem{Value = "Master",  Text = "Master" },
+                           new SelectListItem{Value = "Doctorate",  Text = "Doctorate" }
+                        }, "value", "text"), "Learning Status", new { @class = "form-control", required = true })
+                            @Html.ValidationMessageFor(model => model.Learning_Status, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-9">
+                            <br />
+                            @Html.LabelFor(model => model.Social_Status, htmlAttributes: new { @class = "col - md - 3 Label" })
+
+                            @Html.DropDownListFor(model => model.Social_Status,
+                           new SelectList( new List<SelectListItem>{
+                           new SelectListItem{Value = "Single",  Text = "Single" },
+                           new SelectListItem{Value = "Married",  Text = "Married" },
+                           new SelectListItem{Value = "Divorced",  Text = "Divorced" },
+                           new SelectListItem{Value = "Widowed",  Text = "Widowed" }
+                        }, "value", "text"), "Social Status", new { @class = "form-control", required = true })
+                            @Html.ValidationMessageFor(model => model.Social_Status, "", new { @class = "text-danger" })
+                            <br />
+                        </div>
+                        @Html.HiddenFor(model => model.Patient_Id)
+                        <input type="submit" class="btn btn-primary" value="Register" />
+
+                    </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--end patient rigitration-->
+
+</div>
