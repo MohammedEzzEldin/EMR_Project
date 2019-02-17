@@ -33,35 +33,41 @@
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        @Html.LabelFor(model => model.First_Name, htmlAttributes: new { @class = "col - md - 3 Label " })
+                        @Html.Label("First Name", htmlAttributes: new { @class = "col - md - 3 Label " })
                         <div class="col-md-9">
-                            @Html.EditorFor(model => model.First_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Type your First Name", required = true } })
+                            @Html.EditorFor(model =>model.First_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Type your First Name", required = true } })
                             @Html.ValidationMessageFor(model => model.First_Name, "", new { @class = "text-danger" })
                         </div>
 
+                        @Html.Label("Last Name", htmlAttributes: new { @class = "col - md - 3 Label" })
                         <div class="col-md-9">
-                            @Html.LabelFor(model => model.Last_Name, htmlAttributes: new { @class = "col - md - 3 Label" })
                             @Html.EditorFor(model => model.Last_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Type the Last Name", required = true } })
                             @Html.ValidationMessageFor(model => model.Last_Name, "", new { @class = "text-danger" })
                         </div>
 
+                        @Html.Label("Nationality", htmlAttributes: new { @class = "col - md - 3 Label" })
                         <div class="col-md-9">
-                            @Html.LabelFor(model => model.National_Id, htmlAttributes: new { @class = "col - md - 3 Label" })
+                            @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @class = "form-control", placeholder = "Type The Nationality" } })
+                            @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                        </div>
+
+                        @Html.Label("National Id", htmlAttributes: new { @class = "col - md - 3 Label" })
+                        <div class="col-md-9">
                             @Html.EditorFor(model => model.National_Id, new { htmlAttributes = new { @class = "form-control", placeholder = "Type the National Id", required = true, maxlength = "14" } })
                             @Html.ValidationMessageFor(model => model.National_Id, "", new { @class = "text-danger" })
                         </div>
 
 
+                        @Html.Label("Birth Date", htmlAttributes: new { @class = "col - md - 3 Label" })
                         <div class="col-md-9">
-                            @Html.LabelFor(model => model.Birth_Date, htmlAttributes: new { @class = "col - md - 3 Label" })
                             @Html.EditorFor(model => model.Birth_Date, new { htmlAttributes = new { @class = "form-control", type = "date", placeholder = "Type the Birth Date", required = true } })
                             @Html.ValidationMessageFor(model => model.Birth_Date, "", new { @class = "text-danger" })
                         </div>
 
+                        <br />
+                        @Html.Label("Gender", htmlAttributes: new { @class = "col - md - 3 Label" })
                         <div class="col-md-9">
-                            <br />
-                            @Html.Label("Gender", htmlAttributes: new { @class = "col - md - 3 Label" })
-                            @Html.DropDownListFor(model => model.Gender,
+                            @Html.DropDownListFor(model =>model.Gender,
                            new SelectList( new List<SelectListItem>{
                            new SelectListItem{Value = "male",  Text = "Male" },
                            new SelectListItem{Value = "female",  Text = "Female" },
@@ -70,10 +76,8 @@
                             <br />
                         </div>
 
-                        <div class="col-md-9">
-                            @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "col - md - 3 Label" })
-                            @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @class = "form-control", placeholder = "Type The Nationality" } })
-                        </div>
+
+
                         @Html.HiddenFor(model => model.Person_Id)
                         <input type="submit" class="btn btn-primary" value="Next" />
 

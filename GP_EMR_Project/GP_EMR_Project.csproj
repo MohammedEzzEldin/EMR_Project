@@ -207,6 +207,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Doc_Photo\50.jpg" />
     <Content Include="Content\MainPageBootstrap\css\bootschanges.css" />
     <Content Include="Content\MainPageBootstrap\css\bootstrap.css" />
     <Content Include="Content\MainPageBootstrap\css\hover-min.css" />
@@ -236,6 +237,9 @@
     <Content Include="Content\MainPageBootstrap\pic\text_image.img.jpeg" />
     <Content Include="Content\MainPageBootstrap\pic\WeCare-Logo-V2_150ppi.png" />
     <Content Include="Content\MainPageBootstrap\pic\you_matter_we_care_logo.jpg" />
+    <Content Include="Content\Med_Photo\46.jpg" />
+    <Content Include="Content\Med_Photo\7.jpg" />
+    <Content Include="Content\Patient_Photo\47.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -284,6 +288,8 @@
     <Content Include="Views\Home\Register_Hospital.cshtml" />
     <Content Include="Views\Home\Register_Person.cshtml" />
     <Content Include="Views\Home\Register_Patient.cshtml" />
+    <Content Include="Views\Home\UploadFile.cshtml" />
+    <Content Include="Views\Home\ForgetPassword.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -304,8 +310,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Adm_Photo\" />
-    <Folder Include="Content\Med_Photo\" />
-    <Folder Include="Content\Patient_Photo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

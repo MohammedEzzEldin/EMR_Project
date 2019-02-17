@@ -1,0 +1,46 @@
+﻿@model GP_EMR_Project.Models.User
+
+@{
+    ViewBag.Title = "UploadFile";
+}
+
+<div>
+    <!-- hospital registration -->
+    <div class="hospital_register_con" id="tab1-content">
+        <div class="container ">
+            <div class="row">
+
+                <div class="col-md-7">
+                    <h1 class="text-left">Final Step to Registeration:</h1>
+                    <p class="text-left">---------------------------------------------------------------------------------------------------------------</p>
+                </div>
+
+                <div class="col-md-5 hos">
+
+                    <div class="row">
+                        <div class="col-md">
+                            <h3 class="text-center">Registration Form</h3>
+                        </div>
+                    </div>
+                    <hr color="#FFFFFF" />
+                    @using (Html.BeginForm("UploadFile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(model => model.User_Id, new { htmlAttributes = new { name = "User_Id" } })
+
+                        @Html.Label("Photo", htmlAttributes: new { @class = "col - md - 3 Label" })
+                        <div class="col-md-9">
+                            @Html.TextBox("file", "", new { type = "file", @class = "form-control" }) <br />
+                            <input type="submit" value="Upload" class="btn btn-primary"/>
+                        </div>
+                    }
+                    <hr color="#FFFFFF" />
+                   
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--end hospital rigitration-->
+</div>
+
+

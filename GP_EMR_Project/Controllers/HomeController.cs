@@ -8,6 +8,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Net;
 using System.Web.Security;
+using System.IO;
+using System.Web.Helpers;
 
 namespace GP_EMR_Project.Controllers
 {
@@ -28,53 +30,60 @@ namespace GP_EMR_Project.Controllers
         {
             return View();
         }
-    public ActionResult Login()
-    {  
+        public ActionResult Login()
+        {
             return View();
-    }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-      public ActionResult Login(string username,string password)
+        public ActionResult Login(string username, string password)
         {
-            if (ModelState.IsValid) { 
-            try {
-            User user = db.Users.Single(u => u.Email == username);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    User user = db.Users.Single(u => u.Email == username);
                     // if user do not exist 
                     if (user == null)
                     {
                         ModelState.AddModelError("Email", "You do not register !");
                     }
-                    else if (user.Status_Of_Account == 1) {
-                     string pss = user.Password.Split(' ')[0];
-                     if (pss.Equals(password))
+                    else if (user.Status_Of_Account == 1)
                     {
-                        FormsAuthentication.SetAuthCookie(user.User_Id.ToString(), true);
-                        Session.Add("UserID", user.User_Id.ToString());
-                        Session.Add("UserType", user.User_Type.ToString());
-                        Session.Timeout = 1440;
-                        user.Last_Date_Of_Login = DateTime.Now;
-                        if (user.User_Type == 1) {
+                        string pss = user.Password.Split(' ')[0];
+                        if (pss.Equals(password))
+                        {
+                            FormsAuthentication.SetAuthCookie(user.User_Id.ToString(), true);
+                            Session.Add("UserID", user.User_Id.ToString());
+                            Session.Add("UserType", user.User_Type.ToString());
+                            Session.Timeout = 1440;
+                            user.Last_Date_Of_Login = DateTime.Now;
+                            db.Entry(user).State = EntityState.Modified;
+                            db.SaveChanges();
+                            if (user.User_Type == 1)
+                            {
                                 return RedirectToAction("Index");//Response.Redirect(""); 
                             }
-                        if(user.User_Type == 2) {  Response.Redirect(""); }
-                        if(user.User_Type == 3) {  Response.Redirect(""); }
-                        if(user.User_Type == 4) {  Response.Redirect(""); }
-                    }
+                            if (user.User_Type == 2) { Response.Redirect(""); }
+                            if (user.User_Type == 3) { Response.Redirect(""); }
+                            if (user.User_Type == 4) { Response.Redirect(""); }
+                        }
                         else
                         {
                             ModelState.AddModelError("Password", "Wrong Password");
                         }
                     }
-                    else if(user.Status_Of_Account == 0)
+                    else if (user.Status_Of_Account == 0)
                     {
-                        ModelState.AddModelError("Password","Something Wrong happend, Please contact with us");
+                        ModelState.AddModelError("Password", "Something Wrong happend, Please contact with us");
                     }
-            }
-            catch (Exception ex)
-            {
-                    ModelState.AddModelError("Email", "You do not register ! "+ex.Message);
-            }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Email", "You do not register ! " + ex.Message);
+                }
             }
             return View();
         }
@@ -88,18 +97,19 @@ namespace GP_EMR_Project.Controllers
         }
 
         //Hospiatal Registeration
-        public ActionResult Register_Hospital(User us)
+        public ActionResult Register_Hospital(long id)
         {
-            if ( us.User_Id <=0)
+            if (id <= 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-                Medical_Organization md_org = db.Medical_Organization.Find(us.User_Id); 
-            if(md_org == null)
+            Medical_Organization md_org = new Medical_Organization();
+            md_org.Medical_Org_Id = id;
+            if (md_org == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-               return View(md_org);
+            return View(md_org);
         }
 
         //Hospital Registeration
@@ -110,22 +120,23 @@ namespace GP_EMR_Project.Controllers
             if (ModelState.IsValid)
             {
                 md_org.Medium_Rate = 0.0;
-                db.Entry(md_org).State = EntityState.Modified;  
+                db.Medical_Organization.Add(md_org);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("UploadFile",new { id = md_org.Medical_Org_Id});
             }
             return View(md_org);
         }
 
         //Patient Registeration
-        public ActionResult Register_Patient(Person pr)
+        public ActionResult Register_Patient(long id)
         {
-            if (pr.Person_Id <= 0)
+            if (id <= 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient patient = db.Patients.Find(pr.Person_Id);
-            if(patient == null)
+            Patient patient = new Patient();
+            patient.Patient_Id = id;
+            if (patient == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
@@ -135,65 +146,54 @@ namespace GP_EMR_Project.Controllers
         //Patient Registeration
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register_Patient( [Bind( Include = "Alternative_Phone,Job,Learning_Status,Social_Status,Patient_Id")] Patient patient)
+        public ActionResult Register_Patient([Bind(Include = "Alternative_Phone,Job,Learning_Status,Social_Status,Patient_Id")] Patient patient)
         {
             if (ModelState.IsValid)
-            {  
-                db.Entry(patient).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else
             {
-                patient = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
-                if(patient != null)
-                {
-                    patient.Alternative_Phone = Request.Form["Alternative_Phone"];
-                    patient.Job = Request.Form["Job"];
-                    patient.Learning_Status = Request.Form["Learning_Status"];
-                    patient.Social_Status = Request.Form["Social_Status"];
-                    db.Entry(patient).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                db.Patients.Add(patient);
+                db.SaveChanges();
+                return RedirectToAction("UploadFile",new { id = patient.Patient_Id});
             }
+           
             return View(patient);
         }
 
         //Person Registeration
-        public ActionResult Register_Person(User us)
+        [HttpGet]
+        public ActionResult Register_Person(long id)
         {
-            if(us.User_Id <= 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Person pr = db.People.Find(us.User_Id);
-            if(pr == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
+             if (id <= 0)
+             {
+                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+             }
+
+            Person pr = new Person();
+            pr.Person_Id = id;
+
+             if (pr == null)
+             {
+                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+             }
             return View(pr);
         }
 
         //Person Registeration
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register_Person( [Bind(Include = "First_Name,Last_Name,National_Id,Birth_Date,Gender,Nationality,Person_Id")] Person pr)
+        public ActionResult Register_Person([Bind(Include = "First_Name,Last_Name,National_Id,Birth_Date,Gender,Nationality,Person_Id")] Person pr)
         {
             if (ModelState.IsValid)
             {
-                long pt_id = pr.Person_Id;
-                Patient pt = new Patient();  
-                pt.Patient_Id = pt_id;             
-                db.Entry(pr).State = EntityState.Modified;
-                db.SaveChanges();    
-                //if equal new patient 
-                if(db.Patients.Find(pt_id) == null) 
-                 { 
-                db.Patients.Add(pt);
-                db.SaveChanges();
+                if (pr.Birth_Date > DateTime.Now)
+                {
+                    ModelState.AddModelError("Birth_Date", "Wrong Date");
                 }
-                return RedirectToAction("Register_Patient",pr);
+                else
+                {
+                    db.People.Add(pr);
+                    db.SaveChanges();
+                    return RedirectToAction("Register_Patient", new { id = pr.Person_Id });
+                }
             }
             return View(pr);
         }
@@ -207,72 +207,156 @@ namespace GP_EMR_Project.Controllers
         // General Registeration
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "Email,Address,City,Phone,User_Type,Photo_Url,Password")] User us)
+        public ActionResult Register([Bind(Include = "Email,Address,City,Password,Phone,User_Type")] User us)
         {
+
             if (ModelState.IsValid)
             {
                 if (Request.Form["Confirm Password"] != Request.Form["Password"])
                 {
                     ModelState.AddModelError("Confirm_Password", "Password do not Match");
-                }  
+                }
                 else
-                {
-                    //Access the File using the Name of HTML INPUT File.
-                   // HttpPostedFileBase postedFile =  Request.Files["Photo_Url"];
-
-                    //Check if File is available.
-                  //  if (postedFile != null && postedFile.ContentLength > 0)
-                    {
-                        //Save the File.
-                         //us.Photo_Url = Server.MapPath("~/Content/Patient_Photo") + System.IO.Path.GetFileName(postedFile.FileName);
-                        //postedFile.SaveAs(us.Photo_Url);
-                    }
-                    
+                {          
                     try
                     {
-                        var check_User_exist = db.Users.Single(u => u.Email == us.Email);
+                        var check_User_exist = db.Users.Single(u => u.Email == Request.Form["Email"]);
                         //search user if already exist or not
                         if (check_User_exist != null)
                         {
-                            // Registeration_Id = check_User_exist.User_Id;
-                            if (us.User_Type == 4) { return RedirectToAction("Register_Person", check_User_exist); }
-                            else if (us.User_Type == 2) { return RedirectToAction("Register_Hospital", check_User_exist); }
+                            ModelState.AddModelError("", "User already exist !");
                         }
+                       
                     }
                     catch (Exception ex) { }
 
                     if (us.User_Type == 4)
                     {
-                        us.Status_Of_Account = 1;
-                        long pr_id = us.User_Id;
-                        Person person = new Person();
-                        person.Person_Id = pr_id;
-                        person.First_Name = "";
-                        person.Last_Name = "";
-                        person.Birth_Date = new DateTime(1888, 1, 1);
-                        person.National_Id = "";
-                        person.Gender = "";
-                        db.Users.Add(us);
-                        db.People.Add(person);
-                        db.SaveChanges();
-                        return RedirectToAction("Register_Person", us);
+                        us.Status_Of_Account = 1;    
+                        db.Users.Add(us);   
+                        db.SaveChanges();   
+                        return RedirectToAction("Register_Person", new { id = us.User_Id });
                     }
                     else if (us.User_Type == 2)
                     {
-                        long med_org_id = us.User_Id;
-                        Medical_Organization med = new Medical_Organization();
-                        med.Medical_Org_Id = med_org_id;
-                        med.Medical_Org_Name = "";
-                        med.Medium_Rate = 0.0;
                         db.Users.Add(us);
-                        db.Medical_Organization.Add(med);
                         db.SaveChanges();
-                        return RedirectToAction("Register_Hospital", us);
+                        return RedirectToAction("Register_Hospital",new { id = us.User_Id });
                     }
                 }
             }
             return View(us);
         }
-       
+
+        [HttpPost]
+        public ActionResult Search(string Search)
+        {
+            User us = new User();
+         
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult UploadFile(long id)
+        {
+            if(id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User u = db.Users.Find(id);
+            if(u == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return View(u);
+        }
+
+        [HttpPost]
+        public ActionResult UploadFile(HttpPostedFileBase file)
+        {
+            User u = db.Users.Find((long)Int64.Parse(Request.Form["User_Id"]));
+
+            if (ModelState.IsValid) {
+                if(file == null) {
+                    return  RedirectToAction("Index");
+                }
+
+                if (u != null) {   
+                if(file.FileName != null) { 
+                    if(u.User_Type == 2) { 
+                    file.SaveAs(Server.MapPath("~/Content/Med_Photo/") + u.User_Id + ".jpg");
+                    u.Photo_Url = "~/Content/Med_Photo/" + u.User_Id+".jpg";
+                    }
+                    if (u.User_Type == 4)
+                    {
+                        file.SaveAs(Server.MapPath("~/Content/Patient_Photo/") + u.User_Id + ".jpg");
+                        u.Photo_Url = "~/Content/Patient_Photo/" + u.User_Id + ".jpg";
+                    }
+                    db.Entry(u).State = EntityState.Modified;
+                    db.SaveChanges();
+            }
+            }
+            else
+            {
+                ModelState.AddModelError("User_Id", "User Not Exist");
+            }
+               return RedirectToAction("Index");
+            }
+            return View(u);
+        }
+
+
+       public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgetPassword([Bind(Include = "Email,User_Type")] User user)
+        {
+            User us = new User();
+            try {
+            us = db.Users.Where(model => model.Email == user.Email).Single();
+            }
+            catch {
+            }
+            if (ModelState.IsValid)
+            {
+                if(us == null) { ModelState.AddModelError("","User Not Found, pls register now"); }
+                else
+                {
+                    us.Email = us.Email.Split(' ')[0];
+                    if(us.Email == user.Email)
+                    {
+                        if (us.User_Type == user.User_Type)
+                        {
+                            try {
+                            WebMail.SmtpServer = "smtp.mail.yahoo.com";
+                            WebMail.SmtpPort = 587;
+                            WebMail.EnableSsl = true;
+                            WebMail.SmtpUseDefaultCredentials = true;    
+                            WebMail.UserName = "EMR_GP@yahoo.com";
+                            WebMail.Password = "Password_GP";
+                            WebMail.From = "EMR_GP@yahoo.com";
+                            WebMail.Send(user.Email, "Reset Password", " Your password is "+us.Password);
+                                return RedirectToAction("Login");
+                            }catch(Exception ex)
+                            {
+                                ModelState.AddModelError("Email", "Sorry, We cannot send message to your email because " + ex.StackTrace);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("User_Type", "User Type is Wrong");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", "Email is Wrong");
+                    }
+                }
+            }
+            return View(user);
+        }
+
     }
 }

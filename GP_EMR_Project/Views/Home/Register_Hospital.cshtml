@@ -12,10 +12,8 @@
 
                 <div class="col-md-7">
                     <h1 class="text-left">Join Our Health Care Community Now:</h1>
-                    <p class="text-left">---------------------------------------------------------------------------------------------------------------</p>
+
                 </div>
-
-
 
                 <div class="col-md-5 hos">
 
@@ -25,7 +23,7 @@
                         </div>
                     </div>
                     <hr color="#FFFFFF" />
-
+                   
                     @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
@@ -38,7 +36,7 @@
                             </div>
                         </div>
                         @Html.HiddenFor(model => model.Medical_Org_Id)
-                        <input type="submit" class="btn btn-primary" value="Register" />
+                        <input type="submit" class="btn btn-primary" value="Next" />
                     }
 
 

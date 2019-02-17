@@ -28,11 +28,13 @@
                     </div>
                 </div>
                 <div class=" f col-lg-6 col-sm-7">
-                    <form class="form-inline">
-
-                        <input class=" ml-auto form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                   
+                        @using (Html.BeginForm("Search", "Home", FormMethod.Post, htmlAttributes :new { @class = "form-inline"}))
+                        {
+                            @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search",name="Search" } })
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        }
+           
                 </div>
             </div>
         </div>

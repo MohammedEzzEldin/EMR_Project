@@ -11,8 +11,7 @@
             <div class="row">
 
                 <div class="col-md-7">
-                    <h1 class="text-left">Join Our Health Care Community Now:</h1>
-                    <p class="text-left">---------------------------------------------------------------------------------------------------------------</p>
+                    <h1 class="text-left">Join Our Health Care Community Now</h1>
                 </div>
 
 
@@ -45,7 +44,12 @@
                                 @Html.Editor("password", new { htmlAttributes = new { @class = "form-control", type = "password", maxlength = "15", required = true, placeholder = "Type the Password" } })
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             </div>
+                        </div>      
+                        <div class="text-center">
+                            @Html.ActionLink("Register Now", "Register", "Home") &nbsp;
+                            @Html.ActionLink("Forget Password", "ForgetPassword", "Home")
                         </div>
+
                         <input type="submit" class="btn btn-primary" value="Login" />
                     }
 
