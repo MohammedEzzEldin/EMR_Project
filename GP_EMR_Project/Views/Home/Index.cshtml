@@ -3,6 +3,10 @@
     ViewBag.Title = "Home Page";
 }
 
+@{
+    GP_EMR_Project.Models.EMR_GP_DBEntities db = new GP_EMR_Project.Models.EMR_GP_DBEntities();
+}
+
 <!-- start carousel -->
 
 <div id="carouselExampleSlidesOnly" class="carousel slide container" data-ride="carousel">
@@ -28,73 +32,19 @@
 <div class="container mt-3">
     <div class="row">
         <div class="owl-carousel owl-theme">
-            @foreach (var item in Model)
-            {
-                if(item.User_Type == 3)
-                {
-                    if(item.Person.Doctor.Medium_Rate > 4.5) {
-            <div class="item">
-                <div class="card">
-                    @{
-                        var src = "";
-                        try
-                        {
-                            src = item.Photo_Url.Split(' ')[0];
-                        }
-                        catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
-                    }
-                    <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
-                    <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
-
-                </div>
-            </div>
-                                }
-                            }
-                        }
-
+            @Html.Partial("Partial_Doctors", db.Doctors.ToList().OrderByDescending(model => model.Medium_Rate))
         </div>
-
     </div>
-
 </div>
+
 <br />
+
 <!-- end carousel -->
-
 <div class="content text-center ">
-
     <div class="container">
         <h1><span>The Highest Rated</span> Hospitals</h1>
         <div class="row">
-                            @foreach (var item in Model)
-                            {
-                                if (item.User_Type == 2)
-                                {
-                                    if (item.Status_Of_Account == 1)
-                                    {
-                                        if (item.Medical_Organization.Medium_Rate > 4.5)
-                                        {
-                                               <div class="col-lg-4 col-md-6 col-sm-12  ">
-                                                   <a class=" hvr-border-fade nav-link " href="#">
-                                                       @{
-                                                           var src = "";
-                                                           try
-                                                           {
-                                                               src = item.Photo_Url.Split(' ')[0];
-                                                           }
-                                                           catch(Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
-                                                       }
-                                                       <img class="hospital" src="@Url.Content(src)" alt="hospital" />
-                                                       <h3>@item.Medical_Organization.Medical_Org_Name</h3>
-                                                   </a>
-                                              </div>
-                                        }
-                                    }
-                                }
-                           }
-              
-            </div>
-
+            @Html.Partial("Partial_Medical_Organizations",db.Medical_Organization.ToList().OrderByDescending(model => model.Medium_Rate))   
+        </div>
     </div>
-
 </div>
-

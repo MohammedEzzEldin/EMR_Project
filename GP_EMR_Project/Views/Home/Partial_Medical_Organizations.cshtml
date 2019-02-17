@@ -1,0 +1,32 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Medical_Organization>
+
+@{
+    int i = 0;
+        }
+
+    @foreach (var item in Model)
+    {
+        if (i == 10)
+        {
+            break;
+        }
+        if (item.User.Status_Of_Account == 1)
+        {
+                <div class="col-lg-4 col-md-6 col-sm-12  ">
+                    <a class=" hvr-border-fade nav-link " href="#">
+                        @{
+                            var src = "";
+                            try
+                            {
+                                src = item.User.Photo_Url.Split(' ')[0];
+                            }
+                            catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                        }
+                        <img class="hospital" src="@Url.Content(src)" alt="hospital" />
+                        <h3>@item.Medical_Org_Name</h3>
+                    </a>
+                </div>  
+    }
+        i++;
+}
+

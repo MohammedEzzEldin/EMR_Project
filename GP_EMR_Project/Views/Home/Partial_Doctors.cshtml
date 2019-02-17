@@ -1,0 +1,35 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Doctor>
+
+
+@{
+    int i = 0;
+}
+
+@foreach (var item in Model)
+{
+    if (i == 1)
+    {
+        break;
+    }
+
+        if (item.Person.Doctor.Medium_Rate > 4.5)
+        {
+            <div class="item">
+                <div class="card">
+                    @{
+                        var src = "";
+                        try
+                        {
+                            src = item.Person.User.Photo_Url.Split(' ')[0];
+                        }
+                        catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                    }
+                    <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
+                    <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
+
+                </div>
+            </div>
+        }
+        i++;
+        }
+
