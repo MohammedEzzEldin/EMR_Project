@@ -28,20 +28,15 @@
                     </div>
                 </div>
                 <div class=" f col-lg-6 col-sm-7">
-
-                    @using (Html.BeginForm("Search", "Home", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+                    @if (Session["UserID"] != null)
                     {
-                        @Html.DropDownList("Search_by",
-                                new SelectList( new List<SelectListItem>{
-                                new SelectListItem{Value = "Organization_Name",  Text = "Organization Name" },
-                                new SelectListItem{Value = "Doctor_Name",  Text = "Doctor Name" },
-                                new SelectListItem{Value="Email", Text="Email"}
-                                 }, "value", "text"),"Search by", new { @class = "form-control", required = true })
-                        @Html.Editor("Search", new { htmlAttributes = new { @class = "ml-auto form-control mr-sm-2", type = "search", name = "Search" } })
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    }
-
-                </div>
+                        using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+                        {
+                            @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search" } })
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        }
+                   }
+                    </div>
             </div>
         </div>
     </div>
@@ -57,19 +52,21 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
                 <ul class="navbar-nav ">
-                    <li class="nav-item active hvr-grow">
-                        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
-                    </li>
-
-                    <li class="nav-item hvr-grow">
-                        @Html.ActionLink("About Us", "About", "Home", null, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item hvr-grow">
-                        @Html.ActionLink("Contact Us", "Contact", "Home", null, new { @class = "nav-link" })
-                    </li>
 
                     @if (Session["UserID"] == null)
                     {
+                        <li class="nav-item active hvr-grow">
+                            @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("About Us", "About", "Home", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("Contact Us", "Contact", "Home", null, new { @class = "nav-link" })
+                        </li>
+
                         <li class="nav-item hvr-grow">
                             @Html.ActionLink("Login", "Login", "Home", null, new { @class = "nav-link" })
                         </li>
@@ -84,6 +81,23 @@
                         <li class="nav-item hvr-grow">
                             @Html.ActionLink("Logout", "Logout", "Home", null, new { @class = "nav-link" })
                         </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("Reports", "Index", "Admin", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("Patients", "Index", "Admin", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("Medical Organizations", "Index", "Admin", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("Doctors", "Index", "Admin", null, new { @class = "nav-link" })
+                        </li>
+
                     }
 
                 </ul>

@@ -64,7 +64,7 @@ namespace GP_EMR_Project.Controllers
                             db.SaveChanges();
                             if (user.User_Type == 1)
                             {
-                                return RedirectToAction("Index");//Response.Redirect(""); 
+                                return RedirectToAction("Index","Admin");//Response.Redirect(""); 
                             }
                             if (user.User_Type == 2) { Response.Redirect(""); }
                             if (user.User_Type == 3) { Response.Redirect(""); }
@@ -249,9 +249,19 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string Search)
+        public ActionResult Search(string Search,string Search_by)
         {
-            User us = new User();
+            if (Search_by == "Organization_Name") {
+     
+            }
+            else if(Search_by== "Doctor_Name")
+            {
+
+            }
+            else if(Search_by == "Email")
+            {
+                return View(db.Users.ToList().Where(us => us.Email.Split(' ')[0].Equals(Search)));
+            }
          
             return RedirectToAction("Index");
         }
