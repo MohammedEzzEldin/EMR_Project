@@ -228,7 +228,7 @@ namespace GP_EMR_Project.Controllers
                         }
                        
                     }
-                    catch (Exception ex) { }
+                    catch  { }
 
                     if (us.User_Type == 4)
                     {
@@ -251,8 +251,33 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Search(string Search)
         {
-            User us = new User();
-         
+            if (ModelState.IsValid)
+            {
+               if(Search.Contains('@'))
+                {
+                    return View(db.Users.ToList().Where(u => u.Email.Contains(Search)));
+                }
+                else
+                {
+                    if(db.Medical_Organization.ToList().Where(md => md.Medical_Org_Name.Contains(Search)) != null)
+                    {
+                        return View(db.Users.ToList().Where(md => md.User_Type == 2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                    }
+
+                    if(Search.Contains(' '))
+                    {
+                        if(db.People.ToList().Where(dc => (dc.First_Name + dc.Last_Name).Contains(Search)) != null)
+                        {
+                            return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name + dc.Person.Last_Name).Contains(Search)));
+                        }
+                    }
+                    else
+                    {
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
+                    }
+                }
+            }
+
             return RedirectToAction("Index");
         }
 
