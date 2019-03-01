@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<GP_EMR_Project.Models.User>
-
 @{
     Layout = "~/Views/Shared/_Main.cshtml";
 }
+
+
+<!-- start carousel -->
+
 <div id="carouselExampleSlidesOnly" class="carousel slide container" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -14,42 +17,45 @@
     </div>
     <hr />
 </div>
+<!-- end carousel -->
 
-
-
-<div class="content text-center ">
-    <div class="container">
-
-            @{
-                int i = 0;
-            }
-
-            @foreach (var item in Model)
-            {
-                if (i == 10)
-                {
-                    break;
-                }
-
-                if (item.User_Type == 2)
-                {
-                    <div class="col-lg-4 col-md-6 col-sm-12  ">
-                        <a class=" hvr-border-fade nav-link " href="#">
+@foreach (var item in Model)
+{
+    <!--  if(item.Status_Of_Account == 1) {-->
+    //doctors
+    if (item.User_Type == 3)
+    {
+        <div class="container mt-3">
+            <div class="row">
+                <div class="owl-carousel owl-theme">
+                    <div class="item">
+                        <div class="card">
                             @{
                                 var src = "";
                                 try
                                 {
                                     src = item.Photo_Url.Split(' ')[0];
                                 }
-                                catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                                catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                             }
-                            <img src="@Url.Content(src)" alt="doctor img" class="hospital" />
-                            <h3>@item.Medical_Organization.Medical_Org_Name </h3>
-                        </a>
+                            <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
+                            <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
+
+                        </div>
                     </div>
-                }
-                else if (item.User_Type == 3)
-                {
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+
+
+    // medical organizations
+    else if (item.User_Type == 2)
+    {
+        <div class="content text-center ">
+            <div class="container">
+                <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12  ">
                         <a class=" hvr-border-fade nav-link " href="#">
                             @{
@@ -58,18 +64,18 @@
                                 {
                                     src = item.Photo_Url.Split(' ')[0];
                                 }
-                                catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                                catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                             }
                             <img class="hospital" src="@Url.Content(src)" alt="hospital" />
-                            <h3>@item.Person.First_Name @item.Person.Last_Name</h3>
+                            <h3>@item.Medical_Organization.Medical_Org_Name</h3>
                         </a>
                     </div>
-                }
-                i++;
-            }
+                </div>
+            </div>
         </div>
-        </div>
-        </div>
-    
+    }
+}
+                             
 
-<br />
+
+

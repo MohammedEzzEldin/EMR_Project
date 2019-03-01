@@ -64,7 +64,7 @@ namespace GP_EMR_Project.Controllers
                             db.SaveChanges();
                             if (user.User_Type == 1)
                             {
-                                return RedirectToAction("Index","Admin");//Response.Redirect(""); 
+                                return RedirectToAction("Index");//Response.Redirect(""); 
                             }
                             if (user.User_Type == 2) { Response.Redirect(""); }
                             if (user.User_Type == 3) { Response.Redirect(""); }
@@ -228,7 +228,7 @@ namespace GP_EMR_Project.Controllers
                         }
                        
                     }
-                    catch (Exception ex) { }
+                    catch  { }
 
                     if (us.User_Type == 4)
                     {
@@ -249,20 +249,35 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string Search,string Search_by)
+        public ActionResult Search(string Search)
         {
-            if (Search_by == "Organization_Name") {
-     
-            }
-            else if(Search_by== "Doctor_Name")
+            if (ModelState.IsValid)
             {
+               if(Search.Contains('@'))
+                {
+                    return View(db.Users.ToList().Where(u => u.Email.Contains(Search)));
+                }
+                else
+                {
+                    if(db.Medical_Organization.ToList().Where(md => md.Medical_Org_Name.Contains(Search)) != null)
+                    {
+                        return View(db.Users.ToList().Where(md => md.User_Type == 2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                    }
 
+                    if(Search.Contains(' '))
+                    {
+                        if(db.People.ToList().Where(dc => (dc.First_Name + dc.Last_Name).Contains(Search)) != null)
+                        {
+                            return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name + dc.Person.Last_Name).Contains(Search)));
+                        }
+                    }
+                    else
+                    {
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
+                    }
+                }
             }
-            else if(Search_by == "Email")
-            {
-                return View(db.Users.ToList().Where(us => us.Email.Split(' ')[0].Equals(Search)));
-            }
-         
+
             return RedirectToAction("Index");
         }
 
