@@ -1,0 +1,85 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.User>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Email
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Last_Date_Of_Login)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User_Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status_Of_Account)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo_Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Medical_Organization.Medical_Org_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Person.First_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Last_Date_Of_Login)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User_Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Password)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status_Of_Account)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Photo_Url)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Medical_Organization.Medical_Org_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Person.First_Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.User_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.User_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.User_Id })
+        </td>
+    </tr>
+}
+
+</table>

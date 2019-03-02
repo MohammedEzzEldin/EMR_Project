@@ -248,7 +248,7 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string Search)
+        public ActionResult Search(string Search_about, string Search)
         {
             if (ModelState.IsValid)
             {
@@ -256,10 +256,21 @@ namespace GP_EMR_Project.Controllers
                 {
                     return View(db.Users.ToList().Where(u => u.Email.Contains(Search)));
                 }
-                else
+                else if(Search_about.Equals("Hospitals"))
                 {
-                        return View(db.Users.ToList().Where(md => (md.User_Type==3 && md.Person.First_Name.Contains(Search.Split(' ')[0]) && md.Person.Last_Name.Contains(Search.Split(' ')[1])) || (md.User_Type==2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)) ));
+                        return View(db.Users.ToList().Where(md => md.User_Type==2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)) );
                  }
+               else if (Search_about.Equals("Doctors"))
+                {
+                    if(Search.Split(' ')[1] != null)
+                    {
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
+                    }
+                    else
+                    {
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name+' '+dc.Person.Last_Name).Contains(Search)));
+                    }
+                }
             }
             return RedirectToAction("Index");
         }
