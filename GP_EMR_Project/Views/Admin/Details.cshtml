@@ -1,0 +1,189 @@
+﻿@model GP_EMR_Project.Models.User
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h2 style="text-align:center">Details</h2>
+<hr />
+
+@if (Model.User_Type != 2)
+{
+<div>
+    <div style=" text-align:center">
+        @{
+            var src = "";
+            try
+            {
+                src = Model.Photo_Url.Split(' ')[0];
+            }
+            catch  { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+        }
+        <img src="@Url.Content(src)" alt="Hospital img" style="width:7%; height:5%;" />
+    </div>
+    <table class="table table-bordered table-hover">
+        <tr style="text-align:center">
+            <th>Email</th>
+            <th>Name</th>
+            <th> National Id </th>
+            <th>Nationality</th>
+            <th>Type</th>
+            <th>Account Status</th>
+        </tr>
+
+        <tr style="text-align:center">
+            <td>
+                @Html.DisplayFor(model => model.Email)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.First_Name) &nbsp; @Html.DisplayFor(model => model.Person.Last_Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.National_Id)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.Nationality)
+            </td>
+
+            @if (Model.User_Type == 1)
+            {
+                <td>Admin</td>}
+            @if (Model.User_Type == 3)
+            {
+                <td>Doctor</td>}
+            @if (Model.User_Type == 4)
+            {
+                <td>Patient</td>
+            }
+
+            <!--In Activated-->
+            @if (Model.Status_Of_Account == 0)
+            {
+                <td style="background-color: red"></td>
+            }
+            <!--Activated-->
+            @if (Model.Status_Of_Account == 1)
+            {
+                <td style="background-color:green"></td>
+            }
+            <!--Blocked-->
+            @if (Model.Status_Of_Account == 2)
+            {
+                <td style="background-color:black"></td>
+            }
+        </tr>
+
+        <br />
+
+        <tr style="text-align:center">
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Date of Birth</th>
+        </tr>
+
+        <tr style="text-align:center">
+            <td>@Model.Phone</td>
+            <td>
+                @Html.DisplayFor(model => model.Person.Gender)
+            </td>
+            <td>@Html.DisplayFor(model => model.City)</td>
+            <td>@Html.DisplayFor(model => model.Address)</td>
+            <td>
+                @Html.DisplayFor(model => model.Person.Birth_Date)
+            </td>
+        </tr>
+
+        @if (Model.User_Type == 3)
+        {
+            <tr style="text-align:center">
+                <th>
+                    Acadimic Degree
+                </th>
+                <th>Rate</th>
+            </tr>
+            <tr style="text-align:center">
+                <td>
+                    @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
+                </td>
+                <td>@Html.DisplayFor(model => model.Person.Doctor.Medium_Rate)</td>
+            </tr>
+        }
+
+        @if (Model.User_Type == 4)
+        {
+            <tr style="text-align:center">
+                <th>
+                    Learning Status
+                </th>
+            </tr>
+            <tr style="text-align:center">
+                <td>
+                    @Html.DisplayFor(model => model.Person.Patient.Learning_Status)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+}
+
+else
+{
+    <div style=" text-align:center">
+        @{
+            var src = "";
+            try
+            {
+                src = Model.Photo_Url.Split(' ')[0];
+            }
+            catch  { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+        }
+        <img src="@Url.Content(src)" alt="Hospital img" style="width:7%; height:5%;" />
+    </div>
+
+    <table class="table table-hover table-bordered" style="text-align:center;">
+
+        <tr style="text-align:center">
+            <th>Email</th>
+            <th >Name</th>
+            <th >Phone</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Rate</th>
+            <th>Account Status</th>
+        </tr>
+
+        <tr style="text-align:center">
+            <td>@Html.DisplayFor(model => model.Email)</td>
+            <td >@Html.DisplayFor(model => model.Medical_Organization.Medical_Org_Name)</td>
+            <td>@Html.DisplayFor(model => model.Phone)</td>
+            <td>@Html.DisplayFor(model => model.City)</td>
+            <td>@Html.DisplayFor(model => model.Address)</td>
+            <td>@Html.DisplayFor(model => model.Medical_Organization.Medium_Rate)</td>
+            <!--In Activated-->
+            @if (Model.Status_Of_Account == 0)
+            {
+                <td style="background-color: red"></td>
+            }
+            <!--Activated-->
+            @if (Model.Status_Of_Account == 1)
+            {
+                <td style="background-color:green"></td>
+            }
+            <!--Blocked-->
+            @if (Model.Status_Of_Account == 2)
+            {
+                <td style="background-color:black"></td>
+            }
+        </tr>
+    </table>
+}
+<br />
+<p  style="text-align:center;">
+    @Html.ActionLink("Back to List", "Index","Admin")
+</p>

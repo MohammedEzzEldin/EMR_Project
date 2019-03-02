@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e9d8eddc1c94428da6ac7c3abc3ea892" Name="Diagram1" ZoomLevel="93">
+      <Diagram DiagramId="e9d8eddc1c94428da6ac7c3abc3ea892" Name="Diagram1" ZoomLevel="69">
         <EntityTypeShape EntityType="EMR_GP_DBModel.Child_FollowUp_Form" Width="1.5" PointX="7.5" PointY="15.375" IsExpanded="true" />
         <EntityTypeShape EntityType="EMR_GP_DBModel.Department" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
         <EntityTypeShape EntityType="EMR_GP_DBModel.Doctor" Width="1.5" PointX="10.5" PointY="15.375" IsExpanded="true" />
@@ -49,6 +49,8 @@
         <AssociationConnector Association="EMR_GP_DBModel.FK_Permission_Patient" ManuallyRouted="false" />
         <AssociationConnector Association="EMR_GP_DBModel.FK_Reviews_Patient_Id" ManuallyRouted="false" />
         <AssociationConnector Association="EMR_GP_DBModel.FK_Person_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Doctor_Schedule" Width="1.5" PointX="12.75" PointY="10.875" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Doctor_Schedule_Doctor" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

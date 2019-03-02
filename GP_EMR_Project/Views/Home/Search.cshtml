@@ -19,63 +19,78 @@
 </div>
 <!-- end carousel -->
 
+<div style="text-align:center">
+    <h3>Doctors</h3>
+    <hr />
+</div>
 @foreach (var item in Model)
 {
-    <!--  if(item.Status_Of_Account == 1) {-->
-    //doctors
-    if (item.User_Type == 3)
+    if (item.Status_Of_Account == 1)
     {
-        <div class="container mt-3">
-            <div class="row">
-                <div class="owl-carousel owl-theme">
-                    <div class="item">
-                        <div class="card">
-                            @{
-                                var src = "";
-                                try
-                                {
-                                    src = item.Photo_Url.Split(' ')[0];
+        //doctors
+        if (item.User_Type == 3)
+        {
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="card">
+                                @{
+                                    var src = "";
+                                    try
+                                    {
+                                        src = item.Photo_Url.Split(' ')[0];
+                                    }
+                                    catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                                 }
-                                catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
-                            }
-                            <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
-                            <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
+                                <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
+                                <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <br />
+        }
     }
+}
 
+<hr />
 
-    // medical organizations
-    else if (item.User_Type == 2)
+<div style="text-align:center">
+    <h3>Hospital</h3>
+    <hr />
+</div>
+
+@foreach (var item in Model)
+{
+    if (item.Status_Of_Account == 1)
     {
-        <div class="content text-center ">
-            <div class="container">
+        // medical organizations
+        if (item.User_Type == 2)
+        {
+            <div class="container mt-3">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-12  ">
-                        <a class=" hvr-border-fade nav-link " href="#">
-                            @{
-                                var src = "";
-                                try
-                                {
-                                    src = item.Photo_Url.Split(' ')[0];
+                    <div class="owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="card">
+                                @{
+                                    var src = "";
+                                    try
+                                    {
+                                        src = item.Photo_Url.Split(' ')[0];
+                                    }
+                                    catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                                 }
-                                catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
-                            }
-                            <img class="hospital" src="@Url.Content(src)" alt="hospital" />
-                            <h3>@item.Medical_Organization.Medical_Org_Name</h3>
-                        </a>
+                                <img class="hospital" src="@Url.Content(src)" alt="hospital" />
+                                <div class="card-body "><h3>@item.Medical_Organization.Medical_Org_Name</h3></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     }
 }
-                             
-
-
+<hr />
 

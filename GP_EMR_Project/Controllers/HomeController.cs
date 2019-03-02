@@ -56,15 +56,14 @@ namespace GP_EMR_Project.Controllers
                         if (pss.Equals(password))
                         {
                             FormsAuthentication.SetAuthCookie(user.User_Id.ToString(), true);
-                            Session.Add("UserID", user.User_Id.ToString());
-                            Session.Add("UserType", user.User_Type.ToString());
+                            Session.Add("UserID", user);
                             Session.Timeout = 1440;
                             user.Last_Date_Of_Login = DateTime.Now;
                             db.Entry(user).State = EntityState.Modified;
                             db.SaveChanges();
                             if (user.User_Type == 1)
                             {
-                                return RedirectToAction("Index");//Response.Redirect(""); 
+                                return RedirectToAction("Index","Admin"); 
                             }
                             if (user.User_Type == 2) { Response.Redirect(""); }
                             if (user.User_Type == 3) { Response.Redirect(""); }
@@ -259,25 +258,9 @@ namespace GP_EMR_Project.Controllers
                 }
                 else
                 {
-                    if(db.Medical_Organization.ToList().Where(md => md.Medical_Org_Name.Contains(Search)) != null)
-                    {
-                        return View(db.Users.ToList().Where(md => md.User_Type == 2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)));
-                    }
-
-                    if(Search.Contains(' '))
-                    {
-                        if(db.People.ToList().Where(dc => (dc.First_Name + dc.Last_Name).Contains(Search)) != null)
-                        {
-                            return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name + dc.Person.Last_Name).Contains(Search)));
-                        }
-                    }
-                    else
-                    {
-                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
-                    }
-                }
+                        return View(db.Users.ToList().Where(md => (md.User_Type==3 && md.Person.First_Name.Contains(Search.Split(' ')[0]) && md.Person.Last_Name.Contains(Search.Split(' ')[1])) || (md.User_Type==2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)) ));
+                 }
             }
-
             return RedirectToAction("Index");
         }
 

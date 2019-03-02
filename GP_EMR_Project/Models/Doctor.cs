@@ -22,6 +22,7 @@ namespace GP_EMR_Project.Models
             this.Operations = new HashSet<Operation>();
             this.Permissions = new HashSet<Permission>();
             this.Reviews = new HashSet<Review>();
+            this.Doctor_Schedule = new HashSet<Doctor_Schedule>();
         }
     
         public long Doctor_Id { get; set; }
@@ -44,5 +45,7 @@ namespace GP_EMR_Project.Models
         public virtual ICollection<Permission> Permissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Doctor_Schedule> Doctor_Schedule { get; set; }
     }
 }

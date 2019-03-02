@@ -48,6 +48,16 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Diseases' does not have a primary ke
           <Property Name="Department_Id" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'EMR_GP_DB.dbo.Doctor_Schedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Doctor_Schedule">
+          <Key>
+            <PropertyRef Name="doctor_id" />
+            <PropertyRef Name="day" />
+          </Key>
+          <Property Name="doctor_id" Type="bigint" Nullable="false" />
+          <Property Name="day" Type="char" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'EMR_GP_DB.dbo.Evaluation_Doctor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Evaluation_Doctor">
           <Key>
@@ -171,11 +181,11 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Permission' does not have a primary 
           <Key>
             <PropertyRef Name="Patient_Id" />
             <PropertyRef Name="Doctor_Id" />
-            <PropertyRef Name="Permission" />
+            <PropertyRef Name="Booking_Date" />
           </Key>
           <Property Name="Patient_Id" Type="bigint" Nullable="false" />
           <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
-          <Property Name="Permission" Type="int" Nullable="false" />
+          <Property Name="Booking_Date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -277,6 +287,18 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
             </Principal>
             <Dependent Role="Doctor">
               <PropertyRef Name="Doctor_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Schedule_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Doctor_Schedule" Type="Self.Doctor_Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Doctor_Schedule">
+              <PropertyRef Name="doctor_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -560,6 +582,12 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
     [Diseases].[Disease_Type] AS [Disease_Type]
     FROM [dbo].[Diseases] AS [Diseases]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="Doctor_Schedule" EntityType="Self.Doctor_Schedule" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Doctor_Schedule].[doctor_id] AS [doctor_id], 
+    [Doctor_Schedule].[day] AS [day]
+    FROM [dbo].[Doctor_Schedule] AS [Doctor_Schedule]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Evaluation_Doctor" EntityType="Self.Evaluation_Doctor" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Evaluation_Doctor].[Doctor_Id] AS [Doctor_Id], 
@@ -616,7 +644,7 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
             <DefiningQuery>SELECT 
     [Permission].[Patient_Id] AS [Patient_Id], 
     [Permission].[Doctor_Id] AS [Doctor_Id], 
-    [Permission].[Permission] AS [Permission]
+    [Permission].[Booking_Date] AS [Booking_Date]
     FROM [dbo].[Permission] AS [Permission]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Reviews" EntityType="Self.Reviews" store:Type="Tables" store:Schema="dbo">
@@ -648,6 +676,10 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <AssociationSet Name="FK_Doctor_Person" Association="Self.FK_Doctor_Person">
             <End Role="Person" EntitySet="Person" />
             <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Schedule_Doctor" Association="Self.FK_Doctor_Schedule_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Doctor_Schedule" EntitySet="Doctor_Schedule" />
           </AssociationSet>
           <AssociationSet Name="FK_Evaluation_Doctor_DoctorId" Association="Self.FK_Evaluation_Doctor_DoctorId">
             <End Role="Doctor" EntitySet="Doctor" />
@@ -781,6 +813,7 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <NavigationProperty Name="Operations" Relationship="Self.FK_Operations_Doctor" FromRole="Doctor" ToRole="Operations" />
           <NavigationProperty Name="Permissions" Relationship="Self.FK_Permission_Doctor" FromRole="Doctor" ToRole="Permission" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Doctor_Id" FromRole="Doctor" ToRole="Reviews" />
+          <NavigationProperty Name="Doctor_Schedule" Relationship="EMR_GP_DBModel.FK_Doctor_Schedule_Doctor" FromRole="Doctor" ToRole="Doctor_Schedule" />
         </EntityType>
         <EntityType Name="General_Examination">
           <Key>
@@ -968,13 +1001,13 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <Key>
             <PropertyRef Name="Patient_Id" />
             <PropertyRef Name="Doctor_Id" />
-            <PropertyRef Name="Permission1" />
+            <PropertyRef Name="Booking_Date" />
           </Key>
           <Property Name="Patient_Id" Type="Int64" Nullable="false" />
           <Property Name="Doctor_Id" Type="Int64" Nullable="false" />
-          <Property Name="Permission1" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_Permission_Doctor" FromRole="Permission" ToRole="Doctor" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Permission_Patient" FromRole="Permission" ToRole="Patient" />
+          <Property Name="Booking_Date" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -1443,7 +1476,33 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
             <End Role="User" EntitySet="Users" />
             <End Role="Person" EntitySet="People" />
           </AssociationSet>
+          <EntitySet Name="Doctor_Schedule" EntityType="EMR_GP_DBModel.Doctor_Schedule" />
+          <AssociationSet Name="FK_Doctor_Schedule_Doctor" Association="EMR_GP_DBModel.FK_Doctor_Schedule_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Doctor_Schedule" EntitySet="Doctor_Schedule" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Doctor_Schedule">
+          <Key>
+            <PropertyRef Name="doctor_id" />
+            <PropertyRef Name="day" />
+          </Key>
+          <Property Name="doctor_id" Type="Int64" Nullable="false" />
+          <Property Name="day" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Doctor" Relationship="EMR_GP_DBModel.FK_Doctor_Schedule_Doctor" FromRole="Doctor_Schedule" ToRole="Doctor" />
+        </EntityType>
+        <Association Name="FK_Doctor_Schedule_Doctor">
+          <End Type="EMR_GP_DBModel.Doctor" Role="Doctor" Multiplicity="1" />
+          <End Type="EMR_GP_DBModel.Doctor_Schedule" Role="Doctor_Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Doctor_Id" />
+            </Principal>
+            <Dependent Role="Doctor_Schedule">
+              <PropertyRef Name="doctor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1625,9 +1684,9 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <EntitySetMapping Name="Permissions">
             <EntityTypeMapping TypeName="EMR_GP_DBModel.Permission">
               <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="Booking_Date" ColumnName="Booking_Date" />
                 <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
                 <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
-                <ScalarProperty Name="Permission1" ColumnName="Permission" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1640,6 +1699,14 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
                 <ScalarProperty Name="rev_date" ColumnName="rev_date" />
                 <ScalarProperty Name="rev_midicine" ColumnName="rev_midicine" />
                 <ScalarProperty Name="rev_description_result" ColumnName="rev_description_result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctor_Schedule">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Doctor_Schedule">
+              <MappingFragment StoreEntitySet="Doctor_Schedule">
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="doctor_id" ColumnName="doctor_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
