@@ -12,13 +12,11 @@ namespace GP_EMR_Project.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Permission
+    public partial class Doctor_Schedule
     {
-        public long Patient_Id { get; set; }
-        public long Doctor_Id { get; set; }
-        public System.DateTime Booking_Date { get; set; }
+        public long doctor_id { get; set; }
+        public string day { get; set; }
     
         public virtual Doctor Doctor { get; set; }
-        public virtual Patient Patient { get; set; }
     }
 }

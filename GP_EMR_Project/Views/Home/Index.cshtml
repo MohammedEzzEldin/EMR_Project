@@ -44,7 +44,7 @@
     <div class="container">
         <h1><span>The Highest Rated</span> Hospitals</h1>
         <div class="row">
-            @Html.Partial("Partial_Medical_Organizations",db.Medical_Organization.ToList().OrderByDescending(model => model.Medium_Rate))   
+            @Html.Partial("Partial_Medical_Organizations", db.Medical_Organization.ToList().OrderByDescending(model => model.Medium_Rate))
         </div>
     </div>
 </div>

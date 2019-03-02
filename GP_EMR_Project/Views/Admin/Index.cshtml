@@ -1,0 +1,75 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Medical_Organization>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<hr />
+<h3 style="text-align:center">Requests to Activate the Medical Organizations Accounts</h3>
+<br />
+<div style="
+         margin-top: 1%;
+       ">
+    <table class="table table-bordered table-hover">
+        <tr style="text-align:center">
+            <th>
+                Email
+            </th>
+
+            <th>
+                Name
+            </th>
+
+            <th>
+                Phone
+            </th>
+
+            <th>
+                City
+            </th>
+
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr  style="text-align:center">
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Medical_Org_Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Phone)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.User.City)
+            </td>
+
+                @if (item.User.Status_Of_Account == 0) // in activated
+                {
+                    <td style="background-color:red"></td>
+                }
+                @if(item.User.Status_Of_Account == 1) // activated
+                {
+                    <td style="background-color:green"></td>
+                }
+                @if(item.User.Status_Of_Account ==2) // blocked
+                {
+                    <td style="background-color:black"></td>
+                }
+
+            <td>
+                @Html.ActionLink("Active", "Active_Medical_Org", new { id = item.Medical_Org_Id }, new { @class = "btn btn-danger" }) 
+                @Html.ActionLink("More Detailed", "Details", new { id = item.Medical_Org_Id }, new { @class = "btn btn-danger" }) 
+            </td>
+        </tr>
+        }
+        </table>
+    </div>

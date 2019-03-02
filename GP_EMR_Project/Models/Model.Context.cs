@@ -42,5 +42,6 @@ namespace GP_EMR_Project.Models
         public virtual DbSet<Operation> Operations { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
+        public virtual DbSet<Doctor_Schedule> Doctor_Schedule { get; set; }
     }
 }
