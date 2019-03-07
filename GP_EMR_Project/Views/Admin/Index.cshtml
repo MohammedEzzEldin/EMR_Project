@@ -5,8 +5,9 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 <hr />
-<h3 style="text-align:center">Requests to Activate the Medical Organizations Accounts</h3>
-<br />
+<h3 style="text-align:center">Requests to Activate Medical Organizations Accounts</h3>
+<p style="text-align:center">(totally @Model.Where(u => u.User.Status_Of_Account == 0).Count() )</p>
+
 <div style="
          margin-top: 1%;
        ">

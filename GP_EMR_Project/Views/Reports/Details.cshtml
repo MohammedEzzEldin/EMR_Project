@@ -1,0 +1,107 @@
+﻿@model GP_EMR_Project.Models.User
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Last_Date_Of_Login)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Last_Date_Of_Login)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status_Of_Account)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status_Of_Account)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo_Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photo_Url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Medical_Organization.Medical_Org_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Medical_Organization.Medical_Org_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.First_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.First_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.User_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

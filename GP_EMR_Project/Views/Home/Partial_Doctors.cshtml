@@ -22,7 +22,7 @@
                         {
                             src = item.Person.User.Photo_Url.Split(' ')[0];
                         }
-                        catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                        catch (Exception ) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                     }
                     <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
                     <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>

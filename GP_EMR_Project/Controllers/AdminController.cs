@@ -22,6 +22,9 @@ namespace GP_EMR_Project.Controllers
             {
                 return RedirectToAction("Index","Home");
             }
+            else if(us.User_Type != 1) {
+                return RedirectToAction("Index", "Home");
+            }
             var med_org = db.Medical_Organization.Include(p => p.User).Where(med => med.User.Status_Of_Account == 0);
             return View(med_org.ToList());
         }
