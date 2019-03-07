@@ -17,6 +17,14 @@ namespace GP_EMR_Project.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            User us = (User) Session["UserID"];
+            if(us == null)
+            {
+                return RedirectToAction("Index","Home");
+            }
+            else if(us.User_Type != 1) {
+                return RedirectToAction("Index", "Home");
+            }
             var med_org = db.Medical_Organization.Include(p => p.User).Where(med => med.User.Status_Of_Account == 0);
             return View(med_org.ToList());
         }
@@ -138,7 +146,7 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string Search_about,string Search)
+        public ActionResult Search(string Filter_by, string Search)
         {
             if (ModelState.IsValid)
             {
@@ -146,13 +154,13 @@ namespace GP_EMR_Project.Controllers
                 {
                     return View(db.Users.ToList().Where(u => u.Email.Contains(Search)));
                 }
-                else if (Search_about.Equals("Hospitals"))
+                else if (Filter_by.Equals("Hospitals"))
                 {
                     return View(db.Users.ToList().Where(md => md.User_Type == 2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)));
                 }
-                else if (Search_about.Equals("Doctors"))
+                else if (Filter_by.Equals("Doctors"))
                 {
-                    if (Search.Split(' ')[1] != null)
+                    if (Search.Contains(' '))
                     {
                         return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
                     }
@@ -161,9 +169,9 @@ namespace GP_EMR_Project.Controllers
                         return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name + ' ' + dc.Person.Last_Name).Contains(Search)));
                     }
                 }
-                else if (Search_about.Equals("Patients"))
+                else if (Filter_by.Equals("Patients"))
                 {
-                    if (Search.Split(' ')[1] != null)
+                    if (Search.Contains(' '))
                     {
                         return View(db.Users.ToList().Where(pt => pt.User_Type == 4 && pt.Person.First_Name.Contains(Search)));
                     }
@@ -171,6 +179,11 @@ namespace GP_EMR_Project.Controllers
                     {
                         return View(db.Users.ToList().Where(pt => pt.User_Type == 4 && (pt.Person.First_Name + ' ' + pt.Person.Last_Name).Contains(Search)));
                     }
+                }
+                else
+                {
+                    return View(db.Users.ToList().Where(u => (u.User_Type == 3 && (u.Person.First_Name + ' ' + u.Person.Last_Name).Contains(Search))
+                    || (u.User_Type == 2 && u.Medical_Organization.Medical_Org_Name.Contains(Search))));
                 }
             }
             return RedirectToAction("Index","Admin");

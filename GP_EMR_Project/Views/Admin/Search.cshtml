@@ -1,85 +1,99 @@
 ﻿@model IEnumerable<GP_EMR_Project.Models.User>
 
-
-<table class="table">
-    <tr>
-        <th>
-            Email
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Last_Date_Of_Login)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User_Type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status_Of_Account)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.City)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Photo_Url)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Medical_Organization.Medical_Org_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Person.First_Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Last_Date_Of_Login)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User_Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status_Of_Account)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Photo_Url)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medical_Organization.Medical_Org_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Person.First_Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.User_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.User_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.User_Id })
-        </td>
-    </tr>
+@{ 
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-</table>
+<div style="
+         margin-top: 1%;
+         margin-left:5px;
+         margin-right:8px;
+       ">
+    <table class="table table-bordered table-hover">
+
+        <tr style="text-align:center">
+
+            <th>
+                Email
+            </th>
+
+            <th>
+                User Type
+            </th>
+
+            <th>
+                Phone
+            </th>
+
+            <th>
+                City
+            </th>
+
+            <th>
+                Account Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr style="text-align:center">
+
+            <td>@item.Email</td>
+            @if (item.User_Type == 2)
+            {
+                <td>Medical Organization</td>
+            }
+            else if (item.User_Type == 3)
+            {
+                <td>Doctor</td>
+            }
+            else if (item.User_Type == 4)
+            {
+                <td>Patient</td>
+            }
+            else if (item.User_Type == 1)
+            {
+                <td>Admin</td>
+            }
+
+            <td>@item.Phone</td>
+
+            <td>@item.City</td>
+
+            @if (item.Status_Of_Account == 0)
+            {
+                <td style="background-color:red"></td>
+            }
+            else if (item.Status_Of_Account == 1)
+            {
+                <td style="background-color:green"></td>
+            }
+            else if (item.Status_Of_Account == 3)
+            {
+                <td style="background-color:black"></td>
+            }
+                <td>
+                    @if (item.User_Type == 2)
+                    {
+                        @Html.ActionLink("Active", "Active_Medical_Org", new { id = item.User_Id }, new { @class = "btn btn-danger" })
+                    }
+                    @Html.ActionLink("More Detailed", "Details", new { id = item.User_Id }, new { @class = "btn btn-danger" })
+                </td>
+        </tr>
+        <tr style="text-align:center">
+
+            @{
+                var src = "";
+                try
+                {
+                    src = item.Person.User.Photo_Url.Split(' ')[0];
+                }
+                catch (Exception) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+            }
+            <td>
+                <img src="@Url.Content(src)" alt="user photo" style="height:100px;" />
+            </td>
+        </tr>
+        }
+    </table>
+</div>

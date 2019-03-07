@@ -31,12 +31,12 @@
 
                     @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
                     {
-                        @Html.DropDownList("Search_about",new List<SelectListItem>
+                        @Html.DropDownList("Filter_by",new List<SelectListItem>
                        {
                            new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
                            new SelectListItem(){Text="Doctors",Value="Doctors"},
                             new SelectListItem(){Text="Patients",Value="Patients"},
-                       },"Search about", new { @class = "ml-auto form-control mr-sm-2" })
+                       },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
                         @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search" } })
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     }
@@ -86,8 +86,16 @@
                             @Html.ActionLink("Logout", "Logout", "Home", null, new { @class = "nav-link" })
                         </li>
 
+                        <li>
+                            <h1 style="color:gray"> | </h1>
+                        </li>
+
+                        <li>
+                            @Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+                        </li>
+
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Reports", "Reports", "Home", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Reports", "Index", "Reports", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
@@ -138,14 +146,14 @@
                 <div class="col ">
                     <h3 class="">Links</h3>
                     <ul class="list-unstyled">
-                        <li class="icon"><a href="#">home</a></li>
+                        <li class="icon">@Html.ActionLink("Home","Index","Admin")</li>
                     </ul>
                 </div>
 
                 <div class="col">
                     <h3 class="">Links</h3>
                     <ul class="list-unstyled">
-                        <li class="icon"><a href="#">home</a></li>
+                        <li class="icon">@Html.ActionLink("Home", "Index", "Admin")</li>
                     </ul>
                 </div>
 
