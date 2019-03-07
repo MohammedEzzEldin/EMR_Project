@@ -22,10 +22,30 @@
                         {
                             src = item.Person.User.Photo_Url.Split(' ')[0];
                         }
-                        catch (Exception ) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                        catch (Exception) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                     }
                     <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
-                    <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
+                   
+                        <h4 style="text-align:center">
+                            @{
+                                var rate = item.Medium_Rate;
+                                if (rate / 10 >= 5)
+                                {
+                                    rate = rate + 1;
+                                }
+                            }
+                            @if (item.Medium_Rate > 0)
+                            {
+                                for (var j = 0; j < rate; j++)
+                                {
+                                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                                }
+                            }
+                        </h4>
+                   
+                    <div class="card-body ">
+                        <h3>@item.Person.First_Name @item.Person.Last_Name</h3>
+                    </div>
 
                 </div>
             </div>

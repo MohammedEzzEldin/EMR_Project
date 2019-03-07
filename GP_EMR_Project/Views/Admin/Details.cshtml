@@ -111,7 +111,21 @@
                 <td>
                     @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
                 </td>
-                <td>@Html.DisplayFor(model => model.Person.Doctor.Medium_Rate)</td>
+
+                <td>
+                    @{
+                        var rate = Model.Person.Doctor.Medium_Rate;
+                        if (rate / 10 >= 5)
+                        {
+                            rate = rate + 1;
+                        }
+                    }
+
+                    @for (var i = 0; i < rate; i++)
+                    {
+                        <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                    }
+                </td>
             </tr>
         }
 
@@ -164,7 +178,20 @@ else
             <td>@Html.DisplayFor(model => model.Phone)</td>
             <td>@Html.DisplayFor(model => model.City)</td>
             <td>@Html.DisplayFor(model => model.Address)</td>
-            <td>@Html.DisplayFor(model => model.Medical_Organization.Medium_Rate)</td>
+            <td>
+                @{
+                    var rate = Model.Medical_Organization.Medium_Rate;
+                    if (rate / 10 >= 5)
+                    {
+                        rate = rate + 1;
+                    }
+                }
+
+                @for (var i = 0; i < rate; i++)
+                {
+                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                }
+            </td>
             <!--In Activated-->
             @if (Model.Status_Of_Account == 0)
             {
