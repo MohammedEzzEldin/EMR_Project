@@ -44,6 +44,22 @@
                                     catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                                 }
                                 <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
+                                <h4 style="text-align:center">
+                                    @{
+                                        var rate = item.Person.Doctor.Medium_Rate;
+                                        if (rate / 10 >= 5)
+                                        {
+                                            rate = rate + 1;
+                                        }
+                                    }
+                                    @if (item.Person.Doctor.Medium_Rate > 0)
+                                    {
+                                        for (var j = 0; j < rate; j++)
+                                        {
+                                            <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                                        }
+                                    }
+                                </h4>
                                 <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
 
                             </div>
@@ -83,6 +99,22 @@
                                     catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                                 }
                                 <img class="hospital" src="@Url.Content(src)" alt="hospital" />
+                                <h4 style="text-align:center">
+                                    @{
+                                        var rate = item.Medical_Organization.Medium_Rate;
+                                        if (rate / 10 >= 5)
+                                        {
+                                            rate = rate + 1;
+                                        }
+                                    }
+                                    @if (item.Medical_Organization.Medium_Rate > 0)
+                                    {
+                                        for (var j = 0; j < rate; j++)
+                                        {
+                                            <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                                        }
+                                    }
+                                </h4>
                                 <div class="card-body "><h3>@item.Medical_Organization.Medical_Org_Name</h3></div>
                             </div>
                         </div>

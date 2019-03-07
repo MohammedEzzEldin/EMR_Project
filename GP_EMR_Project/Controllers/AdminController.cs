@@ -29,6 +29,22 @@ namespace GP_EMR_Project.Controllers
             return View(med_org.ToList());
         }
 
+        //GET: Medical Organization
+        public ActionResult Index_Medical_Org()
+        {
+            User us = (User)Session["UserID"];
+            if (us == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (us.User_Type != 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var med_org = db.Medical_Organization.Include(p => p.User).OrderByDescending(md => md.Medium_Rate).Take(10);
+            return View(med_org.ToList());
+        }
+
         // GET: Admin/Details/5
         public ActionResult Details(long? id)
         {
@@ -189,6 +205,16 @@ namespace GP_EMR_Project.Controllers
             return RedirectToAction("Index","Admin");
         }
 
+        [HttpPost]
+        public ActionResult Search_Medical_Org(string Search, string Search_by)
+        {
+            return View();
+        }
+
+        public ActionResult Filter(string Filter_by, string Order_by)
+        {
+            return View();
+        }
         public ActionResult Patients()
         {
             return View();
@@ -219,6 +245,23 @@ namespace GP_EMR_Project.Controllers
             db.Entry(med_org).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Block(long? id)
+        {
+            if (id == null)
+            {
+                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User us = db.Users.Find(id);
+            if (us == null)
+            {
+               return HttpNotFound();
+            }
+            us.Status_Of_Account = 2;
+            db.Entry(us).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index_Medical_Org");
         }
     }
 }
