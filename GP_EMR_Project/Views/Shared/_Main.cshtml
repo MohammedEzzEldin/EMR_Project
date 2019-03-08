@@ -36,7 +36,7 @@
                            new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
                            new SelectListItem(){Text="Doctors",Value="Doctors"}
                        }, "Filter by", new { @class = "ml-auto form-control mr-sm-2" })
-                            @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search",name="Search" } })
+                            @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search",name="Search",placeholder="email or name" } })
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         }
            

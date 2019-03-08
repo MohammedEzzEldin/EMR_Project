@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<GP_EMR_Project.Models.Medical_Organization>
-
+@{ 
+    ViewBag.Title = "Admin_Index_Medical_Org";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
 <br />
 <div class="" style="text-align:center">
     <ul class="nav navbar-nav" style="text-align:center; display:inline-block">
@@ -11,10 +14,11 @@
                          {
                        new SelectListItem{Value = "med_phone",  Text = "Phone" },
                        new SelectListItem{Value = "med_name",   Text = "Organization Name"},
-                       new SelectListItem{Value = "med_city"   ,   Text = "City" }
-                        }, "value", "text"), "Search By", new { @class = "form-control", @style = "margin-left :1px;" }
+                       new SelectListItem{Value = "med_city"   ,   Text = "City" },
+                       new SelectListItem{Value ="med_email",    Text="email"}
+                        }, "value", "text"), "Search By", new { @class = "form-control", @style = "margin-left :1px;",required = true }
                        )
-                @Html.Editor("Search", new { htmlAttributes = new { @class = "form-control", placeholder = "Search",style= "text-align:center;" } })
+                @Html.Editor("Search", new { htmlAttributes = new { @class = "form-control", placeholder = "Search",style= "text-align:center;", required = true} })
                 <input type="submit" value="Search" class="btn btn-danger" style="width:100%"/>
             </li>
         }
@@ -32,7 +36,7 @@
                         new SelectListItem {Text = "Name", Value = "Name"},
                         new SelectListItem {Text = "City", Value = "City"}
                         },"value","text")
-                , "Filter by", new { @class = "form-control", style = "text-align:center;" }
+                , "Filter by", new { @class = "form-control", style = "text-align:center;", required = true }
                         )
 
                 @Html.DropDownList("Order_by",
@@ -95,7 +99,7 @@
                     {
                         for (var i = 0; i < rate; i++)
                         {
-                            <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                            <span><i class="fa fa-star fa-lg" style="color:gold;display:inline-table;"></i></span>
                         }
                     }
                     else

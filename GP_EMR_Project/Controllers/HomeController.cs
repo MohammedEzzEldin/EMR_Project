@@ -264,16 +264,16 @@ namespace GP_EMR_Project.Controllers
                 {
                     if(Search.Contains(' '))
                     {
-                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && String.Compare(dc.Person.First_Name.Split(' ')[0]+" "+ dc.Person.Last_Name.Split(' ')[0],Search,true) == 0));
                     }
                     else
                     {
-                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name+' '+dc.Person.Last_Name).Contains(Search)));
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));  
                     }
                 }
                 else
                 {
-                    return View(db.Users.ToList().Where(u => (u.User_Type == 3 && (u.Person.First_Name+' '+u.Person.Last_Name).Contains(Search)) 
+                    return View(db.Users.ToList().Where(u => (u.User_Type == 3 && String.Compare(u.Person.First_Name.Split(' ')[0] + " " + u.Person.Last_Name.Split(' ')[0], Search, true) == 0) 
                     || (u.User_Type == 2 && u.Medical_Organization.Medical_Org_Name.Contains(Search))));
                 }
             }
