@@ -37,7 +37,7 @@
                            new SelectListItem(){Text="Doctors",Value="Doctors"},
                             new SelectListItem(){Text="Patients",Value="Patients"},
                        },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
-                        @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search" } })
+                        @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search", placeholder = "email or name" } })
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     }
 
@@ -99,7 +99,7 @@
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Patients", "Patients", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Patients", "Index_Patients", "Admin", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">

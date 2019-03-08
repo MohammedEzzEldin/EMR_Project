@@ -12,36 +12,36 @@
         }
         if (item.User.Status_Of_Account == 1)
         {
-                <div class="col-lg-4 col-md-6 col-sm-12  ">
-                    <a class=" hvr-border-fade nav-link " href="#">
-                        @{
-                            var src = "";
-                            try
-                            {
-                                src = item.User.Photo_Url.Split(' ')[0];
-                            }
-                            catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
-                        }
-                        <img class="hospital" src="@Url.Content(src)" alt="hospital" />
-                        <h4 style="text-align:center">
-                            @{
-                                var rate = item.Medium_Rate;
-                                if (rate / 10 >= 5)
-                                {
-                                    rate = rate + 1;
-                                }
-                            }
-                            @if (item.Medium_Rate > 0)
-                            {
-                                for (var j = 0; j < rate; j++)
-                                {
-                                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
-                                }
-                            }
-                        </h4>
-                        <h3>@item.Medical_Org_Name</h3>
-                    </a>
-                </div>  
+<div class="col-lg-4 col-md-6 col-sm-12">
+  
+    <a class=" hvr-border-fade nav-link " href="#">
+            @{
+                var rate = item.Medium_Rate;
+                if (rate / 10 >= 5)
+                {
+                    rate = rate + 1;
+                }
+            }
+            @if (item.Medium_Rate > 0)
+            {
+                for (var j = 0; j < rate; j++)
+                {
+                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                }
+            }
+
+        @{
+            var src = "";
+            try
+            {
+                src = item.User.Photo_Url.Split(' ')[0];
+            }
+            catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+        }
+        <img class="hospital" src="@Url.Content(src)" alt="hospital" />
+        <h3>@item.Medical_Org_Name</h3>
+    </a>
+</div>  
     }
         i++;
 }

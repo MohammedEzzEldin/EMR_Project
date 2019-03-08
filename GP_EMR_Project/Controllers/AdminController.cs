@@ -178,27 +178,27 @@ namespace GP_EMR_Project.Controllers
                 {
                     if (Search.Contains(' '))
                     {
-                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && String.Compare(dc.Person.First_Name.Split(' ')[0] + " " + dc.Person.Last_Name.Split(' ')[0], Search, true) == 0));
                     }
                     else
                     {
-                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && (dc.Person.First_Name + ' ' + dc.Person.Last_Name).Contains(Search)));
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
                     }
                 }
                 else if (Filter_by.Equals("Patients"))
                 {
                     if (Search.Contains(' '))
                     {
-                        return View(db.Users.ToList().Where(pt => pt.User_Type == 4 && pt.Person.First_Name.Contains(Search)));
+                        return View(db.Users.ToList().Where(pt => pt.User_Type == 4 && String.Compare(pt.Person.First_Name.Split(' ')[0] + " " + pt.Person.Last_Name.Split(' ')[0], Search, true) == 0));
                     }
                     else
                     {
-                        return View(db.Users.ToList().Where(pt => pt.User_Type == 4 && (pt.Person.First_Name + ' ' + pt.Person.Last_Name).Contains(Search)));
+                        return View(db.Users.ToList().Where(pt => pt.User_Type == 4 && pt.Person.First_Name.Contains(Search)));
                     }
                 }
                 else
                 {
-                    return View(db.Users.ToList().Where(u => (u.User_Type == 3 && (u.Person.First_Name + ' ' + u.Person.Last_Name).Contains(Search))
+                    return View(db.Users.ToList().Where(u => (u.User_Type == 3 && String.Compare(u.Person.First_Name.Split(' ')[0] + " " + u.Person.Last_Name.Split(' ')[0], Search, true) == 0)
                     || (u.User_Type == 2 && u.Medical_Organization.Medical_Org_Name.Contains(Search))));
                 }
             }
@@ -208,16 +208,133 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Search_Medical_Org(string Search, string Search_by)
         {
-            return View();
+            switch (Search_by)
+            {
+                case "med_phone":
+                    return View("Index_Medical_Org", db.Medical_Organization.Where(med => med.User.Phone.Contains(Search)));
+
+                case "med_name":
+                    return View("Index_Medical_Org", db.Medical_Organization.Where(med => med.Medical_Org_Name.Contains(Search)));
+
+                case "med_city":
+                    return View("Index_Medical_Org",db.Medical_Organization.Where(med => med.User.City.Contains(Search)));
+
+                case "med_email":
+                    return View("Index_Medical_Org",db.Medical_Organization.Where(med => med.User.Email.Contains(Search)));
+                default:
+                    return RedirectToAction("Index_Medical_Org");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Search_Patient(string Search,string Search_by)
+        {
+            switch (Search_by)
+            {
+                case "pt_phone":
+                    return View("Index_Patients", db.Patients.Where(pt => pt.Person.User.Phone.Contains(Search)));
+
+                case "pt_fname":
+                    return View("Index_Patients", db.Patients.Where(pt => pt.Person.First_Name.Contains(Search)));
+
+                case "pt_Lname":
+                    return View("Index_Patients", db.Patients.Where(pt => pt.Person.Last_Name.Contains(Search)));
+
+                case "pt_email":
+                    return View("Index_Patients", db.Patients.Where(pt => pt.Person.User.Email.Contains(Search)));
+                case "pt_city":
+                    return View("Index_Patients", db.Patients.Where(pt => pt.Person.User.City.Contains(Search)));
+                default:
+                    return RedirectToAction("Index_Patients");
+            }
         }
 
         public ActionResult Filter(string Filter_by, string Order_by)
         {
-            return View();
+            if(Order_by.Equals("asc"))
+            {
+                    switch (Filter_by)
+                    {
+                       case "High_Rate":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderByDescending(med => med.Medium_Rate));
+                       case "Low_Rate":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderBy(med => med.Medium_Rate));
+                       case "Name":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderBy(med => med.Medical_Org_Name));
+                       case "City":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderBy(med => med.User.City));
+                       default:
+                            break;
+                    }
+            }
+            else if (Order_by.Equals("dsc"))
+            {
+                switch (Filter_by)
+                {
+                    case "High_Rate":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderByDescending(med => med.Medium_Rate));
+                    case "Low_Rate":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderBy(med => med.Medium_Rate));
+                    case "Name":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderByDescending(med => med.Medical_Org_Name));
+                    case "City":
+                        return View("Index_Medical_Org", db.Medical_Organization.OrderByDescending(med => med.User.City));
+                    default:
+                        break;
+                }
+            }
+            return RedirectToAction("Index_Medical_Org");
         }
-        public ActionResult Patients()
+
+        public ActionResult Filter_Patient(string Filter_by, string Order_by)
         {
-            return View();
+            if (Order_by.Equals("asc"))
+            {
+                switch (Filter_by)
+                {
+                    case "Death":
+                        return View("Index_Patients", db.Patients.Where(pt => pt.Death_Date != null).OrderByDescending(pt => pt.Death_Date));
+                    case "Lname":
+                        return View("Index_Patients", db.Patients.OrderBy(pt => pt.Person.Last_Name));
+                    case "fname":
+                        return View("Index_Patients", db.Patients.OrderBy(pt => pt.Person.First_Name));
+                    case "City":
+                        return View("Index_Patients", db.Patients.OrderBy(pt => pt.Person.User.City));
+                    default:
+                        break;
+                }
+            }
+            else if (Order_by.Equals("dsc"))
+            {
+                switch (Filter_by)
+                {
+                    case "Death":
+                        return View("Index_Patients", db.Patients.Where(pt => pt.Death_Date != null).OrderByDescending(pt => pt.Death_Date));
+                    case "Lname":
+                        return View("Index_Patients", db.Patients.OrderBy(pt => pt.Person.Last_Name));
+                    case "fname":
+                        return View("Index_Patients", db.Patients.OrderByDescending(pt => pt.Person.First_Name));
+                    case "City":
+                        return View("Index_Patients", db.Patients.OrderByDescending(pt => pt.Person.User.City));
+                    default:
+                        break;
+                }
+            }
+            return RedirectToAction("Index_Patients");
+        }
+        public ActionResult Index_Patients()
+        {
+            User us = (User)Session["UserID"];
+            if (us == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (us.User_Type != 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var patient = db.Patients.Include(p => p.Person).Include(u => u.Person.User).OrderBy(md => md.Person.First_Name+" "+md.Person.Last_Name).Take(10);
+            return View(patient.ToList());
         }
 
         public ActionResult Doctors()
