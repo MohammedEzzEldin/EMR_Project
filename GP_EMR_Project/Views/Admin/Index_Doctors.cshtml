@@ -1,24 +1,23 @@
-﻿@model IEnumerable<GP_EMR_Project.Models.Patient>
+﻿@model IEnumerable<GP_EMR_Project.Models.Doctor>
 
 @{
-    ViewBag.Title = "Index_Patients";
+    ViewBag.Title = "Index_Doctors";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-
 <br />
 <div class="" style="text-align:center">
     <ul class="nav navbar-nav" style="text-align:center; display:inline-block">
-        @using (Html.BeginForm("Search_Patient", "Admin", FormMethod.Post, new { @style = "display : inline-block" }))
+        @using (Html.BeginForm("Search_Doctor", "Admin", FormMethod.Post, new { @style = "display : inline-block" }))
         {
             <li>
                 @Html.DropDownList("Search_by",
                            new SelectList(new List<SelectListItem>
                          {
-                       new SelectListItem{Value = "pt_phone",  Text = "Phone" },
-                       new SelectListItem{Value = "pt_fname",   Text = "First Name"},
-                       new SelectListItem{Value = "pt_Lname"   ,   Text = "Last Name" },
-                       new SelectListItem{Value = "pt_city"   ,   Text = "City" },
-                       new SelectListItem{Value ="pt_email",    Text="email"}
+                       new SelectListItem{Value = "dc_phone",  Text = "Phone" },
+                       new SelectListItem{Value = "dc_fname",   Text = "First Name"},
+                       new SelectListItem{Value = "dc_Lname"   ,   Text = "Last Name" },
+                       new SelectListItem{Value = "dc_city"   ,   Text = "City" },
+                       new SelectListItem{Value ="dc_email",    Text="email"}
                         }, "value", "text"), "Search By", new { @class = "form-control", @style = "margin-left :1px;",required = true }
                        )
                 @Html.Editor("Search", new { htmlAttributes = new { @class = "form-control", placeholder = "Search", style = "text-align:center;", required = true } })
@@ -28,13 +27,14 @@
     </ul>
 
     <ul class="nav navbar-nav" style="text-align:center; display:inline-block">
-        @using (Html.BeginForm("Filter_Patient", "Admin", FormMethod.Get, new { @style = "display : inline-block" }))
+        @using (Html.BeginForm("Filter_Doctor", "Admin", FormMethod.Get, new { @style = "display : inline-block" }))
         {
             <li>
                 @Html.DropDownList("Filter_by",
                new SelectList (new List<SelectListItem>
                          {
-                        new SelectListItem {Text = "Death", Value = "Death" },
+                        new SelectListItem {Text = "High Rate",  Value = "High_Rate" },
+                        new SelectListItem {Text = "Low Rate",   Value = "Low_Rate" },
                         new SelectListItem {Text = "Last Name", Value = "Lname"},
                         new SelectListItem {Text = "First Name", Value = "fname"},
                         new SelectListItem {Text = "Nationality", Value = "Nationality"},
@@ -68,7 +68,7 @@
             </th>
 
             <th>
-                Email
+                Medical Organization
             </th>
 
             <th>
@@ -76,7 +76,7 @@
             </th>
 
             <th>
-                City
+                Rate
             </th>
 
             <th>
@@ -92,7 +92,7 @@
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Person.User.Email)
+                    @Html.DisplayFor(modelItem => item.Person.User.Medical_Organization.Medical_Org_Name)
                 </td>
 
                 <td>
@@ -100,7 +100,24 @@
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Person.User.City)
+                    @{
+                        var rate = item.Medium_Rate;
+                        if (rate / 10 >= 5)
+                        {
+                            rate = rate + 1;
+                        }
+                    }
+                    @if (item.Medium_Rate > 0)
+                    {
+                        for (var i = 0; i < rate; i++)
+                        {
+                            <span><i class="fa fa-star fa-lg" style="color:gold;display:inline-table;"></i></span>
+                        }
+                    }
+                    else
+                    {
+                        <p>0</p>
+                    }
                 </td>
 
                 @if (item.Person.User.Status_Of_Account == 0) // in activated
@@ -119,19 +136,19 @@
                 <td>
                     @if (item.Person.User.Status_Of_Account != 1)
                     {
-                        @Html.ActionLink("Active", "Active_Account", new { id = item.Patient_Id }, new { @class = "btn btn-danger", style = "color:green" })
+                        @Html.ActionLink("Active", "Active_Account", new { id = item.Doctor_Id }, new { @class = "btn btn-danger", style = "color:green" })
                     }
                     @if (item.Person.User.Status_Of_Account == 1)
                     {
-                        @Html.ActionLink("Block", "Block", new { id = item.Patient_Id }, new { @class = "btn btn-danger", style = "color:black" })
+                        @Html.ActionLink("Block", "Block", new { id = item.Doctor_Id }, new { @class = "btn btn-danger", style = "color:black" })
                     }
 
-                    @Html.ActionLink("More Detailed", "Details", new { id = item.Patient_Id }, new { @class = "btn btn-danger" })
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Patient_Id }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("More Detailed", "Details", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
 
                     @if (item.Person.User.Status_Of_Account == 0)
                     {
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Patient_Id }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
                     }
 
                 </td>

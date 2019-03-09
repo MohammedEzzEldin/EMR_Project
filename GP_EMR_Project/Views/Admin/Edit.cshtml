@@ -1,80 +1,233 @@
-﻿@model GP_EMR_Project.Models.Person
+﻿@model GP_EMR_Project.Models.User
 
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<h2>Edit</h2>
+<h2 style="text-align:center;">Edit</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Person</h4>
+
+    <div class="form-horizontal" style="text-align:center">
+        @if (Model.User_Type == 2)
+        {
+            <h4 style="color:blue;">Medical Organizatoin</h4>
+        }
+        else if (Model.User_Type == 3)
+        {
+            <h4>Doctor</h4>
+        }
+        else if (Model.User_Type == 4)
+        {
+            <h4>Patient</h4>
+        }
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Person_Id)
+        @if (Model.User_Type == 2)
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Medical_Organization.Medical_Org_Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.First_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.First_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.First_Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <table class="table table-bordered table-hover">
+                <tr style="text-align:center">
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                </tr>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Last_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Last_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Last_Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <tr style="text-align:center">
+                    <td>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",type="email"} })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Birth_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Birth_Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Birth_Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <td>
+                        @Html.EditorFor(model => model.Medical_Organization.Medical_Org_Name, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.Medical_Organization.Medical_Org_Name, "", new { @class = "text-danger" })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.National_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.National_Id, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.National_Id, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <td>
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <td>
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </td>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <td>
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+            </table> 
+        }
+        else if (Model.User_Type != 2)
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Person.Person_Id)
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <table class="table table-bordered table-hover">
+                <tr style="text-align:center">
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th> National Id </th>
+                    <th>Nationality</th>
+                </tr>
+
+                <tr style="text-align:center">
+                    <td>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email"} })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.Person.First_Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Person.First_Name, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.Person.Last_Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Person.Last_Name, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.Person.National_Id, new { htmlAttributes = new { @class = "form-control",maxlength = "15" } })
+                        @Html.ValidationMessageFor(model => model.Person.National_Id, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.Person.Nationality, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.Person.Nationality, "", new { @class = "text-danger" })
+                    </td>
+
+
+
+                <tr style="text-align:center">
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>City</th>
+                    <th>Address</th>
+                </tr>
+
+                <tr style="text-align:center">
+                    <td>
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", type = "tel",maxlength="15" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        <span style="color:darkblue">Write male or female: </span>
+                        @Html.EditorFor(model => model.Person.Gender, new { htmlAttributes = new { @class = "form-control", maxlength="6" } })
+                        @Html.ValidationMessageFor(model => model.Person.Gender, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </td>
+
+                    <td>
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", type = "text",} })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+
+                @if (Model.User_Type == 3)
+                {
+                    <tr style="text-align:center">
+                        <th>
+                            Acadimic Degree
+                        </th>
+
+                        <th>
+                            Functional Degree
+                        </th>
+
+                        <th>
+                            Spacialization
+                        </th>
+
+                    </tr>
+                    <tr style="text-align:center">
+                        <td>
+                            @Html.EditorFor(model => model.Person.Doctor.Acadimic_Degree, new { htmlAttributes = new { @class = "form-control", type = "text"} })
+                            @Html.ValidationMessageFor(model => model.Person.Doctor.Acadimic_Degree, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Person.Doctor.Functional_Degree, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Person.Doctor.Functional_Degree, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Person.Doctor.Spacialization, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Person.Doctor.Spacialization, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+
+                @if (Model.User_Type == 4)
+                {
+                    <tr style="text-align:center">
+                        <th>
+                            Learning Status
+                        </th>
+
+                        <th>
+                            Social Status
+                        </th>
+
+                        <th>
+                            Alternative_Phone
+                        </th>
+
+                        <th>
+                            Job
+                        </th>
+                    </tr>
+                    <tr style="text-align:center">
+                        <td>
+                            @Html.EditorFor(model => model.Person.Patient.Learning_Status, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Person.Patient.Learning_Status, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Person.Patient.Social_Status, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Person.Patient.Social_Status, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Person.Patient.Alternative_Phone, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Person.Patient.Alternative_Phone, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Person.Patient.Job, new { htmlAttributes = new { @class = "form-control", type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Person.Patient.Job, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+            <div class="form-group" style="text-align:center">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-danger" style="width:25%;text-align:center;margin-left:20%" />
+                </div>
             </div>
-        </div>
     </div>
+
 }
 
-<div>
+<div style="text-align:center">
     @Html.ActionLink("Back to List", "Index")
 </div>
 
