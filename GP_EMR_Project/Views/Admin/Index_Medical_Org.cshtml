@@ -132,7 +132,7 @@
                     <td>
                         @if (item.User.Status_Of_Account != 1)
                         {
-                            @Html.ActionLink("Active", "Active_Medical_Org", new { id = item.Medical_Org_Id }, new { @class = "btn btn-danger", style = "color:green" })
+                            @Html.ActionLink("Active", "Active_Account", new { id = item.Medical_Org_Id }, new { @class = "btn btn-danger", style = "color:green" })
                         }
                         @if (item.User.Status_Of_Account == 1)
                         {

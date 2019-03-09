@@ -18,7 +18,9 @@
             {
                 src = Model.Photo_Url.Split(' ')[0];
             }
-            catch  { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+            catch(Exception ex)  {
+                src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+            }
         }
         <img src="@Url.Content(src)" alt="Hospital img" style="width:7%; height:5%;" />
     </div>
@@ -101,32 +103,57 @@
 
         @if (Model.User_Type == 3)
         {
-            <tr style="text-align:center">
-                <th>
-                    Acadimic Degree
-                </th>
-                <th>Rate</th>
-            </tr>
-            <tr style="text-align:center">
-                <td>
-                    @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
-                </td>
+        <tr style="text-align:center">
+            <th>
+                Acadimic Degree
+            </th>
+            <th>
+                Acadimic Degree
+            </th>
 
-                <td>
-                    @{
-                        var rate = Model.Person.Doctor.Medium_Rate;
-                        if (rate / 10 >= 5)
-                        {
-                            rate = rate + 1;
-                        }
-                    }
+            <th>
+                Functional Degree
+            </th>
 
-                    @for (var i = 0; i < rate; i++)
+            <th>
+                Spacialization
+            </th>
+
+            <th>Rate</th>
+        </tr>
+        <tr style="text-align:center">
+            <td>
+                @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.Doctor.Functional_Degree)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.Doctor.Spacialization)
+            </td>
+
+            <td>
+                @{
+                    var rate = Model.Person.Doctor.Medium_Rate;
+                    if (rate / 10 >= 5)
                     {
-                        <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                        rate = rate + 1;
                     }
-                </td>
-            </tr>
+                }
+
+                @for (var i = 0; i < rate; i++)
+                {
+                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
+                }
+            </td>
+        </tr>
+
         }
 
         @if (Model.User_Type == 4)
@@ -135,11 +162,29 @@
                 <th>
                     Learning Status
                 </th>
+
+                <th>
+                    Social Status
+                </th>
+
+                <th>
+                    Alternative Phone
+                </th>
+
+                <th>
+                    Job
+                </th>
             </tr>
             <tr style="text-align:center">
                 <td>
                     @Html.DisplayFor(model => model.Person.Patient.Learning_Status)
                 </td>
+
+                <td>@Html.DisplayFor(model => model.Person.Patient.Social_Status)</td>
+
+                <td>@Html.DisplayFor(model => model.Person.Patient.Alternative_Phone)</td>
+
+                <td>@Html.DisplayFor(model => model.Person.Patient.Job)</td>
             </tr>
         }
     </table>
