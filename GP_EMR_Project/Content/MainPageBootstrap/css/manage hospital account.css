@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+	.t{
+		margin-bottom:20px;}
+
+.t h1{color:#333;
+margin-bottom:20px;
+font-weight:bolder;}
+	
+.bg-light{
+	background:#CCC;}
+.u{
+	list-style:none;
+	padding:0px;
+	margin:0px;}
+	
+ul li.l{
+	
+	text-align:center;
+	cursor:pointer;}
+	
+ul li.inactive{
+	background:#CCC;}	
+
+.contentt{
+	margin:30px;
+}
+
+.contentt h3{
+	margin-bottom:30px;
+	font-weight:bolder;
+	font-size:30px;}
+
+.main-table tr th{
+	background-color:#666;
+	color:#FFF;
+}

@@ -67,8 +67,8 @@
                 }
 
             <td>
-                @Html.ActionLink("Active", "Active_Medical_Org", new { id = item.Medical_Org_Id }, new { @class = "btn btn-danger" }) 
-                @Html.ActionLink("More Detailed", "Details", new { id = item.Medical_Org_Id }, new { @class = "btn btn-danger" }) 
+                @Html.ActionLink("Active", "Active_Medical_Org", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger" }) 
+                @Html.ActionLink("Details", "Details", new { id = item.Medical_Org_Id }, new { @class ="btn btn-outline-primary" }) 
             </td>
         </tr>
         }

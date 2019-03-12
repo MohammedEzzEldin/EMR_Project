@@ -1,0 +1,29 @@
+star-rating{
+	font-family:'FontAwesome';
+	font-size:48px;
+	display:inline-flex;
+	cursor:pointer;
+}
+
+small-star-rating{
+	font-family:'FontAwesome';
+	font-size:20px;
+	display:inline-flex;
+	cursor:pointer;
+	text-align:center;
+	//margin-left:45px;
+}
+
+ .star:before{
+	content:"\f006";
+	color:#777;}
+
+.Halfstar:before{	
+content:"\f123";
+	color:#FC0;}
+	
+.star.full:before{
+	content:"\f005";
+	color:#FC0;
+}
+	

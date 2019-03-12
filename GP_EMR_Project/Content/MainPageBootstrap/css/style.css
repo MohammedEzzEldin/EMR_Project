@@ -23,13 +23,16 @@ background-color:}
 	font-weight:bold;
 	color:#093;}	
 
+h4{
+	font-weight:bold;}
 
 
 
 	
 .w{max-width:100%}	
 
-.f{padding-top:5px;}	
+.f{padding-top:5px;
+}	
 	
 .form-inline{
 	line-height:30px;}
@@ -39,17 +42,18 @@ background-color:}
 		
 
 .btn:not(:disabled):not(.disabled) {
-	background-color:#FFF;
-	color:#03C;
+	
+
 	 border-radius: 15px;
   }
   
   .btn:not(:disabled):not(.disabled):active {
-  background-color:#03C;
+	  color:#FFF;
+
 }
 			
 .btn-outline-success{
-	color:#03C;
+	
 	border-color:#03C;}
 	
 	
@@ -173,6 +177,23 @@ font-weight:bold;}
 
 .soiallist li{
 	float:left;}
+
+#scroll-up:before{	
+font-family:'FontAwesome';
+content:"\f0aa";
+position:fixed;
+font-size:75px;
+
+right:15px;
+bottom:5px;
+z-index:99999;
+cursor:pointer;
+color:#03F;
+display:none;
+}	
+
+#scroll-up:hover{
+	opacity:0.7;}
 	
 .footer .icon:before{
 	font-family:'FontAwesome';

@@ -21,7 +21,7 @@
                         }, "value", "text"), "Search By", new { @class = "form-control", @style = "margin-left :1px;",required = true }
                        )
                 @Html.Editor("Search", new { htmlAttributes = new { @class = "form-control", placeholder = "Search", style = "text-align:center;", required = true } })
-                <input type="submit" value="Search" class="btn btn-danger" style="width:100%" />
+                <input type="submit" value="Search" class="btn btn-outline-danger" style="width:100%" />
             </li>
         }
     </ul>
@@ -50,7 +50,7 @@
                            new SelectListItem{Value = "dsc", Text = "Descending"},
                             }, "value", "text"), "Order By", new { @class = "form-control", style = "text-align:center;" }
                            )
-                <input type="submit" value="Apply" class="btn btn-danger" style="width:100%" />
+                <input type="submit" value="Apply" class="btn btn-outline-danger" style="width:100%" />
             </li>
         }
     </ul>
@@ -100,24 +100,45 @@
                 </td>
 
                 <td>
-                    @{
-                        var rate = item.Medium_Rate;
-                        if (rate / 10 >= 5)
-                        {
-                            rate = rate + 1;
+                    <small-star-rating>
+                        @{
+                            var rate = item.Medium_Rate;
+                            var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                            if (rate == null || rate == 0)
+                            {
+                                <div class="star"></div>
+                                <div class="star"></div>
+                                <div class="star "></div>
+                                <div class="star "></div>
+                                <div class="star"></div>
+                            }
+                            else
+                            {
+                                for (int j = 1; j <= 5; j++)
+                                {
+                                    if (j > (int)rate)
+                                    {
+                                        if (0.8 <= fraction)
+                                        {
+                                            <div class="star full"></div>
+                                        }
+                                        else if (0.4 <= fraction)
+                                        {
+                                            <div class="star Halfstar"></div>
+                                        }
+                                        else if (0.3 >= fraction)
+                                        {
+                                            <div class="star"></div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="star full"></div>
+                                    }
+                                }
+                            }
                         }
-                    }
-                    @if (item.Medium_Rate > 0)
-                    {
-                        for (var i = 0; i < rate; i++)
-                        {
-                            <span><i class="fa fa-star fa-lg" style="color:gold;display:inline-table;"></i></span>
-                        }
-                    }
-                    else
-                    {
-                        <p>0</p>
-                    }
+                    </small-star-rating>
                 </td>
 
                 @if (item.Person.User.Status_Of_Account == 0) // in activated
@@ -136,19 +157,19 @@
                 <td>
                     @if (item.Person.User.Status_Of_Account != 1)
                     {
-                        @Html.ActionLink("Active", "Active_Account", new { id = item.Doctor_Id }, new { @class = "btn btn-danger", style = "color:green" })
+                        @Html.ActionLink("Active", "Active_Account", new { id = item.Doctor_Id }, new { @class = "btn btn-outline-danger", style = "color:green" })
                     }
                     @if (item.Person.User.Status_Of_Account == 1)
                     {
-                        @Html.ActionLink("Block", "Block", new { id = item.Doctor_Id }, new { @class = "btn btn-danger", style = "color:black" })
+                        @Html.ActionLink("Block", "Block", new { id = item.Doctor_Id }, new { @class = "btn btn-outline-danger", style = "color:black" })
                     }
 
-                    @Html.ActionLink("More Detailed", "Details", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Details", "Details", new { id = item.Doctor_Id }, new { @class = "btn btn-outline-primary" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Doctor_Id }, new { @class = "btn btn-outline-danger" })
 
                     @if (item.Person.User.Status_Of_Account == 0)
                     {
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Doctor_Id }, new { @class = "btn btn-outline-danger" })
                     }
 
                 </td>

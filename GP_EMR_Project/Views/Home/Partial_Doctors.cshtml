@@ -16,22 +16,47 @@
         {
 <div class="item">
     <div class="card">
-        <span style="display:inline-table;text-align:center">
+
+        <small-star-rating style="margin-left:45px">
             @{
                 var rate = item.Medium_Rate;
-                if (rate / 10 >= 5)
+                var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                if (rate == null || rate == 0)
                 {
-                    rate = rate + 1;
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star "></div>
+                    <div class="star "></div>
+                    <div class="star"></div>
+                }
+                else
+                {
+                    for (int j = 1; j <= 5; j++)
+                    {
+                        if(j > (int) rate)
+                        {
+                            if(0.8 <= fraction)
+                            {
+                                <div class="star full"></div>
+                            }
+                            else if(0.4 <= fraction)
+                            {
+                                <div class="star Halfstar"></div>
+                            }
+                            else if (0.3 >= fraction)
+                            {
+                                <div class="star"></div>
+                            }
+                        }
+                        else
+                        {
+                                <div class="star full"></div>
+                        }
+                    }
                 }
             }
-            @if (item.Medium_Rate > 0)
-            {
-                for (var j = 0; j < rate; j++)
-                {
-                    <li class="fa fa-star fa-lg" style="color:gold;display:inline-table"></li>
-                }
-            }
-        </span>
+        </small-star-rating>
+
         @{
             var src = "";
             try

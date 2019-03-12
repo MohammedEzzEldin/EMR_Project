@@ -1,0 +1,40 @@
+	.u{
+		margin-top:100px;
+		margin-bottom:100px;}
+	
+	.stats h1{
+		
+		font-weight:bolder;
+		font-size:80px;
+		color:#7f8c8d;}
+	
+	.stats .stat{
+		background-color:#CCC;
+		padding:20px;
+		font-size:15px;
+		margin-top:50px;
+		color:#FFF;
+		border-radius:10px;}
+		
+	.stats .stat span{
+		display:block;
+		font-size:50px;
+		font-weight:bold;}
+	.stat a{
+		color:#FFF;
+		text-decoration:none;}
+				
+	
+	.stats .members{
+		background-color:#27ae60;}	
+		
+		
+	.stats .hospitals{
+		background-color:#2980b9;}	
+		
+	.stats .pending{
+		background-color:#c0392b;}
+	
+	
+	.stats .blocked	{
+		background-color:#2f3640;}

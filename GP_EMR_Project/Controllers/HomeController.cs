@@ -65,9 +65,18 @@ namespace GP_EMR_Project.Controllers
                             {
                                 return RedirectToAction("Index","Admin"); 
                             }
-                            if (user.User_Type == 2) { Response.Redirect(""); }
-                            if (user.User_Type == 3) { Response.Redirect(""); }
-                            if (user.User_Type == 4) { Response.Redirect(""); }
+                            if (user.User_Type == 2)
+                            {
+                                return RedirectToAction("Index", "Medical_Organization");
+                            }
+                            if (user.User_Type == 3)
+                            {
+                                return RedirectToAction("Index", "Doctor");
+                            }
+                            if (user.User_Type == 4)
+                            {
+                                return RedirectToAction("Index", "Patient");
+                            }
                         }
                         else
                         {
