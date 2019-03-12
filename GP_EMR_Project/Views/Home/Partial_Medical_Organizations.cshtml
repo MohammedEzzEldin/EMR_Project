@@ -15,21 +15,6 @@
 <div class="col-lg-4 col-md-6 col-sm-12">
   
     <a class=" hvr-border-fade nav-link " href="#">
-            @{
-                var rate = item.Medium_Rate;
-                if (rate / 10 >= 5)
-                {
-                    rate = rate + 1;
-                }
-            }
-            @if (item.Medium_Rate > 0)
-            {
-                for (var j = 0; j < rate; j++)
-                {
-                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
-                }
-            }
-
         @{
             var src = "";
             try
@@ -39,6 +24,45 @@
             catch (Exception ex) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
         }
         <img class="hospital" src="@Url.Content(src)" alt="hospital" />
+        <small-star-rating>
+            @{
+                var rate = item.Medium_Rate;
+                var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                if (rate == null || rate == 0)
+                {
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star "></div>
+                    <div class="star "></div>
+                    <div class="star"></div>
+                }
+                else
+                {
+                    for (int j = 1; j <= 5; j++)
+                    {
+                        if (j > (int)rate)
+                        {
+                            if (0.8 <= fraction)
+                            {
+                                <div class="star full"></div>
+                            }
+                            else if (0.4 <= fraction)
+                            {
+                                <div class="star Halfstar"></div>
+                            }
+                            else if (0.3 >= fraction)
+                            {
+                                <div class="star"></div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="star full"></div>
+                        }
+                    }
+                }
+            }
+        </small-star-rating>
         <h3>@item.Medical_Org_Name</h3>
     </a>
 </div>  

@@ -213,13 +213,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Doc_Photo\50.jpg" />
+    <Content Include="Content\MainPageBootstrap\css\AddDoctor.css" />
+    <Content Include="Content\MainPageBootstrap\css\AdminDashbord.css" />
     <Content Include="Content\MainPageBootstrap\css\bootschanges.css" />
     <Content Include="Content\MainPageBootstrap\css\bootstrap.css" />
     <Content Include="Content\MainPageBootstrap\css\hover-min.css" />
+    <Content Include="Content\MainPageBootstrap\css\login.css" />
+    <Content Include="Content\MainPageBootstrap\css\manage hospital account.css" />
     <Content Include="Content\MainPageBootstrap\css\owl.carousel.css" />
     <Content Include="Content\MainPageBootstrap\css\owl.theme.default.css" />
     <Content Include="Content\MainPageBootstrap\css\Registration.css" />
+    <Content Include="Content\MainPageBootstrap\css\StarRating.css" />
     <Content Include="Content\MainPageBootstrap\css\style.css" />
+    <Content Include="Content\MainPageBootstrap\css\UserProfile.css" />
     <Content Include="Content\MainPageBootstrap\js\bootstrap.min.js" />
     <Content Include="Content\MainPageBootstrap\js\Dynamice content_reg.js" />
     <Content Include="Content\MainPageBootstrap\js\jquery-3.3.1.min.js" />
