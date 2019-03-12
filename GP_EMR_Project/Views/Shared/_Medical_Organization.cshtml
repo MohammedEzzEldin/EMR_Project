@@ -26,12 +26,12 @@
                 <div class="col-lg-6 col-sm ">
                     <div class="navbar-brand">
                         <img src="~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                        <span class="h">Health</span><span class="c">Care</span>
+                        <span class="h">Hospital</span><span class="c">Name</span>  
                     </div>
                 </div>
                 <div class=" f col-lg-6 col-sm-7">
 
-                    @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+                    @using (Html.BeginForm("Search", "", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
                     {
                         @Html.DropDownList("Filter_by",new List<SelectListItem>
                        {
@@ -93,24 +93,22 @@
                         </li>
 
                         <li>
-                            @Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Index", "Index", "Medical_Organization", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Reports", "Index", "Reports", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Account", "Manage_Account", "Medical_Organization", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Patients", "Index_Patients", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Doctors", "Manage_Doctors", "Medical_Organization", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Medical Organizations", "Index_Medical_Org", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Department", "Manage_Department", "Medical_Organization", null, new { @class = "nav-link" })
                         </li>
 
-                        <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Doctors", "Index_Doctors", "Admin", null, new { @class = "nav-link" })
-                        </li>
+                      
                     }
 
                 </ul>

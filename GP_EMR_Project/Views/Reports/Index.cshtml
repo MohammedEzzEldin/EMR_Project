@@ -5,115 +5,136 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 <hr />
-<h3 style="text-align:center">Reports</h3>
-<br />
-<div style="
-         margin-top: 1%;
-         margin-left:5px;
-         margin-right:8px;
-       ">
-    <table class="table table-bordered table-hover">
-        <tr style="text-align:center">
-            <th>
-                <!--Number of -->
-                Users
-            </th>
+        <div class="u">
+            <div class="container stats text-center">
+                <h1>Reports</h1> <br />
+                <button class="btn btn-outline-info" style="text-align:center; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Users
+                            <span><a href="">@Model.Count()</a></span>
+                        </div>
+                    </div>
 
-            <th style="color:cadetblue">
-                <!--Number of -->
-                Medical Organizations
-            </th>
+                    <div class="col-md-3">
+                        <div class="stat hospitals">
+                            Medical Organizations
+                            <span><a href="">@Model.Where(u => u.User_Type == 2).Count()</a></span>
+                        </div>
+                    </div>
 
-            <th style="color:blue">
-                <!--Number of -->
-                Doctors
-            </th>
+                    <div class="col-md-3 ">
+                        <div class="stat hospitals">
+                            Doctors
+                            <span><a href="">@Model.Where(u => u.User_Type == 3).Count()</a></span>
+                        </div>
+                    </div>
 
-            <th style="color:green">
-                <!--Number of -->
-                Life Patients
-            </th>
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Life Patients
+                            <span><a href="">@Model.Where(u => u.User_Type == 4 && u.Person.Patient.Death_Date == null).Count()</a></span>
+                        </div>
+                    </div>
 
-            <th style="color: red">
-                <!--Number of -->
-                Died Patients
-            </th>
-        </tr>
+                    <div class="col-md-3">
+                        <div class="stat pending">
+                            Died Patients
+                            <span><a href=""> @Model.Where(u => u.User_Type == 4 && u.Person.Patient.Death_Date != null).Count()</a></span>
+                        </div>
+                    </div>
 
 
-        <tr style="text-align:center">
-            <td>
-                @Model.Count()
-            </td>
 
-            <td>
-                @Model.Where(u => u.User_Type == 2).Count()
-            </td>
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Active Accounts
+                            <span><a href="">@Model.Where(u => u.Status_Of_Account == 1).Count()</a></span>
+                        </div>
+                    </div>
 
-            <td>
-                @Model.Where(u => u.User_Type == 3).Count()
-            </td>
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Active Medical Organizations
+                            <span><a href="">@Model.Where(u => u.User_Type == 2 && u.Status_Of_Account == 1).Count()</a></span>
+                        </div>
+                    </div>
 
-            <td>
-                @Model.Where(u => u.User_Type == 4 && u.Person.Patient.Death_Date == null).Count()
-            </td>
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Active Doctors
+                            <span><a href="">@Model.Where(u => u.User_Type == 3 && u.Status_Of_Account == 1).Count()</a></span>
+                        </div>
+                    </div>
 
-            <td>
-                @Model.Where(u => u.User_Type == 4 && u.Person.Patient.Death_Date != null).Count()
-            </td>
-        </tr>
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Active Patients
+                            <span><a href="">@Model.Where(u => u.User_Type == 4 && u.Status_Of_Account == 1).Count()</a></span>
+                        </div>
+                    </div>
 
-        <tr style="text-align:center">
-            <!--Active Users-->
-            <th>Active Accounts</th>
 
-            <!--Active Hospitals-->
-            <th style="color:cadetblue">Active Accounts</th>
 
-            <!--Active Doctors-->
-            <th style="color:blue">Active Accounts</th>
+                    <div class="col-md-3">
+                        <div class="stat pending">
+                            InActive Accounts
+                            <span><a href="">@Model.Where(u => u.Status_Of_Account == 0).Count()</a></span>
+                        </div>
+                    </div>
 
-            <!--Active Patients-->
-            <th style="color:green">Active Patient Accounts</th>
-            <td><button class="btn btn-info" style="width:100%"  id ="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button></td>
-        </tr>
+                    <div class="col-md-3">
+                        <div class="stat pending">
+                            InActive Medical Organizations
+                            <span><a href="">@Model.Where(u => u.User_Type == 2 && u.Status_Of_Account == 0).Count()</a></span>
+                        </div>
+                    </div>
 
-        <tr style="text-align:center">
-            <td>@Model.Where(u => u.Status_Of_Account == 1).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 2 && u.Status_Of_Account == 1).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 3 && u.Status_Of_Account == 1).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 4 && u.Status_Of_Account == 1).Count()</td>
-        </tr>
+                    <div class="col-md-3">
+                        <div class="stat pending">
+                            InActive Doctors
+                            <span><a href="">@Model.Where(u => u.User_Type == 3 && u.Status_Of_Account == 0).Count()</a></span>
+                        </div>
+                    </div>
 
-        <tr style="text-align:center">
-            <th>InActive Accounts</th>
-            <th style="color:cadetblue">InActive Accounts</th>
-            <th style="color:blue">InActive Accounts</th>
-            <th style="color:green">InActive Accounts</th>
-        </tr>
+                    <div class="col-md-3">
+                        <div class="stat pending">
+                            InActive Patients
+                            <span><a href="">@Model.Where(u => u.User_Type == 4 && u.Status_Of_Account == 0).Count()</a></span>
+                        </div>
+                    </div>
 
-        <tr style="text-align:center">
-            <td>@Model.Where(u => u.Status_Of_Account == 0).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 2 && u.Status_Of_Account == 0).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 3 && u.Status_Of_Account == 0).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 4 && u.Status_Of_Account == 0).Count()</td>
-        </tr>
 
-        <tr style="text-align:center">
-            <th>Blocked Accounts</th>
-            <th style="color:cadetblue">Blocked Accounts</th>
-            <th style="color:blue">Blocked Accounts</th>
-            <th style="color:green">Blocked Accounts</th>
-        </tr>
+                    <div class="col-md-3">
+                        <div class="stat blocked">
+                            Blocked Accounts
+                            <span><a href="">@Model.Where(u => u.Status_Of_Account == 2).Count() </a></span>
+                        </div>
+                    </div>
 
-        <tr style="text-align:center">
-            <td>@Model.Where(u => u.Status_Of_Account == 3).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 2 && u.Status_Of_Account == 3).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 3 && u.Status_Of_Account == 3).Count()</td>
-            <td>@Model.Where(u => u.User_Type == 4 && u.Status_Of_Account == 3).Count()</td>
-        </tr>
-       
-    </table>
+                    <div class="col-md-3">
+                        <div class="stat blocked">
+                            Blocked Medical Organizations
+                            <span><a href="">@Model.Where(u => u.User_Type == 2 && u.Status_Of_Account == 2).Count() </a></span>
+                        </div>
+                    </div>
 
-    
-</div>
+                    <div class="col-md-3">
+                        <div class="stat blocked">
+                            Blocked Doctors
+                            <span><a href="">@Model.Where(u => u.User_Type == 3 && u.Status_Of_Account == 2).Count() </a></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="stat blocked">
+                            Blocked Patients
+                            <span><a href="">@Model.Where(u => u.User_Type == 4 && u.Status_Of_Account == 2).Count() </a></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+

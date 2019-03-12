@@ -231,7 +231,10 @@
     <Content Include="Content\MainPageBootstrap\js\bootstrap.min.js" />
     <Content Include="Content\MainPageBootstrap\js\Dynamice content_reg.js" />
     <Content Include="Content\MainPageBootstrap\js\jquery-3.3.1.min.js" />
+    <Content Include="Content\MainPageBootstrap\js\login.js" />
     <Content Include="Content\MainPageBootstrap\js\owl.carousel.js" />
+    <Content Include="Content\MainPageBootstrap\js\StarRating.js" />
+    <Content Include="Content\MainPageBootstrap\js\UserProfile.js" />
     <Content Include="Content\MainPageBootstrap\pic\90e5e1_2671db873fa6473da0b5c4c16eef776f-mv2.gif" />
     <Content Include="Content\MainPageBootstrap\pic\allathomehealthcare-org2.png" />
     <Content Include="Content\MainPageBootstrap\pic\c3-healthcare-logo-md.png" />

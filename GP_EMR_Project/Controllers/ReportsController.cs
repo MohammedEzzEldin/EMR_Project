@@ -15,6 +15,7 @@ namespace GP_EMR_Project.Controllers
         private EMR_GP_DBEntities db = new EMR_GP_DBEntities();
 
         // GET: Reports
+        
         public ActionResult Index()
         {
             var users = db.Users.Include(u => u.Medical_Organization).Include(u => u.Person);
