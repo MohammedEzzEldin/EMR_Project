@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Health care</title>
+    <title>Patient Account</title>
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/hover-min.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.carousel.css" />
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/Registration.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.theme.default.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/StarRating.css" />
-
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/UserProfile.css" />
 </head>
 
 <body>
@@ -31,13 +31,12 @@
                 </div>
                 <div class=" f col-lg-6 col-sm-7">
 
-                    @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+                    @using (Html.BeginForm("Search", "Patient", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
                     {
                         @Html.DropDownList("Filter_by",new List<SelectListItem>
                        {
                            new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
                            new SelectListItem(){Text="Doctors",Value="Doctors"},
-                            new SelectListItem(){Text="Patients",Value="Patients"},
                        },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
                         @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search", placeholder = "email or name" } })
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -93,23 +92,23 @@
                         </li>
 
                         <li>
-                            @Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Index", "Index", "Patient", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Reports", "Index", "Reports", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Account", "Manage_Account", "Patient", new { id = Session["User_Id"] }, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Patients", "Index_Patients", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Patients", "Index_Patients", "Patient", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Medical Organizations", "Index_Medical_Org", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Medical Organizations", "Index_Medical_Org", "Patient", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Doctors", "Index_Doctors", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Doctors", "Index_Doctors", "Patient", null, new { @class = "nav-link" })
                         </li>
                     }
 

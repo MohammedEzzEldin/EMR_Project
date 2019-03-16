@@ -1,0 +1,27 @@
+﻿@model GP_EMR_Project.Models.Patient
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Patient.cshtml";
+}
+
+<div class="content"   style="background-color:beige" >
+    <div style=" text-align:center">
+        @{
+            var src = "";
+            try
+            {
+                src = Model.Person.User.Photo_Url.Split(' ')[0];
+            }
+            catch (Exception ex)
+            {
+                src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+            }
+        }
+        <img src="@Url.Content(src)" alt="patient img" style="border-radius:50%; width:10%; height:5%;" /> 
+        <br />
+          <h5>@Model.Person.First_Name @Model.Person.Last_Name</h5>
+    </div>
+
+
+</div>
