@@ -128,5 +128,37 @@ namespace GP_EMR_Project.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Search(string Filter_by,string Search)
+        {
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Manage_Account()
+        {
+            return View();
+        }
+
+        public ActionResult Manage_Doctors()
+        {
+            return View();
+        }
+
+        public ActionResult Manage_Department()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Add_New_Department()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add_New_Department(Department dep)
+        {
+            return RedirectToAction("Index");
+        }
     }
 }

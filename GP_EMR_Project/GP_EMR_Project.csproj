@@ -253,6 +253,7 @@
     <Content Include="Content\MainPageBootstrap\pic\text_image.img.jpeg" />
     <Content Include="Content\MainPageBootstrap\pic\WeCare-Logo-V2_150ppi.png" />
     <Content Include="Content\MainPageBootstrap\pic\you_matter_we_care_logo.jpg" />
+    <Content Include="Content\MainPageBootstrap\pic\مستشفى_57357.png" />
     <Content Include="Content\Med_Photo\46.jpg" />
     <Content Include="Content\Med_Photo\7.jpg" />
     <Content Include="Content\Patient_Photo\47.jpg" />
@@ -334,6 +335,10 @@
     <Content Include="Views\Doctor\Details.cshtml" />
     <Content Include="Views\Doctor\Edit.cshtml" />
     <Content Include="Views\Doctor\Index.cshtml" />
+    <Content Include="Views\Medical_Organization\Add_New_Department.cshtml" />
+    <Content Include="Views\Medical_Organization\Manage_Department.cshtml" />
+    <Content Include="Views\Medical_Organization\Manage_Account.cshtml" />
+    <Content Include="Views\Medical_Organization\Manage_Doctors.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
