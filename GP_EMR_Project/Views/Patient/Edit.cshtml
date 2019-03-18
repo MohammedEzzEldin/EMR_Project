@@ -5,79 +5,126 @@
     Layout = "~/Views/Shared/_Patient.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="content" style="background-color:beige;">
+    <div class="container u" style="margin-left :10%;">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        @using (Html.BeginForm("Upload_Photo", "Patient", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Patient_Id)
+                            <div class="card-title ">
+                                <div class="d-flex justify-content-start">
+                                    <div class="image-container">
+                                        @{
+                                            var src = "";
+                                            try
+                                            {
+                                                src = Model.Person.User.Photo_Url.Split(' ')[0];
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+                                            }
+                                        }
+                                        <img src="@Url.Content(src)" id="imgProfile" class="img-thumbnail im" style="border-radius:50%;" />
+                                        <div class="middle">
+                                            <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />                                          
+                                            @Html.TextBox("file", "", new { type = "file", id = "profilePicture", style = "display: none;", name = "file" })
+                                            <input type="submit" class="btn btn-secondary d-done" id="Confirm" value="Confirm Changes" hidden />
+                                        </div>     
+                                    </div>
+                              
+                                     
+                                </div>
+                            </div>
+                                            }
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Patient_Id)
+                            <div class="row">
+                                <div class="col-12">
+                                    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <div class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Information</div>
+                                        </li>
+
+                                    </ul>
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Full Name</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            <input type="text" class="form-control" id="FullMame" placeholder="Enter The FullName">
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Password</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <hr />
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Patient</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Patient_Id)
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">confirm Password</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Number</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            <input type="text" class="form-control" id="FullMame" placeholder="Enter The FullName">
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Address</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            <input type="text" class="form-control" id="FullMame" placeholder="Enter The FullName">
+                                        </div>
+                                    </div>
+                                    <hr />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Learning_Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Learning_Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Learning_Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                    <div class="row">
+                                        <div class="col-md-11">
+                                            <button type="submit" class="btn btn-primary btn-lg ">Save</button>
+                                        </div>
+                                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Social_Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Social_Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Social_Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Death_Date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Death_Date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Death_Date, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Alternative_Phone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Alternative_Phone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Alternative_Phone, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Job, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Job, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Job, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Reason_Death, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Reason_Death, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Reason_Death, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+   @Scripts.Render("~/Content/MainPageBootstrap/js/UserProfile.js")
 }

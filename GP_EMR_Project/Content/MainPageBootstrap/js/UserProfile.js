@@ -24,7 +24,8 @@ $(document).ready(function () {
             $('#profilePicture').on('change', function () {
                 readURL(this);
                 $('#btnChangePicture').addClass('changing');
-                $('#btnChangePicture').attr('value', 'Confirm');
+                $('#btnChangePicture').attr('hidden','hidden');
+                $('#Confirm').removeAttr('hidden')
                 $('#btnDiscard').removeClass('d-none');
                 // $('#imgProfile').attr('src', '');
             });

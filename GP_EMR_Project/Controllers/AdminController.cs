@@ -125,6 +125,18 @@ namespace GP_EMR_Project.Controllers
             User user = new User();
             if (Request.Form["Medical_Organization.Medical_Org_Id"] == null){
                 user = db.Users.Find(Int64.Parse(Request.Form["Person.Person_Id"]));
+
+                if(user != null && user.User_Type == 1)
+                {
+                    if (Request.Form["Confirm_Password"] != Request.Form["Password"].Split(' ')[0])
+                    {
+                        ModelState.AddModelError("Confirm_Password", "Password do not Match");
+                    }
+                    else
+                    {
+                        user.Password = Request.Form["Password"].Split(' ')[0];  
+                    }
+                }
             }
             else
             {

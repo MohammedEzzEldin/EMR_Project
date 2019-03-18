@@ -18,10 +18,191 @@
                 src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
             }
         }
-        <img src="@Url.Content(src)" alt="patient img" style="border-radius:50%; width:10%; height:5%;" /> 
-        <br />
-          <h5>@Model.Person.First_Name @Model.Person.Last_Name</h5>
+        <img src="@Url.Content(src)" alt="patient img" class="img-thumbnail im" style="border-radius:50%;" />
+        <h3 style="color:blue;">@Model.Person.First_Name<span style="color:green">@Model.Person.Last_Name </span> </h3>
+        <hr style="width:50%"/>
     </div>
 
+    <div style="text-align:center">
+        <div class="u">
+            <div class="container stats text-center">
+                <h1>General Examination</h1> <br />
+                                             <div class="row">
+                                                 @if (Model.General_Examination != null)
+                                                 {
+                                                     <div class="col-md-3">
+                                                         <div class="stat members">
+                                                             The Length
+                                                             @if (Model.General_Examination.Length != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Length</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
 
+                                                     <div class="col-md-3">
+                                                         <div class="stat members">
+                                                             The Weight
+                                                             @if (Model.General_Examination.Weight != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Weight</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat pending">
+                                                             The Temperature
+                                                             @if (Model.General_Examination.Temperature != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Temperature</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat pending">
+                                                             The Blood Pressure
+                                                             @if (Model.General_Examination.Blood_Pressure != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Blood_Pressure</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat pending">
+                                                             The Blood Type
+                                                             @if (Model.General_Examination.Blood_Type != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Blood_Type</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat hospitals">
+                                                             The Diabetes
+                                                             @if (Model.General_Examination.Diabetes != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Diabetes</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat hospitals">
+                                                             The Allergies
+                                                             @if (Model.General_Examination.Allergies != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Allergies</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat hospitals">
+                                                             The Habits
+                                                             @if (Model.General_Examination.Habits != null)
+                                                             {
+                                                                 <span><a href="">@Model.General_Examination.Habits</a></span>
+                                                             }
+                                                             else
+                                                             {
+                                                                <span>Empty</span>
+                                                             }
+                                                         </div>
+                                                     </div>
+                                                 }
+                                                 else
+                                                 {
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Length</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Weight</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Temperature</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Blood Pressure</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Blood Type</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Diabetes</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Allergies</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="col-md-3">
+                                                         <div class="stat blocked">
+                                                             <h4>The Habits</h4>
+                                                             <h5>Undefined</h5>
+                                                         </div>
+                                                     </div>
+                                                 }
+                                             </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-info" style="text-align:center; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+    </div>
 </div>

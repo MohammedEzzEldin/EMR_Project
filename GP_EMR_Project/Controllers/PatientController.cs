@@ -20,9 +20,13 @@ namespace GP_EMR_Project.Controllers
             User sesstion = (User)Session["UserID"];
             if (Session["UserID"] != null && sesstion.User_Type == 4)
             {
+                    if (id != sesstion.User_Id)
+                    {
+                    id = sesstion.User_Id;
                     if (id == null)
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
                     }
                     var patient = db.Patients.Find(id);
                     if (patient == null)
@@ -54,13 +58,9 @@ namespace GP_EMR_Project.Controllers
             return View(patient);
         }
 
-        public ActionResult Manage_Account(User id)
+        public ActionResult Manage_Account()
         {
-            if(id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            return View();
+            return RedirectToAction("Edit",new { id = ((User) Session["UserID"]).User_Id});
         }
         // GET: Patient/Create
         public ActionResult Create()
@@ -162,5 +162,75 @@ namespace GP_EMR_Project.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Family_History()
+        {
+            return View();
+        }
+
+        public ActionResult Your_Diseases()
+        {
+            return View();
+        }
+
+        public ActionResult Examinations()
+        {
+            return View();
+        }
+
+        public ActionResult Reviews()
+        {
+            return View();
+        }
+
+        public ActionResult Operations()
+        {
+            return View();
+        }
+
+        public ActionResult Laboratories_Radiology()
+        {
+            return View();
+        }
+
+        public ActionResult Child_Followup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload_Photo(HttpPostedFileBase file)
+        {
+            User u = db.Users.Find((long)Int64.Parse(Request.Form["Patient_Id"]));
+
+            if (ModelState.IsValid)
+            {
+                if (file == null)
+                {
+                    return RedirectToAction("Manage_Account","Patient");
+                }
+
+                if (u != null)
+                {
+                    if (file.FileName != null)
+                    {
+                        if (u.User_Type == 4)
+                        {
+                            file.SaveAs(Server.MapPath("~/Content/Patient_Photo/") + u.User_Id + ".jpg");
+                            u.Photo_Url = "~/Content/Patient_Photo/" + u.User_Id + ".jpg";
+                        }
+                        db.Entry(u).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("User_Id", "User Not Exist");
+                }
+                return RedirectToAction("Manage_Account");
+            }
+            return RedirectToAction("Manage_Account");
+        }
+
     }
 }

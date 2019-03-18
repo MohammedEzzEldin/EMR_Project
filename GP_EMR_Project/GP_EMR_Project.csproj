@@ -345,7 +345,13 @@
     <Content Include="Views\Patient\Details.cshtml" />
     <Content Include="Views\Patient\Edit.cshtml" />
     <Content Include="Views\Patient\Index.cshtml" />
-    <Content Include="Views\Patient\Manage_Account.cshtml" />
+    <Content Include="Views\Patient\Family_History.cshtml" />
+    <Content Include="Views\Patient\Your_Diseases.cshtml" />
+    <Content Include="Views\Patient\Examinations.cshtml" />
+    <Content Include="Views\Patient\Reviews.cshtml" />
+    <Content Include="Views\Patient\Operations.cshtml" />
+    <Content Include="Views\Patient\Laboratories_Radiology.cshtml" />
+    <Content Include="Views\Patient\Child_Followup.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

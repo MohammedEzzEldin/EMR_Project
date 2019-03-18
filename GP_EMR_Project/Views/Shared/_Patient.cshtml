@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.theme.default.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/StarRating.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/UserProfile.css" />
+    <link rel="stylesheet"href="~/Content/MainPageBootstrap/css/AdminDashbord.css" />
 </head>
 
 <body>
@@ -96,20 +97,28 @@
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Manage Account", "Manage_Account", "Patient", new { id = Session["User_Id"] }, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Account", "Manage_Account", "Patient",null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item  dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Medical Record
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @Html.ActionLink("Family History", "Family_History", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Your Diseases", "Your_Diseases", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Medical Examinations", "Examinations", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Medical Reviews", "Reviews", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Operations", "Operations", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Laboratories & radiology", "Laboratories_Radiology", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Child Followup Form", "Child_Followup", "Patient", null, new { @class = "dropdown-item" })
+                            </div>
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Patients", "Index_Patients", "Patient", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Book", "Book", "Patient", null, new { @class = "nav-link" })
                         </li>
 
-                        <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Medical Organizations", "Index_Medical_Org", "Patient", null, new { @class = "nav-link" })
-                        </li>
-
-                        <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Doctors", "Index_Doctors", "Patient", null, new { @class = "nav-link" })
-                        </li>
                     }
 
                 </ul>
@@ -134,12 +143,9 @@
     <!-- end navbar -->
 
 
-    <div>
+    <div style="background-color:beige;">
         @RenderBody()
     </div>
-
-
-
 
     <div class="footer ">
         <div class="container">

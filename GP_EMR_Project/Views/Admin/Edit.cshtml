@@ -84,7 +84,7 @@
 
                 <tr style="text-align:center">
                     <td>
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email"} })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </td>
 
@@ -99,12 +99,12 @@
                     </td>
 
                     <td>
-                        @Html.EditorFor(model => model.Person.National_Id, new { htmlAttributes = new { @class = "form-control",maxlength = "15" } })
+                        @Html.EditorFor(model => model.Person.National_Id, new { htmlAttributes = new { @class = "form-control", maxlength = "15" } })
                         @Html.ValidationMessageFor(model => model.Person.National_Id, "", new { @class = "text-danger" })
                     </td>
 
                     <td>
-                        @Html.EditorFor(model => model.Person.Nationality, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.EditorFor(model => model.Person.Nationality, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Person.Nationality, "", new { @class = "text-danger" })
                     </td>
 
@@ -119,13 +119,13 @@
 
                 <tr style="text-align:center">
                     <td>
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", type = "tel",maxlength="15" } })
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
                         @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                     </td>
 
                     <td>
                         <span style="color:darkblue">Write male or female: </span>
-                        @Html.EditorFor(model => model.Person.Gender, new { htmlAttributes = new { @class = "form-control", maxlength="6" } })
+                        @Html.EditorFor(model => model.Person.Gender, new { htmlAttributes = new { @class = "form-control", maxlength = "6" } })
                         @Html.ValidationMessageFor(model => model.Person.Gender, "", new { @class = "text-danger" })
                     </td>
 
@@ -135,7 +135,7 @@
                     </td>
 
                     <td>
-                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", type = "text",} })
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", type = "text", } })
                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                     </td>
                 </tr>
@@ -158,7 +158,7 @@
                     </tr>
                     <tr style="text-align:center">
                         <td>
-                            @Html.EditorFor(model => model.Person.Doctor.Acadimic_Degree, new { htmlAttributes = new { @class = "form-control", type = "text"} })
+                            @Html.EditorFor(model => model.Person.Doctor.Acadimic_Degree, new { htmlAttributes = new { @class = "form-control", type = "text" } })
                             @Html.ValidationMessageFor(model => model.Person.Doctor.Acadimic_Degree, "", new { @class = "text-danger" })
                         </td>
 
@@ -212,6 +212,28 @@
                         <td>
                             @Html.EditorFor(model => model.Person.Patient.Job, new { htmlAttributes = new { @class = "form-control", type = "text" } })
                             @Html.ValidationMessageFor(model => model.Person.Patient.Job, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+                @if (Model.User_Type == 1)
+                {
+                    <tr style="text-align:center">
+                        <th></th>
+                        <th>Password</th>
+                        <th>Confirm Password</th>
+                    </tr>
+
+                    <tr style="text-align:center;">
+                        <td></td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = "Type The Password", required = true, maxlength = "15" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.Editor("Confirm_Password", new { htmlAttributes = new { @class = "form-control", type = "password",placeholder = "Type The Password", maxlength = "15" } })
+                            @Html.ValidationMessage("Confirm_Password", "", new { @class = "text-danger" })
                         </td>
                     </tr>
                 }
