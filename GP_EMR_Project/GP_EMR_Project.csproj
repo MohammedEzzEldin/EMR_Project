@@ -138,6 +138,7 @@
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Medical_OrganizationController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -339,6 +340,18 @@
     <Content Include="Views\Medical_Organization\Manage_Department.cshtml" />
     <Content Include="Views\Medical_Organization\Manage_Account.cshtml" />
     <Content Include="Views\Medical_Organization\Manage_Doctors.cshtml" />
+    <Content Include="Views\Patient\Create.cshtml" />
+    <Content Include="Views\Patient\Delete.cshtml" />
+    <Content Include="Views\Patient\Details.cshtml" />
+    <Content Include="Views\Patient\Edit.cshtml" />
+    <Content Include="Views\Patient\Index.cshtml" />
+    <Content Include="Views\Patient\Family_History.cshtml" />
+    <Content Include="Views\Patient\Your_Diseases.cshtml" />
+    <Content Include="Views\Patient\Examinations.cshtml" />
+    <Content Include="Views\Patient\Reviews.cshtml" />
+    <Content Include="Views\Patient\Operations.cshtml" />
+    <Content Include="Views\Patient\Laboratories_Radiology.cshtml" />
+    <Content Include="Views\Patient\Child_Followup.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

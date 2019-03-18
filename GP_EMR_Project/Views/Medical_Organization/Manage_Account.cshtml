@@ -1,4 +1,4 @@
-﻿@model GP_EMR_Project.Models.Department
+﻿@model GP_EMR_Project.Models.Medical_Organization
 
 @{
     ViewBag.Title = "Manage_Account";
@@ -14,12 +14,25 @@
                     <div class="card-title ">
                         <div class="d-flex justify-content-start">
                             <div class="image-container">
-                                <img src="~/Content/MainPageBootstrap/pic/مستشفى_57357.png" id="imgProfile" class="img-thumbnail im" />
+                                @{
+                                    var src = "";
+                                    try
+                                    {
+                                        src = Model.User.Photo_Url.Split(' ')[0];
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+                                    }
+                                }
+                                <img src="@Url.Content(src)" id="imgProfile" class="img-thumbnail im" style="border-radius:50%;" />
                                 <div class="middle">
                                     <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
-                                    <input type="file" style="display: none;" id="profilePicture" name="file" />
+                                    @Html.TextBox("file", "", new { type = "file", id = "profilePicture", style = "display: none;", name = "file" })
+                                    <input type="submit" class="btn btn-secondary d-done" id="Confirm" value="Confirm Changes" hidden />
                                 </div>
                             </div>
+                        </div>
 
                             <div class="ml-auto">
                                 <input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes" />

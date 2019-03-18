@@ -1,0 +1,91 @@
+﻿@model GP_EMR_Project.Models.Patient
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Patient.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Patient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Learning_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Learning_Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Social_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Social_Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Death_Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Death_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Alternative_Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Alternative_Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Job)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reason_Death)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reason_Death)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Child_FollowUp_Form.Feed_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Child_FollowUp_Form.Feed_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.General_Examination.Blood_Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.General_Examination.Blood_Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.First_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.First_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Patient_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
