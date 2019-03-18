@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Health care</title>
+    <title>Patient Account</title>
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/hover-min.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.carousel.css" />
@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/Registration.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.theme.default.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/StarRating.css" />
-
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/UserProfile.css" />
+    <link rel="stylesheet"href="~/Content/MainPageBootstrap/css/AdminDashbord.css" />
 </head>
 
 <body>
@@ -31,13 +32,12 @@
                 </div>
                 <div class=" f col-lg-6 col-sm-7">
 
-                    @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+                    @using (Html.BeginForm("Search", "Patient", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
                     {
                         @Html.DropDownList("Filter_by",new List<SelectListItem>
                        {
                            new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
                            new SelectListItem(){Text="Doctors",Value="Doctors"},
-                            new SelectListItem(){Text="Patients",Value="Patients"},
                        },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
                         @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search", placeholder = "email or name" } })
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -93,24 +93,32 @@
                         </li>
 
                         <li>
-                            @Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Index", "Index", "Patient", null, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Reports", "Index", "Reports", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Account", "Manage_Account", "Patient",null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item  dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Medical Record
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @Html.ActionLink("Family History", "Family_History", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Your Diseases", "Your_Diseases", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Medical Examinations", "Examinations", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Medical Reviews", "Reviews", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Operations", "Operations", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Laboratories & radiology", "Laboratories_Radiology", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Child Followup Form", "Child_Followup", "Patient", null, new { @class = "dropdown-item" })
+                            </div>
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Patients", "Index_Patients", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Book", "Book", "Patient", null, new { @class = "nav-link" })
                         </li>
 
-                        <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Medical Organizations", "Index_Medical_Org", "Admin", null, new { @class = "nav-link" })
-                        </li>
-
-                        <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Doctors", "Index_Doctors", "Admin", null, new { @class = "nav-link" })
-                        </li>
                     }
 
                 </ul>
@@ -135,12 +143,9 @@
     <!-- end navbar -->
 
 
-    <div>
+    <div style="background-color:beige;">
         @RenderBody()
     </div>
-
-
-
 
     <div class="footer ">
         <div class="container">

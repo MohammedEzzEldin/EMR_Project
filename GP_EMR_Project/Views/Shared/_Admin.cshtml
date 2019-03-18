@@ -81,7 +81,6 @@
                             @Html.ActionLink("Register", "Register", "Home", null, new { @class = "nav-link" })
                         </li>
                     }
-
                     @if (Session["UserID"] != null)
                     {
                         <li class="nav-item hvr-grow">
@@ -94,6 +93,10 @@
 
                         <li>
                             @Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+                        </li>
+
+                        <li class="nav-item hvr-grow">
+                            @Html.ActionLink("Manage Account", "Edit", "Admin", new { id = ((GP_EMR_Project.Models.User) Session["UserID"]).User_Id }, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
