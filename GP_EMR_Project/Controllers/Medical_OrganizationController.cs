@@ -17,8 +17,16 @@ namespace GP_EMR_Project.Controllers
         // GET: Medical_Organization
         public ActionResult Index()
         {
-            var medical_Organization = db.Medical_Organization.Include(m => m.User);
-            return View(medical_Organization.ToList());
+            User user = (User)Session["UserID"];
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if(user.User_Type != 2)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(user);
         }
 
         // GET: Medical_Organization/Details/5
