@@ -33,16 +33,19 @@
                                         }
                                         <img src="@Url.Content(src)" id="imgProfile" class="img-thumbnail im" style="border-radius:50%;" />
                                         <div class="middle">
-                                            <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />                                          
+                                            <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
                                             @Html.TextBox("file", "", new { type = "file", id = "profilePicture", style = "display: none;", name = "file" })
                                             <input type="submit" class="btn btn-secondary d-done" id="Confirm" value="Confirm Changes" hidden />
-                                        </div>     
+                                        </div>
+                                        <div>
+                                        </div>
                                     </div>
                               
                                      
                                 </div>
                             </div>
                                             }
+
                         @using (Html.BeginForm())
                         {
                             @Html.AntiForgeryToken()
@@ -60,10 +63,159 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Full Name</label>
+                                            <label style="font-weight:bold;">First Name</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            <input type="text" class="form-control" id="FullMame" placeholder="Enter The FullName">
+                                            @Html.EditorFor(model => model.Person.First_Name.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "100" } })
+                                            @Html.ValidationMessageFor(model => model.Person.First_Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Last Name</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.Last_Name.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "100" } })
+                                            @Html.ValidationMessageFor(model => model.Person.Last_Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">National Id</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.National_Id.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "15" } })
+                                            @Html.ValidationMessageFor(model => model.Person.National_Id, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Nationality</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.Nationality.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "50" } })
+                                            @Html.ValidationMessageFor(model => model.Person.Nationality, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">City</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.User.City.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "200" } })
+                                            @Html.ValidationMessageFor(model => model.Person.User.City, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Address</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.User.Address.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "200" } })
+                                            @Html.ValidationMessageFor(model => model.Person.User.Address, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Gender</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.DropDownListFor(model =>model.Person.Gender,
+                                                                     new SelectList( new List<SelectListItem>{
+                                                                     new SelectListItem{Value = "male",  Text = "Male" },
+                                                                     new SelectListItem{Value = "female",  Text = "Female" },
+                                                                     new SelectListItem{Value=Model.Person.Gender,Text=Model.Person.Gender,Selected=true}
+                                                                     }, "value", "text"), "Gender", new { @class = "form-control"})
+                                            @Html.ValidationMessageFor(model => model.Person.Gender, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Birth Date</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.Birth_Date, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                            @Html.ValidationMessageFor(model => model.Person.Birth_Date, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Email</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.User.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                                            @Html.ValidationMessageFor(model => model.Person.User.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Phone</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Person.User.Phone.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.ValidationMessageFor(model => model.Person.User.Phone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Birth Date</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Alternative_Phone.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel" } })
+                                            @Html.ValidationMessageFor(model => model.Alternative_Phone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Learning Status</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Learning_Status.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.ValidationMessageFor(model => model.Learning_Status, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">PSocial Status</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Social_Status.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.ValidationMessageFor(model => model.Social_Status, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Job</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            @Html.EditorFor(model => model.Job.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.ValidationMessageFor(model => model.Job, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <hr />
@@ -73,7 +225,8 @@
                                             <label style="font-weight:bold;">Password</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off">
+                                            @Html.EditorFor(model => model.Person.User.Password.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "password", id = "inputPassword3", maxlength = "15", autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.Person.National_Id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <hr />
@@ -81,28 +234,11 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">confirm Password</label>
+                                            <label style="font-weight:bold;">Confirm Password</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="off">
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Number</label>
-                                        </div>
-                                        <div class="col-md-8 col-6">
-                                            <input type="text" class="form-control" id="FullMame" placeholder="Enter The FullName">
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div class="row">
-                                        <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Address</label>
-                                        </div>
-                                        <div class="col-md-8 col-6">
-                                            <input type="text" class="form-control" id="FullMame" placeholder="Enter The FullName">
+                                            @Html.EditorFor(model => model.Person.User.Password.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "password", id = "inputPassword3", placeholder = "Write Password Again", maxlength = "15", autocomplete = "off" } })
+                                            @Html.ValidationMessage("Confirm_Password", "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <hr />
@@ -112,7 +248,6 @@
                                             <button type="submit" class="btn btn-primary btn-lg ">Save</button>
                                         </div>
                                     </div>
-
 
                                 </div>
                             </div>

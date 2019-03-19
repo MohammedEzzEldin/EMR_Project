@@ -82,94 +82,93 @@
 
         @foreach (var item in Model)
         {
-            <tr style="text-align:center">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Medical_Org_Name)
-                </td>
+        <tr style="text-align:center">
+            <td>
+                @Html.DisplayFor(modelItem => item.Medical_Org_Name)
+            </td>
 
-                <td>
-                    <small-star-rating>
-                        @{
-                            var rate = item.Medium_Rate;
-                            var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
-                            if (rate == null || rate == 0)
+            <td>
+                <small-star-rating>
+                    @{
+                        var rate = item.Medium_Rate;
+                        var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                        if (rate == null || rate == 0)
+                        {
+                            <div class="star"></div>
+                            <div class="star"></div>
+                            <div class="star "></div>
+                            <div class="star "></div>
+                            <div class="star"></div>
+                        }
+                        else
+                        {
+                            for (int j = 1; j <= 5; j++)
                             {
-                                <div class="star"></div>
-                                <div class="star"></div>
-                                <div class="star "></div>
-                                <div class="star "></div>
-                                <div class="star"></div>
-                            }
-                            else
-                            {
-                                for (int j = 1; j <= 5; j++)
+                                if (j > (int)rate)
                                 {
-                                    if (j > (int)rate)
-                                    {
-                                        if (0.8 <= fraction)
-                                        {
-                                            <div class="star full"></div>
-                                        }
-                                        else if (0.4 <= fraction)
-                                        {
-                                            <div class="star Halfstar"></div>
-                                        }
-                                        else if (0.3 >= fraction)
-                                        {
-                                            <div class="star"></div>
-                                        }
-                                    }
-                                    else
+                                    if (0.8 <= fraction)
                                     {
                                         <div class="star full"></div>
                                     }
+                                    else if (0.4 <= fraction)
+                                    {
+                                        <div class="star Halfstar"></div>
+                                    }
+                                    else if (0.3 >= fraction)
+                                    {
+                                        <div class="star"></div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="star full"></div>
                                 }
                             }
                         }
-                    </small-star-rating>
-                </td>
+                    }
+                </small-star-rating>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Phone)
+            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Phone)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.City)
+            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.City)
-                </td>
+            @if (item.User.Status_Of_Account == 0) // in activated
+            {
+                <td style="background-color:red"></td>
+            }
+            @if (item.User.Status_Of_Account == 1) // activated
+            {
+                <td style="background-color:green"></td>
+            }
+            @if (item.User.Status_Of_Account == 2) // blocked
+            {
+                <td style="background-color:black"></td>
+            }
 
-                @if (item.User.Status_Of_Account == 0) // in activated
+            <td>
+                @if (item.User.Status_Of_Account != 1)
                 {
-                    <td style="background-color:red"></td>
+                    @Html.ActionLink("Active", "Active_Account", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger", style = "color:green" })
                 }
-                @if (item.User.Status_Of_Account == 1) // activated
+                @if (item.User.Status_Of_Account == 1)
                 {
-                    <td style="background-color:green"></td>
+                    @Html.ActionLink("Block", "Block", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger", style = "color:black" })
                 }
-                @if (item.User.Status_Of_Account == 2) // blocked
+
+                @Html.ActionLink("Details", "Details", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-primary" })
+                @Html.ActionLink("Edit", "Edit", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger" })
+
+                @if (item.User.Status_Of_Account == 0)
                 {
-                    <td style="background-color:black"></td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger" })
                 }
 
-                    <td>
-                        @if (item.User.Status_Of_Account != 1)
-                        {
-                            @Html.ActionLink("Active", "Active_Account", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger", style = "color:green" })
-                        }
-                        @if (item.User.Status_Of_Account == 1)
-                        {
-                            @Html.ActionLink("Block", "Block", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger",style="color:black" })
-                        }
-
-                        @Html.ActionLink("Details", "Details", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-primary" })
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger" })
-
-                        @if (item.User.Status_Of_Account == 0)
-                        {
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Medical_Org_Id }, new { @class = "btn btn-outline-danger" })
-                        }
-
-                    </td>
-            </tr>
+            </td>
+        </tr>
         }
     </table>
 </div>
