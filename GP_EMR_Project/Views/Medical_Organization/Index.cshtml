@@ -1,45 +1,73 @@
-﻿@model IEnumerable<GP_EMR_Project.Models.Medical_Organization>
+﻿@model GP_EMR_Project.Models.User
 
 @{
+    /**/
+
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Medical_Organization.cshtml";
 }
 
-<h2>Index</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Medical_Org_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Medium_Rate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </th>
-        <th></th>
-    </tr>
+<img src="@Url.Content(Model.Photo_Url)" width="300" height="300" style="border-radius:50%;display: block;margin-left: auto;margin-right: auto;border:2px solid #000000" />
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medical_Org_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medium_Rate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Medical_Org_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Medical_Org_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Medical_Org_Id })
-        </td>
-    </tr>
-}
+<center>
+    <small-star-rating>
+        @{
+            var rate = Model.Medical_Organization.Medium_Rate;
+            var fraction = Model.Medical_Organization.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+            if (rate == null || rate == 0)
+            {
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star "></div>
+                <div class="star "></div>
+                <div class="star"></div>
+            }
+            else
+            {
+                for (int j = 1; j <= 5; j++)
+                {
+                    if (j > (int)rate)
+                    {
+                        if (0.8 <= fraction)
+                        {
+                            <div class="star full"></div>
+                        }
+                        else if (0.4 <= fraction)
+                        {
+                            <div class="star Halfstar"></div>
+                        }
+                        else if (0.3 >= fraction)
+                        {
+                            <div class="star"></div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="star full"></div>
+                    }
+                }
+            }
+        }
+    </small-star-rating>
+</center>
+<div class="u">
+    <div class="container stats text-center">
+        <h1>@Model.Medical_Organization.Medical_Org_Name</h1> <br />
+        <div class="row">
 
-</table>
+            <div class="col-md-6">
+                <div class="stat members">
+                    Departments
+                    <span><a href="">@Model.Medical_Organization.Departments.Count()</a></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="stat hospitals">
+                    Doctors
+                    <span><a href="">@Model.Medical_Organization.Departments.Count()</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
