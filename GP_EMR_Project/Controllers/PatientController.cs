@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using GP_EMR_Project.Models;
 
+
 namespace GP_EMR_Project.Controllers
 {
     public class PatientController : Controller
@@ -103,9 +104,11 @@ namespace GP_EMR_Project.Controllers
             {
                 return HttpNotFound();
             }
+
             ViewBag.Patient_Id = new SelectList(db.Child_FollowUp_Form, "Patient_Id", "Feed_Type", patient.Patient_Id);
             ViewBag.Patient_Id = new SelectList(db.General_Examination, "Patient_Id", "Blood_Type", patient.Patient_Id);
             ViewBag.Patient_Id = new SelectList(db.People, "Person_Id", "First_Name", patient.Patient_Id);
+           
             return View(patient);
         }
 
