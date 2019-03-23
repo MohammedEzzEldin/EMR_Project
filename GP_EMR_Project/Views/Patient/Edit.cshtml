@@ -66,7 +66,7 @@
                                             <label style="font-weight:bold;">First Name</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.First_Name.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "100" } })
+                                            @Html.EditorFor(model => model.Person.First_Name, new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "100" } })
                                             @Html.ValidationMessageFor(model => model.Person.First_Name, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -77,7 +77,7 @@
                                             <label style="font-weight:bold;">Last Name</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.Last_Name.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "100" } })
+                                            @Html.EditorFor(model => model.Person.Last_Name, new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "100" } })
                                             @Html.ValidationMessageFor(model => model.Person.Last_Name, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@
                                             <label style="font-weight:bold;">National Id</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.National_Id.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "15" } })
+                                            @Html.EditorFor(model => model.Person.National_Id, new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "15" } })
                                             @Html.ValidationMessageFor(model => model.Person.National_Id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                             <label style="font-weight:bold;">Nationality</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.Nationality.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "50" } })
+                                            @Html.EditorFor(model => model.Person.Nationality, new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "50" } })
                                             @Html.ValidationMessageFor(model => model.Person.Nationality, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@
                                             <label style="font-weight:bold;">City</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.User.City.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "200" } })
+                                            @Html.EditorFor(model => model.Person.User.City, new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "200" } })
                                             @Html.ValidationMessageFor(model => model.Person.User.City, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -121,7 +121,7 @@
                                             <label style="font-weight:bold;">Address</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.User.Address.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "200" } })
+                                            @Html.EditorFor(model => model.Person.User.Address, new { htmlAttributes = new { @class = "form-control", type = "text", maxlength = "200" } })
                                             @Html.ValidationMessageFor(model => model.Person.User.Address, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -136,7 +136,7 @@
                                                                      new SelectList( new List<SelectListItem>{
                                                                      new SelectListItem{Value = "male",  Text = "Male" },
                                                                      new SelectListItem{Value = "female",  Text = "Female" },
-                                                                     new SelectListItem{Value=Model.Person.Gender,Text=Model.Person.Gender,Selected=true}
+                                                                     new SelectListItem{Value=Model.Person.Gender,Text="Your is "+Model.Person.Gender,Selected=true}
                                                                      }, "value", "text"), "Gender", new { @class = "form-control"})
                                             @Html.ValidationMessageFor(model => model.Person.Gender, "", new { @class = "text-danger" })
                                         </div>
@@ -148,6 +148,9 @@
                                             <label style="font-weight:bold;">Birth Date</label>
                                         </div>
                                         <div class="col-md-8 col-6">
+                                            <p style="text-align:center">Your <span style="color:red">Birth </span> <span style="color:blue">Date</span> is 
+                                            <span style="color:blue;font-weight:bold;font-size:large;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">@Model.Person.Birth_Date.ToShortDateString()</span></p> 
+
                                             @Html.EditorFor(model => model.Person.Birth_Date, new { htmlAttributes = new { @class = "form-control", type = "date" } })
                                             @Html.ValidationMessageFor(model => model.Person.Birth_Date, "", new { @class = "text-danger" })
                                         </div>
@@ -159,7 +162,7 @@
                                             <label style="font-weight:bold;">Email</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.User.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                                            @Html.EditorFor(model => model.Person.User.Email.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "email" } })
                                             @Html.ValidationMessageFor(model => model.Person.User.Email, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -170,7 +173,7 @@
                                             <label style="font-weight:bold;">Phone</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Person.User.Phone.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.EditorFor(model => model.Person.User.Phone, new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
                                             @Html.ValidationMessageFor(model => model.Person.User.Phone, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -178,10 +181,10 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">Birth Date</label>
+                                            <label style="font-weight:bold;">Alternative Phone</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Alternative_Phone.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel" } })
+                                            @Html.EditorFor(model => model.Alternative_Phone, new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength="15" } })
                                             @Html.ValidationMessageFor(model => model.Alternative_Phone, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -192,7 +195,20 @@
                                             <label style="font-weight:bold;">Learning Status</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Learning_Status.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.DropDownListFor(model => model.Learning_Status,
+                                                                                 new SelectList( new List<SelectListItem>{
+                                                                                 new SelectListItem{Value = "Illiterate",  Text = "He does not read and he does not write" },
+                                                                                 new SelectListItem{Value = "literate",  Text = "He reads and writes" },
+                                                                                 new SelectListItem{Value = "Elementary",  Text = "Elementary" },
+                                                                                 new SelectListItem{Value = "Intermediate",  Text = "Intermediate" },
+                                                                                 new SelectListItem{Value = "Upper Intermediate",  Text = "Upper Intermediate" },
+                                                                                 new SelectListItem{Value = "Secondary",  Text = "Secondary" },
+                                                                                 new SelectListItem{Value = "Diploma",  Text = "Diploma" },
+                                                                                 new SelectListItem{Value = "Bachelor",  Text = "Bachelor" },
+                                                                                 new SelectListItem{Value = "Master",  Text = "Master" },
+                                                                                 new SelectListItem{Value = "Doctorate",  Text = "Doctorate" },
+                                                                                 new SelectListItem{Value=Model.Learning_Status,Text="Your is "+Model.Learning_Status, Selected=true}
+                                                                                             }, "value", "text"), "Learning Status", new { @class = "form-control"})
                                             @Html.ValidationMessageFor(model => model.Learning_Status, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -200,10 +216,17 @@
 
                                     <div class="row">
                                         <div class="col-sm-3 col-md-2 col-5">
-                                            <label style="font-weight:bold;">PSocial Status</label>
+                                            <label style="font-weight:bold;">Social Status</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Social_Status.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.DropDownListFor(model => model.Social_Status,
+                                                                         new SelectList( new List<SelectListItem>{
+                                                                         new SelectListItem{Value = "Single",  Text = "Single" },
+                                                                         new SelectListItem{Value = "Married",  Text = "Married" },
+                                                                         new SelectListItem{Value = "Divorced",  Text = "Divorced" },
+                                                                         new SelectListItem{Value = "Widowed",  Text = "Widowed" },
+                                                                         new SelectListItem{Value=Model.Social_Status, Text="Your is "+Model.Social_Status,Selected=true}
+                        }                                  , "value", "text"), "Social Status", new { @class = "form-control"})
                                             @Html.ValidationMessageFor(model => model.Social_Status, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -214,7 +237,7 @@
                                             <label style="font-weight:bold;">Job</label>
                                         </div>
                                         <div class="col-md-8 col-6">
-                                            @Html.EditorFor(model => model.Job.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
+                                            @Html.EditorFor(model => model.Job, new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15" } })
                                             @Html.ValidationMessageFor(model => model.Job, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
