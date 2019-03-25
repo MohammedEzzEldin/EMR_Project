@@ -117,13 +117,43 @@ namespace GP_EMR_Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Patient_Id,Learning_Status,Social_Status,Death_Date,Alternative_Phone,Job,Reason_Death")] Patient patient)
+        public ActionResult Edit()
         {
-            if (ModelState.IsValid)
+            Patient patient = null;
+            patient = db.Patients.Find(long.Parse(Request.Form["Patient_Id"]));
+            if (patient != null)
             {
-                db.Entry(patient).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+
+                    patient.Person.First_Name = Request.Form["Person.First_Name"];
+                    patient.Person.Last_Name = Request.Form["Person.Last_Name"];
+                    patient.Person.National_Id = Request.Form["Person.National_Id"];
+                    patient.Person.Nationality = Request.Form["Person.Nationality"];
+                    patient.Person.User.City = Request.Form["Person.User.City"];
+                    patient.Person.User.Address = Request.Form["Person.User.Address"];
+                    patient.Person.Gender = Request.Form["Person.Gender"];
+                    DateTime dateTemp = Convert.ToDateTime(Request.Form["Person.Birth_Date.Day"]+"/"+ Request.Form["Person.Birth_Date.Month"]+"/"+ Request.Form["Person.Birth_Date.Year"]);
+                    patient.Person.Birth_Date = dateTemp;
+                    patient.Person.User.Email = Request.Form["[0]"]; // refer to email field
+                    patient.Person.User.Phone = Request.Form["Person.User.Phone"];
+                    patient.Alternative_Phone = Request.Form["Alternative_Phone"];
+                    patient.Learning_Status = Request.Form["Learning_Status"];
+                    patient.Social_Status = Request.Form["Social_Status"];
+                    patient.Job = Request.Form["Job"];
+                    if (Request.Form["Person.User.Password"].Split(' ')[0] == Request.Form["Confirm_Password"].Split(' ')[0])
+                    {
+                        patient.Person.User.Password = Request.Form["Person.User.Password"].Split(' ')[0];
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Confirm_Password", "Password do not Match Confirm Password, Password do not change");
+                        return View(patient);
+                    }
+                    db.Entry(patient).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             ViewBag.Patient_Id = new SelectList(db.Child_FollowUp_Form, "Patient_Id", "Feed_Type", patient.Patient_Id);
             ViewBag.Patient_Id = new SelectList(db.General_Examination, "Patient_Id", "Blood_Type", patient.Patient_Id);
