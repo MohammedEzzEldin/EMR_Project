@@ -42,7 +42,34 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Search(string Filter_by, string Search)
         {
-            return RedirectToAction("Index", "Patient");
+            if (ModelState.IsValid)
+            {
+                if (Search.Contains('@'))
+                {
+                    return View(db.Users.ToList().Where(u => u.Email.Contains(Search)));
+                }
+                else if (Filter_by.Equals("Hospitals"))
+                {
+                    return View(db.Users.ToList().Where(md => md.User_Type == 2 && md.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                }
+                else if (Filter_by.Equals("Doctors"))
+                {
+                    if (Search.Contains(' '))
+                    {
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && String.Compare(dc.Person.First_Name.Split(' ')[0] + " " + dc.Person.Last_Name.Split(' ')[0], Search, true) == 0));
+                    }
+                    else
+                    {
+                        return View(db.Users.ToList().Where(dc => dc.User_Type == 3 && dc.Person.First_Name.Contains(Search)));
+                    }
+                }
+                else
+                {
+                    return View(db.Users.ToList().Where(u => (u.User_Type == 3 && String.Compare(u.Person.First_Name.Split(' ')[0] + " " + u.Person.Last_Name.Split(' ')[0], Search, true) == 0)
+                    || (u.User_Type == 2 && u.Medical_Organization.Medical_Org_Name.Contains(Search))));
+                }
+            }
+            return RedirectToAction("Index","Patient");
         }
         // GET: Patient/Details/5
         public ActionResult Details(long? id)
@@ -51,12 +78,21 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient patient = db.Patients.Find(id);
-            if (patient == null)
+            User us = db.Users.Find(id);
+            if (us == null)
             {
                 return HttpNotFound();
             }
-            return View(patient);
+            if(us.User_Type == 3)
+            {
+                Medical_Organization med = db.Medical_Organization.Find(us.Person.Doctor.Medical_Org_Id);
+                ViewBag.Medical_Org_Name = med.Medical_Org_Name;
+                ViewBag.Medical_Org_Email = med.User.Email;
+                ViewBag.Medical_Org_Phone = med.User.Phone;
+                ViewBag.Medical_Org_City = med.User.City;
+                ViewBag.Medical_Org_Address = med.User.Address;
+            }
+            return View(us);
         }
 
         public ActionResult Manage_Account()

@@ -116,10 +116,14 @@
 
                                                      <div class="col-md-3">
                                                          <div class="stat hospitals">
-                                                             The Allergies
+                                                             <!--we seperate Allergies from each others by  (,) -->
+                                                             <h5 style="text-decoration:underline;">The Allergies</h5>
                                                              @if (Model.General_Examination.Allergies != null)
                                                              {
-                                                                 <span><a href="">@Model.General_Examination.Allergies</a></span>
+                                                                 foreach (var item in Model.General_Examination.Allergies.Split(','))
+                                                                 {
+                                                                     <h6 href="">@item</h6>
+                                                                 }
                                                              }
                                                              else
                                                              {
@@ -130,14 +134,18 @@
 
                                                      <div class="col-md-3">
                                                          <div class="stat hospitals">
-                                                             The Habits
+                                                             <!--we seperate habits from each others by (,) -->
+                                                             <h5 style="text-decoration:underline;">The Habits</h5>
                                                              @if (Model.General_Examination.Habits != null)
                                                              {
-                                                                 <span><a href="">@Model.General_Examination.Habits</a></span>
+                                                                 foreach (var item in Model.General_Examination.Habits.Split(','))
+                                                                 {
+                                                                     <h6 href="">@item</h6>
+                                                                 }
                                                              }
                                                              else
                                                              {
-                                                                <span>Empty</span>
+                                                                 <span>Empty</span>
                                                              }
                                                          </div>
                                                      </div>

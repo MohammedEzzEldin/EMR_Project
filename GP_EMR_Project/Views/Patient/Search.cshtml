@@ -1,0 +1,169 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.User>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Patient.cshtml";
+}
+<br />
+<div style="text-align:center">
+    <h3>Doctors</h3>
+    <hr />
+</div>
+@foreach (var item in Model)
+{
+    if (item.Status_Of_Account == 1)
+    {
+        //doctors
+        if (item.User_Type == 3)
+        {
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="card">
+                                <a href="@Url.Action("Details",new { id = item.User_Id})">
+                                    @{
+                                        var src = "";
+                                        try
+                                        {
+                                            src = item.Photo_Url.Split(' ')[0];
+                                        }
+                                        catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                                    }
+                                    <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" />
+                                    <h4 style="text-align:center">
+                                        <small-star-rating>
+                                            @{
+                                                var rate = item.Person.Doctor.Medium_Rate;
+                                                var fraction = item.Person.Doctor.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                                                if (rate == null || rate == 0)
+                                                {
+                                                    <div class="star"></div>
+                                                    <div class="star"></div>
+                                                    <div class="star "></div>
+                                                    <div class="star "></div>
+                                                    <div class="star"></div>
+                                                }
+                                                else
+                                                {
+                                                    for (int j = 1; j <= 5; j++)
+                                                    {
+                                                        if (j > (int)rate)
+                                                        {
+                                                            if (0.8 <= fraction)
+                                                            {
+                                                                <div class="star full"></div>
+                                                            }
+                                                            else if (0.4 <= fraction)
+                                                            {
+                                                                <div class="star Halfstar"></div>
+                                                            }
+                                                            else if (0.3 >= fraction)
+                                                            {
+                                                                <div class="star"></div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="star full"></div>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </small-star-rating>
+                                    </h4>
+                                </a>
+                                    <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+
+<hr />
+
+<div style="text-align:center">
+    <h3>Hospital</h3>
+    <hr />
+</div>
+
+@foreach (var item in Model)
+{
+    if (item.Status_Of_Account == 1)
+    {
+        // medical organizations
+        if (item.User_Type == 2)
+        {
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="card">
+                                <a href="@Url.Action("Details",new { id = item.User_Id})">
+                                    @{
+                                        var src = "";
+                                        try
+                                        {
+                                            src = item.Photo_Url.Split(' ')[0];
+                                        }
+                                        catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+                                    }
+                                    <img class="hospital" src="@Url.Content(src)" alt="hospital" />
+                                    <h4 style="text-align:center">
+                                        <small-star-rating>
+                                            @{
+                                                var rate = item.Medical_Organization.Medium_Rate;
+                                                var fraction = item.Medical_Organization.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                                                if (rate == null || rate == 0)
+                                                {
+                                                    <div class="star"></div>
+                                                    <div class="star"></div>
+                                                    <div class="star "></div>
+                                                    <div class="star "></div>
+                                                    <div class="star"></div>
+                                                }
+                                                else
+                                                {
+                                                    for (int j = 1; j <= 5; j++)
+                                                    {
+                                                        if (j > (int)rate)
+                                                        {
+                                                            if (0.8 <= fraction)
+                                                            {
+                                                                <div class="star full"></div>
+                                                            }
+                                                            else if (0.4 <= fraction)
+                                                            {
+                                                                <div class="star Halfstar"></div>
+                                                            }
+                                                            else if (0.3 >= fraction)
+                                                            {
+                                                                <div class="star"></div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="star full"></div>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </small-star-rating>
+                                    </h4>
+                                </a>
+                                <div class="card-body "><h3>@item.Medical_Organization.Medical_Org_Name</h3></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+<hr />
+
+

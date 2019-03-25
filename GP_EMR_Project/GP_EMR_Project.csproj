@@ -352,6 +352,7 @@
     <Content Include="Views\Patient\Operations.cshtml" />
     <Content Include="Views\Patient\Laboratories_Radiology.cshtml" />
     <Content Include="Views\Patient\Child_Followup.cshtml" />
+    <Content Include="Views\Patient\Search.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -1,91 +1,300 @@
-﻿@model GP_EMR_Project.Models.Patient
+﻿@model GP_EMR_Project.Models.User
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Patient.cshtml";
 }
 
-<h2>Details</h2>
+<br />
 
-<div>
-    <h4>Patient</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Learning_Status)
-        </dt>
+<h2 style="text-align:center; font-style:italic;">Details</h2>
+<hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.Learning_Status)
-        </dd>
+@if (Model.User_Type == 3)
+{
+    <div>
+        <div style=" text-align:center">
+            @{
+                var src = "";
+                try
+                {
+                    src = Model.Photo_Url.Split(' ')[0];
+                }
+                catch (Exception ex)
+                {
+                    src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+                }
+            }
+            <img src="@Url.Content(src)" alt="Hospital img" class="mg-thumbnail im" style="border-radius:50%" />
+            <br />
+            <small-star-rating>
+                @{
+                    var rate = Model.Person.Doctor.Medium_Rate;
+                    var fraction = Model.Person.Doctor.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                    if (rate == null || rate == 0)
+                    {
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star "></div>
+                        <div class="star "></div>
+                        <div class="star"></div>
+                    }
+                    else
+                    {
+                        for (int j = 1; j <= 5; j++)
+                        {
+                            if (j > (int)rate)
+                            {
+                                if (0.8 <= fraction)
+                                {
+                                    <div class="star full"></div>
+                                }
+                                else if (0.4 <= fraction)
+                                {
+                                    <div class="star Halfstar"></div>
+                                }
+                                else if (0.3 >= fraction)
+                                {
+                                    <div class="star"></div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="star full"></div>
+                            }
+                        }
+                    }
+                }
+            </small-star-rating>
+        </div>
+        <table class="table table-bordered table-hover">
+            <tr style="text-align:center">
+                <th>Email</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>Type</th>
+            </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Social_Status)
-        </dt>
+            <tr style="text-align:center; color:blue">
+                <td>
+                    @Html.DisplayFor(model => model.Email)
+                </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.Social_Status)
-        </dd>
+                <td>
+                    @Html.DisplayFor(model => model.Person.First_Name) &nbsp; @Html.DisplayFor(model => model.Person.Last_Name)
+                </td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Death_Date)
-        </dt>
+                <td>
+                    @Html.DisplayFor(model => model.Person.Gender)
+                </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.Death_Date)
-        </dd>
+                <td>
+                    @Html.DisplayFor(model => model.Person.Nationality)
+                </td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Alternative_Phone)
-        </dt>
+                <td>Doctor</td>
+            </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Alternative_Phone)
-        </dd>
+            <br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Job)
-        </dt>
+            <tr style="text-align:center">
+                <th>Medical Organization</th>
+                <th>Organization Email</th>
+                <th>Organization Phone</th>
+                <th>Organization City</th>
+                <th>Organization Address</th>
+            </tr>
+            
+            <tr style="text-align:center; color:blue">
+                @if (Model.Person.Doctor.Medical_Org_Id == 0)
+                {
+                    <td>Empty</td>
+                    <td>Empty</td>
+                    <td>Empty</td>
+                    <td>Empty</td>
+                    <td>Empty</td>
+                }
+                else
+                {
+                    GP_EMR_Project.Models.Medical_Organization med = (GP_EMR_Project.Models.Medical_Organization)ViewBag.Medical_Org;
 
-        <dd>
-            @Html.DisplayFor(model => model.Job)
-        </dd>
+                    <td>@ViewBag.Medical_Org_Name</td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Reason_Death)
-        </dt>
+                    <td>@ViewBag.Medical_Org_Email</td>
 
-        <dd>
-            @Html.DisplayFor(model => model.Reason_Death)
-        </dd>
+                    <td>@ViewBag.Medical_Org_Phone</td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Child_FollowUp_Form.Feed_Type)
-        </dt>
+                    <td>@ViewBag.Medical_Org_City</td>
 
-        <dd>
-            @Html.DisplayFor(model => model.Child_FollowUp_Form.Feed_Type)
-        </dd>
+                    <td>@ViewBag.Medical_Org_Address</td>
+                }
+            </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.General_Examination.Blood_Type)
-        </dt>
+                <tr style="text-align:center;">
+                    <th>
+                        Acadimic Degree
+                    </th>
+                    <th>
+                        Acadimic Degree
+                    </th>
 
-        <dd>
-            @Html.DisplayFor(model => model.General_Examination.Blood_Type)
-        </dd>
+                    <th>
+                        Functional Degree
+                    </th>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Person.First_Name)
-        </dt>
+                    <th>
+                        Spacialization
+                    </th>
 
-        <dd>
-            @Html.DisplayFor(model => model.Person.First_Name)
-        </dd>
+                    <th>
+                        Department
+                    </th>
+                </tr>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Patient_Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                <tr style="text-align:center; color:blue">
+                    <td>
+                        @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Person.Doctor.Functional_Degree)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Person.Doctor.Spacialization)
+                    </td>
+
+                    @if (Model.Person.Doctor.Department == null)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Model.Person.Doctor.Department.Department_Name
+                        </td>
+                    }
+                </tr>
+
+            <tr style="text-align:center">
+                <td></td>
+                <td></td>
+                <td><a href="#" class="btn btn-outline-danger">Book</a></td>
+                <td></td>
+                <td></td>
+            </tr>
+            }
+
+        </table>
+    </div>
+}
+
+else if(Model.User_Type == 2)
+{
+    <div style=" text-align:center">
+        @{
+            var src = "";
+            try
+            {
+                src = Model.Photo_Url.Split(' ')[0];
+            }
+            catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
+        }
+        <img src="@Url.Content(src)" class="img-thumbnail im" alt="Hospital img" style="border-radius:50%;" />
+        <br />
+        <small-star-rating>
+            @{
+                var rate = Model.Medical_Organization.Medium_Rate;
+                var fraction = Model.Medical_Organization.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                if (rate == null || rate == 0)
+                {
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star "></div>
+                    <div class="star "></div>
+                    <div class="star"></div>
+                }
+                else
+                {
+                    for (int j = 1; j <= 5; j++)
+                    {
+                        if (j > (int)rate)
+                        {
+                            if (0.8 <= fraction)
+                            {
+                                <div class="star full"></div>
+                            }
+                            else if (0.4 <= fraction)
+                            {
+                                <div class="star Halfstar"></div>
+                            }
+                            else if (0.3 >= fraction)
+                            {
+                                <div class="star"></div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="star full"></div>
+                        }
+                    }
+                }
+            }
+        </small-star-rating>
+    </div>
+    <br />
+
+    <table class="table table-hover table-bordered" style="text-align:center;">
+
+        <tr style="text-align:center">
+            <th>Email</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>City</th>
+            <th>Address</th>
+        </tr>
+
+        <tr style="text-align:center; color:blue">
+            <td>@Html.DisplayFor(model => model.Email)</td>
+            <td>@Html.DisplayFor(model => model.Medical_Organization.Medical_Org_Name)</td>
+            <td>@Html.DisplayFor(model => model.Phone)</td>
+            <td>@Html.DisplayFor(model => model.City)</td>
+            <td>@Html.DisplayFor(model => model.Address)</td>       
+        </tr>
+
+        <tr style="text-align:center;">
+            <th></th>
+            <th></th>
+            <th>
+                Number of Departments
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        <tr style="text-align:center; color:blue">
+            <td></td>
+            <td></td>
+            <td>@Model.Medical_Organization.Departments.Count()</td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr style="text-align:center;">
+            <td></td>
+            <td></td>
+            <td><a href="#" class="btn btn-outline-danger">Go To Book</a></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+}
+<br />
+
+
+
