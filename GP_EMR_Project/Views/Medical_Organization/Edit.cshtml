@@ -1,50 +1,160 @@
 ﻿@model GP_EMR_Project.Models.Medical_Organization
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Manage_Account";
     Layout = "~/Views/Shared/_Medical_Organization.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="container u" style="margin-left :10%">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+                    @using (Html.BeginForm("Upload_Photo", "Medical_Organization", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken();
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Medical_Org_Id)
+                        <div class="card-title ">
+                            <div class="d-flex justify-content-start">
+                                <div class="image-container">
+                                    @{
+                                        var src = "";
+                                        try
+                                        {
+                                            src = Model.User.Photo_Url.Split(' ')[0];
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+                                        }
+                                    }
+                                    <img src="@Url.Content(src)" id="imgProfile" class="img-thumbnail im" style="border-radius:50%;" />
+                                    <div class="middle">
+                                        <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
+                                        @Html.TextBox("file", "", new { type = "file", id = "profilePicture", style = "display: none;", name = "file" })
+                                        <input type="submit" class="btn btn-secondary d-done" id="Confirm" value="Confirm Changes" hidden />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!--seprate between form and profile picture-->
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <div class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Information</div>
+                            </li>
+
+                        </ul>
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Medical_Org_Id)
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    <label style="font-weight:bold">Medical Organization Name</label>
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.EditorFor(model => model.Medical_Org_Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Full Name", maxlength="100" } })
+                                    @Html.ValidationMessageFor(model => model.Medical_Org_Name, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    @Html.LabelFor(model => model.User.Email, htmlAttributes: new { @style = "font-weight:bold" })
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.EditorFor(model => model.User.Email.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Email", maxlength="200" } })
+                                    @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    @Html.LabelFor(model => model.User.Phone, htmlAttributes: new { @style = "font-weight:bold" })
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.EditorFor(model => model.User.Phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Phone", maxlength="15" } })
+                                    @Html.ValidationMessageFor(model => model.User.Phone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    @Html.LabelFor(model => model.User.City, htmlAttributes: new { @style = "font-weight:bold" })
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.EditorFor(model => model.User.City, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Address", maxlength="20" } })
+                                    @Html.ValidationMessageFor(model => model.User.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    @Html.LabelFor(model => model.User.Address, htmlAttributes: new { @style = "font-weight:bold" })
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.EditorFor(model => model.User.Address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Address", maxlength="200" } })
+                                    @Html.ValidationMessageFor(model => model.User.Address, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    @Html.LabelFor(model => model.User.Password, htmlAttributes: new { @style = "font-weight:bold" })
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.EditorFor(model => model.User.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Password",type="password", maxlength = "15" } })
+                                    @Html.ValidationMessageFor(model => model.User.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row" style="margin-left:20px">
+                                <div class="col-sm-3 col-md-2 col-5">
+                                    @Html.Label("Confirm Password", htmlAttributes: new { @style = "font-weight:bold" })
+                                </div>
+                                <div class="col-md-8 col-6">
+                                    @Html.Editor("Confirm_Password", new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter The Password",type="password", maxlength = "15" } })
+                                    @Html.ValidationMessage("Confirm_Password", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-12" style="margin-left:30%">
+                                    <button type="submit" class="btn btn-primary btn-lg ">Save</button>
+                                </div>
+                            </div>
+                        }
+                        <br />
+                        <br />
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Medical_Organization</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Medical_Org_Id)
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Medical_Org_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Medical_Org_Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Medical_Org_Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Medium_Rate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Medium_Rate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Medium_Rate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+<br />
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -22,7 +22,7 @@ namespace GP_EMR_Project.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            else if(user.User_Type != 2)
+            else if (user.User_Type != 2)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -89,16 +89,33 @@ namespace GP_EMR_Project.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Medical_Org_Id,Medical_Org_Name,Medium_Rate")] Medical_Organization medical_Organization)
+        public ActionResult Edit()
         {
-            if (ModelState.IsValid)
+            Medical_Organization medical_Organization = db.Medical_Organization.Find((long)Int64.Parse(Request.Form["Medical_Org_Id"]));
+            if (medical_Organization == null)
             {
+                ModelState.AddModelError("", "Something Wrong is occured");
+                return View(medical_Organization);
+            }
+              if (ModelState.IsValid)
+            {
+                medical_Organization.Medical_Org_Name = Request.Form["Medical_Org_Name"];
+                medical_Organization.User.Email = Request.Form["[0]"]; // [0] refer to email feild in input tag
+                medical_Organization.User.Phone = Request.Form["User.Phone"];
+                medical_Organization.User.City = Request.Form["User.City"];
+                medical_Organization.User.Address = Request.Form["User.Address"];
+                if(Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
+                {
+                    medical_Organization.User.Password = Request.Form["User.Password"];
+                }
+                else
+                {
+                    ModelState.AddModelError("Confirm_Password", "Password do not match Confirm Password Feild");
+                }
                 db.Entry(medical_Organization).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Medical_Org_Id = new SelectList(db.Users, "User_Id", "Email", medical_Organization.Medical_Org_Id);
             return View(medical_Organization);
         }
 
@@ -137,14 +154,14 @@ namespace GP_EMR_Project.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Search(string Filter_by,string Search)
+        public ActionResult Search(string Filter_by, string Search)
         {
             return RedirectToAction("Index");
         }
 
         public ActionResult Manage_Account()
         {
-            return View();
+            return RedirectToAction("Edit", new { id = ((User)Session["UserID"]).User_Id });
         }
 
         public ActionResult Manage_Doctors()
@@ -168,5 +185,40 @@ namespace GP_EMR_Project.Controllers
         {
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult Upload_Photo(HttpPostedFileBase file)
+        {
+            User u = db.Users.Find((long)Int64.Parse(Request.Form["Medical_Org_Id"]));
+
+            if (ModelState.IsValid)
+            {
+                if (file == null)
+                {
+                    return RedirectToAction("Manage_Account", "Medical_Organization");
+                }
+
+                if (u != null)
+                {
+                    if (file.FileName != null)
+                    {
+                        if (u.User_Type == 2)
+                        {
+                            file.SaveAs(Server.MapPath("~/Content/Med_Photo/") + u.User_Id + ".jpg");
+                            u.Photo_Url = "~/Content/Med_Photo/" + u.User_Id + ".jpg";
+                        }
+                        db.Entry(u).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("User_Id", "User Not Exist");
+                }
+                return RedirectToAction("Manage_Account");
+            }
+            return RedirectToAction("Manage_Account");
+        }
+
     }
 }

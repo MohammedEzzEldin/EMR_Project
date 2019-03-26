@@ -10,78 +10,93 @@
 <br />
 <br />
 <br />
+@{
+    var src = "";
+    try
+    {
+        src = Model.Photo_Url.Split(' ')[0];
+    }
+    catch (Exception ex)
+    {
+        src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+    }
+}
+<div style="text-align:center">
+    <img src="@Url.Content(src)" class="img-thumbnail im" style="border-radius:50%; text-align:center" />
 
-<img src="@Url.Content(Model.Photo_Url)" width="300" height="300" style="border-radius:50%;display: block;margin-left: auto;margin-right: auto;border:2px solid #000000" />
-
-<center>
-    <small-star-rating>
-        @{
-            var rate = Model.Medical_Organization.Medium_Rate;
-            var fraction = Model.Medical_Organization.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
-            if (rate == null || rate == 0)
-            {
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star "></div>
-                <div class="star "></div>
-                <div class="star"></div>
-            }
-            else
-            {
-                for (int j = 1; j <= 5; j++)
+    <center>
+        <small-star-rating>
+            @{
+                var rate = Model.Medical_Organization.Medium_Rate;
+                var fraction = Model.Medical_Organization.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                if (rate == null || rate == 0)
                 {
-                    if (j > (int)rate)
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star "></div>
+                    <div class="star "></div>
+                    <div class="star"></div>
+                }
+                else
+                {
+                    for (int j = 1; j <= 5; j++)
                     {
-                        if (0.8 <= fraction)
+                        if (j > (int)rate)
+                        {
+                            if (0.8 <= fraction)
+                            {
+                                <div class="star full"></div>
+                            }
+                            else if (0.4 <= fraction)
+                            {
+                                <div class="star Halfstar"></div>
+                            }
+                            else if (0.3 >= fraction)
+                            {
+                                <div class="star"></div>
+                            }
+                        }
+                        else
                         {
                             <div class="star full"></div>
                         }
-                        else if (0.4 <= fraction)
-                        {
-                            <div class="star Halfstar"></div>
-                        }
-                        else if (0.3 >= fraction)
-                        {
-                            <div class="star"></div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="star full"></div>
                     }
                 }
             }
-        }
-    </small-star-rating>
-</center>
-<div class="u">
-    <div class="container stats text-center">
-        <h1>@Model.Medical_Organization.Medical_Org_Name</h1> <br />
-        <div class="row">
+        </small-star-rating>
+    </center>
+    <div class="u">
+        <div class="container stats text-center">
+            <h1>@Model.Medical_Organization.Medical_Org_Name</h1> <br />
+            <div class="row">
 
-            <div class="col-md-6">
-                <div class="stat members">
-                    Departments
-                    <span><a href="">@Model.Medical_Organization.Departments.Count()</a></span>
+                <div class="col-md-6">
+                    <div class="stat members">
+                        Departments
+                        <span><a href="">@Model.Medical_Organization.Departments.Count()</a></span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="stat hospitals">
-                    Doctors
-                    <span><a href="">@{
-                        IEnumerable<GP_EMR_Project.Models.Doctor> list = new List<GP_EMR_Project.Models.Doctor>();
+                <div class="col-md-6">
+                    <div class="stat hospitals">
+                        Doctors
+                        <span>
+                            <a href="">
+                                @{
+                                    IEnumerable<GP_EMR_Project.Models.Doctor> list = new List<GP_EMR_Project.Models.Doctor>();
 
-                        list = list.Where(dc => dc.Medical_Org_Id == Model.User_Id );
+                                    list = list.Where(dc => dc.Medical_Org_Id == Model.User_Id);
 
-                    }
-                        @list.Count()</a></span>
+                                }
+                                @list.Count()
+                            </a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <br />
 <br />
 <br />
