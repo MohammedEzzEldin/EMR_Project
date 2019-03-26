@@ -391,5 +391,38 @@ namespace GP_EMR_Project.Controllers
             return View(user);
         }
 
+        public ActionResult Details_Of_Doctor(long? id)
+        {
+            if(id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Doctor dc = db.Doctors.Find(id);
+            if(dc == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Medical_Organization med = db.Medical_Organization.Find(dc.Medical_Org_Id);
+            ViewBag.Medical_Org_Name = med.Medical_Org_Name;
+            ViewBag.Medical_Org_Email = med.User.Email;
+            ViewBag.Medical_Org_Phone = med.User.Phone;
+            ViewBag.Medical_Org_City = med.User.City;
+            ViewBag.Medical_Org_Address = med.User.Address;
+            return View(dc);
+        }
+
+        public ActionResult Details_Of_Hospital(long? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+            Medical_Organization org = db.Medical_Organization.Find(id);
+            if (org == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(org);
+        }
     }
 }

@@ -181,13 +181,23 @@
                     }
                 </tr>
 
-            <tr style="text-align:center">
-                <td></td>
-                <td></td>
-                <td><a href="#" class="btn btn-outline-danger">Book</a></td>
-                <td></td>
-                <td></td>
-            </tr>
+                <tr style="text-align:center;color:red">
+                    <th>The Schedule  =></th>
+                    @foreach (var item in Model.Person.Doctor.Doctor_Schedule.Where(dc => dc.doctor_id == Model.User_Id))
+                    {
+                        <td style="color:green">@item.day</td>
+                    }
+                </tr>
+
+
+                <tr style="text-align:center">
+                    <td></td>
+                    <td></td>
+                    <td><a href="#" class="btn btn-outline-danger">Book</a></td>
+                    <td><a href="#" class="btn btn-outline-danger">Rate</a></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             }
 
         </table>
@@ -288,7 +298,10 @@ else if(Model.User_Type == 2)
         <tr style="text-align:center;">
             <td></td>
             <td></td>
-            <td><a href="#" class="btn btn-outline-danger">Go To Book</a></td>
+            <td>
+                <a href="#" class="btn btn-outline-danger">Go To Book</a>
+                <a href="#" class="btn btn-outline-danger">Rate</a>
+            </td>
             <td></td>
             <td></td>
         </tr>

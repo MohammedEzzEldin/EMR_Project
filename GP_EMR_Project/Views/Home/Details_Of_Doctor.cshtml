@@ -1,0 +1,193 @@
+﻿@model GP_EMR_Project.Models.Doctor
+
+@{
+    ViewBag.Title = "Details_Of_Doctor";
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+<br />
+
+<h2 style="text-align:center; font-style:italic;">Details</h2>
+<hr />
+
+<div>
+    <div style=" text-align:center">
+        @{
+            var src = "";
+            try
+            {
+                src = Model.Person.User.Photo_Url.Split(' ')[0];
+            }
+            catch (Exception ex)
+            {
+                src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+            }
+        }
+        <img src="@Url.Content(src)" alt="Doctor img" class="mg-thumbnail im" style="border-radius:50%; height:200px; width:200px" />
+        <br />
+        <small-star-rating>
+            @{
+                var rate = Model.Medium_Rate;
+                var fraction = Model.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                if (rate == null || rate == 0)
+                {
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star "></div>
+                    <div class="star "></div>
+                    <div class="star"></div>
+                }
+                else
+                {
+                    for (int j = 1; j <= 5; j++)
+                    {
+                        if (j > (int)rate)
+                        {
+                            if (0.8 <= fraction)
+                            {
+                                <div class="star full"></div>
+                            }
+                            else if (0.4 <= fraction)
+                            {
+                                <div class="star Halfstar"></div>
+                            }
+                            else if (0.3 >= fraction)
+                            {
+                                <div class="star"></div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="star full"></div>
+                        }
+                    }
+                }
+            }
+        </small-star-rating>
+    </div>
+    <table class="table table-bordered table-hover">
+        <tr style="text-align:center">
+            <th>Email</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Nationality</th>
+            <th>Type</th>
+        </tr>
+
+        <tr style="text-align:center; color:blue">
+            <td>
+                @Html.DisplayFor(model => model.Person.User.Email)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.First_Name) &nbsp; @Html.DisplayFor(model => model.Person.Last_Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.Gender)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Person.Nationality)
+            </td>
+
+            <td>Doctor</td>
+        </tr>
+
+        <br />
+
+        <tr style="text-align:center">
+            <th>Medical Organization</th>
+            <th>Organization Email</th>
+            <th>Organization Phone</th>
+            <th>Organization City</th>
+            <th>Organization Address</th>
+        </tr>
+
+        <tr style="text-align:center; color:blue">
+            @if (Model.Medical_Org_Id == 0)
+            {
+                <td>Empty</td>
+                <td>Empty</td>
+                <td>Empty</td>
+                <td>Empty</td>
+                <td>Empty</td>
+            }
+            else
+            {
+                GP_EMR_Project.Models.Medical_Organization med = (GP_EMR_Project.Models.Medical_Organization)ViewBag.Medical_Org;
+
+                <td>@ViewBag.Medical_Org_Name</td>
+
+                <td>@ViewBag.Medical_Org_Email</td>
+
+                <td>@ViewBag.Medical_Org_Phone</td>
+
+                <td>@ViewBag.Medical_Org_City</td>
+
+                <td>@ViewBag.Medical_Org_Address</td>
+            }
+        </tr>
+
+        <tr style="text-align:center;">
+            <th>
+                Acadimic Degree
+            </th>
+            <th>
+                Acadimic Degree
+            </th>
+
+            <th>
+                Functional Degree
+            </th>
+
+            <th>
+                Spacialization
+            </th>
+
+            <th>
+                Department
+            </th>
+        </tr>
+
+        <tr style="text-align:center; color:blue">
+            <td>
+                @Html.DisplayFor(model => model.Acadimic_Degree)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Acadimic_Degree)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Functional_Degree)
+            </td>
+
+            <td>
+                @Html.DisplayFor(model => model.Spacialization)
+            </td>
+
+            @if (Model.Department == null)
+            {
+                <td></td>
+            }
+            else
+            {
+                <td>
+                    @Model.Department.Department_Name
+                </td>
+            }
+        </tr>
+
+        <tr style="text-align:center">
+            <td></td>
+            <td></td>
+            <td><a href="@Url.Action("Login","Home")" class="btn btn-outline-danger">Book</a></td>
+            <td></td>
+            <td></td>
+        </tr>
+        }
+
+    </table>
+</div>
+<br />

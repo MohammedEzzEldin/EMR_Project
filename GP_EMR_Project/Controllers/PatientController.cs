@@ -83,16 +83,20 @@ namespace GP_EMR_Project.Controllers
             {
                 return HttpNotFound();
             }
-            if(us.User_Type == 3)
+            if(us.Status_Of_Account == 1)
             {
-                Medical_Organization med = db.Medical_Organization.Find(us.Person.Doctor.Medical_Org_Id);
-                ViewBag.Medical_Org_Name = med.Medical_Org_Name;
-                ViewBag.Medical_Org_Email = med.User.Email;
-                ViewBag.Medical_Org_Phone = med.User.Phone;
-                ViewBag.Medical_Org_City = med.User.City;
-                ViewBag.Medical_Org_Address = med.User.Address;
+                if (us.User_Type == 3)
+                {
+                    Medical_Organization med = db.Medical_Organization.Find(us.Person.Doctor.Medical_Org_Id);
+                    ViewBag.Medical_Org_Name = med.Medical_Org_Name;
+                    ViewBag.Medical_Org_Email = med.User.Email;
+                    ViewBag.Medical_Org_Phone = med.User.Phone;
+                    ViewBag.Medical_Org_City = med.User.City;
+                    ViewBag.Medical_Org_Address = med.User.Address;
+                }
+                return View(us);
             }
-            return View(us);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Manage_Account()
@@ -299,6 +303,11 @@ namespace GP_EMR_Project.Controllers
                 return RedirectToAction("Manage_Account");
             }
             return RedirectToAction("Manage_Account");
+        }
+
+        public ActionResult Book(object obj)
+        {
+            return null;
         }
 
     }
