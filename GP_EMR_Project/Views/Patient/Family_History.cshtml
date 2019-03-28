@@ -1,10 +1,29 @@
-﻿@model GP_EMR_Project.Models.Family_History
+﻿@model IEnumerable<GP_EMR_Project.Models.Family_History>
 
 @{
     ViewBag.Title = "Family_History";
     Layout = "~/Views/Shared/_Patient.cshtml";
 }
-
-<div style="text-align:center">
-    <h2>Family History</h2>
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey">Family History</h3>
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered text-center">
+                <tr>
+                    <th>Disease name</th>
+                    <th>Disease Type</th>
+                </tr>
+                <tr>
+                    @foreach (var item in Model)
+                    {
+                        <td>@item.Disease_Name</td>
+                        <td>@item.Disease_Type</td>
+                    }
+                </tr>
+               
+            </table>
+            <br />
+        </div>
+    </div>
 </div>

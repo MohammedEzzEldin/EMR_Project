@@ -236,9 +236,19 @@ namespace GP_EMR_Project.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Family_History()
+        public ActionResult Family_History(long? id)
         {
-            return View();
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id); 
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id);
+            return View(fm.ToList());
         }
 
         public ActionResult Your_Diseases()

@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.theme.default.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/StarRating.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/UserProfile.css" />
-    <link rel="stylesheet"href="~/Content/MainPageBootstrap/css/AdminDashbord.css" />
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/AdminDashbord.css" />
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/manage hospital account.css" />
 </head>
 
 <body>
@@ -105,7 +106,7 @@
                                 Medical Record
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @Html.ActionLink("Family History", "Family_History", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Family History", "Family_History", "Patient", new { id = ((GP_EMR_Project.Models.User) Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Your Diseases", "Your_Diseases", "Patient", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Medical Examinations", "Examinations", "Patient", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Medical Reviews", "Reviews", "Patient", null, new { @class = "dropdown-item" })
