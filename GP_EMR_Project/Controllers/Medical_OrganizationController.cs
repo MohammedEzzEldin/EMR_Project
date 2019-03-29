@@ -97,20 +97,22 @@ namespace GP_EMR_Project.Controllers
                 ModelState.AddModelError("", "Something Wrong is occured");
                 return View(medical_Organization);
             }
-              if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 medical_Organization.Medical_Org_Name = Request.Form["Medical_Org_Name"];
                 medical_Organization.User.Email = Request.Form["[0]"]; // [0] refer to email feild in input tag
                 medical_Organization.User.Phone = Request.Form["User.Phone"];
                 medical_Organization.User.City = Request.Form["User.City"];
                 medical_Organization.User.Address = Request.Form["User.Address"];
-                if(Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
+                if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
                 {
                     medical_Organization.User.Password = Request.Form["User.Password"];
+                    return View(medical_Organization);
                 }
                 else
                 {
                     ModelState.AddModelError("Confirm_Password", "Password do not match Confirm Password Feild");
+                    return View(medical_Organization);
                 }
                 db.Entry(medical_Organization).State = EntityState.Modified;
                 db.SaveChanges();
@@ -171,19 +173,39 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Manage_Department()
         {
-            return View();
+            User user = (User)Session["UserID"];
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (user.User_Type != 2)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            Medical_Organization medical_Organization = db.Medical_Organization.Find(user.User_Id);
+            var id = (long)user.User_Id;
+            ViewData["medical_org_id"] = id;
+            return View(medical_Organization.Departments);
         }
 
         [HttpGet]
-        public ActionResult Add_New_Department()
+        public ActionResult Add_New_Department(long? id)
         {
+            ViewData["medical_org_id"] = id;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Add_New_Department(Department dep)
+        [ValidateAntiForgeryToken]
+        public ActionResult Add_New_Department([Bind(Include = "Department_Id,Department_Name,Medical_Org_Id")]Department dep)
         {
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                db.Departments.Add(dep);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(dep);
         }
 
         [HttpPost]

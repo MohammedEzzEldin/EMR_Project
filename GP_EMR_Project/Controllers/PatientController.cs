@@ -247,10 +247,26 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
+            ViewBag.Patient_Id = pt.Patient_Id;
             var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id);
             return View(fm.ToList());
         }
 
+        [HttpPost]
+        public ActionResult Search_In_Family_History(string DiseaseName)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Name, DiseaseName, true) == 0);
+            return View("Family_History",fm.ToList());
+        }
         public ActionResult Your_Diseases()
         {
             return View();

@@ -1,4 +1,4 @@
-﻿@model GP_EMR_Project.Models.Department
+﻿@model IEnumerable<GP_EMR_Project.Models.Department>
 
 @{
     ViewBag.Title = "Manage_Department";
@@ -7,6 +7,12 @@
 
 <div class="contentt">
     <h3 class="text-center">Manage Department</h3>
+    @{
+        var id = (long)ViewData["medical_org_id"];
+    }
+    <p>
+        <a href="@Url.Action("Add_New_Department","Medical_Organization",new { id=id})" class="btn btn-dark e"><i class="fa fa-plus"></i>Add New Department</a>
+    </p>
     <div class="container">
         <div class="table-responsive">
             <table class=" main-table table table-bordered text-center">
@@ -14,58 +20,21 @@
                     <th>Department name</th>
                     <th>Control Department</th>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-success">Edit</a>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-success">Edit</a>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-success">Edit</a>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-success">Edit</a>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-success">Edit</a>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-success">Edit</a>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Department_Name)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "#", new { id = item.Department_Id }, new { @class = "btn btn-secondary" }) |
+                            @Html.ActionLink("Delete", "#", new { id = item.Department_Id }, new { @class = "btn btn-danger" })
+                        </td>
+                    </tr>
+                }
             </table>
         </div>
-        <a href="#" class="btn btn-dark e"><i class="fa fa-plus"></i>Add New Department</a>
+
     </div>
 </div>
+
 
 
