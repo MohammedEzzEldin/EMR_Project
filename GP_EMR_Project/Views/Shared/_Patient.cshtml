@@ -107,12 +107,12 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 @Html.ActionLink("Family History", "Family_History", "Patient", new { id = ((GP_EMR_Project.Models.User) Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Your Diseases", "Your_Diseases", "Patient", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Medical Examinations", "Examinations", "Patient", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Medical Reviews", "Reviews", "Patient", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Operations", "Operations", "Patient", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Laboratories & radiology", "Laboratories_Radiology", "Patient", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("Child Followup Form", "Child_Followup", "Patient", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Your Diseases", "Your_Diseases", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Medical Examinations", "Examinations", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Medical Reviews", "Reviews", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Operations", "Operations", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Laboratories & radiology", "Laboratories_Radiology", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Child Followup Form", "Child_Followup", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "dropdown-item" })
                             </div>
                         </li>
 

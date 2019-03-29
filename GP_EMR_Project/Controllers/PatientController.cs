@@ -15,6 +15,7 @@ namespace GP_EMR_Project.Controllers
     {
         private EMR_GP_DBEntities db = new EMR_GP_DBEntities();
 
+
         // GET: Patient
         public ActionResult Index(long?id)
         {
@@ -248,12 +249,13 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             ViewBag.Patient_Id = pt.Patient_Id;
-            var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id);
+            List<SelectListItem> DiseaseTypes = new List<SelectListItem>();
+            var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id);     
             return View(fm.ToList());
         }
 
         [HttpPost]
-        public ActionResult Search_In_Family_History(string DiseaseName)
+        public ActionResult Search_In_Family_History(string Search)
         {
             if (Request.Form["Patient_Id"] == null)
             {
@@ -264,17 +266,209 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Name, DiseaseName, true) == 0);
+            IQueryable<Family_History> fm = db.Family_History;
+            if (Request.Form["Search_By"] == "Name")
+            {
+                fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Name, Search, true) == 0);
+            }
+            else if (Request.Form["Search_By"] == "Type")
+            {
+                fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Type, Search, true) == 0);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
             return View("Family_History",fm.ToList());
         }
-        public ActionResult Your_Diseases()
+
+        [HttpPost]
+        public ActionResult Search_In_Your_Disease(string Search)
         {
-            return View();
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            IQueryable<Disease> ds = db.Diseases; 
+            if (Request.Form["Search_By"] == "Name")
+            {
+                ds = db.Diseases.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Name, Search, true) == 0);
+            }
+            else if(Request.Form["Search_By"] == "Type")
+            {
+                ds = db.Diseases.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Type, Search, true) == 0);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            return View("Your_Diseases", ds.ToList());
         }
 
-        public ActionResult Examinations()
+        [HttpPost]
+        public ActionResult Search_In_Medical_Examinations(string Search)
         {
-            return View();
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IQueryable<Disease> ds = db.Diseases.Where(d => d.Patient_Id == pt.Patient_Id);
+            switch(Request.Form["Search_By"])
+            {
+                case "Hospital":
+                        return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && ex.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                case "Doctor":
+                    if(Search.Split(' ').Length > 1)
+                    {
+                        return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && (ex.Doctor.Person.First_Name+ex.Doctor.Person.Last_Name).Contains(Search)));
+                    }
+                    else{
+                        return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && String.Compare(ex.Doctor.Person.First_Name , Search, true) == 0));
+                    }
+                case "Diagnosis":
+                    return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && ex.exm_description_result.Contains(Search)));
+                case "Treatments":
+                    return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && ex.exm_midicine.Contains(Search)));
+                default:
+                    break;
+            }
+            return View("Examinations", ds.ToList());
+        }
+        public ActionResult Your_Diseases(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            var ds = db.Diseases.Where(f => f.Patient_Id == pt.Patient_Id);
+            return View(ds.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Order_By_Family_History()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            switch (Request.Form["Order_By"])
+            {
+                case "Desc_Disease":
+                    return View("Family_History",db.Family_History.ToList().Where(f =>f.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(f => f.Disease_Name));
+
+                case "Desc_Type":
+                    return View("Family_History", db.Family_History.ToList().Where(f => f.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(f => f.Disease_Type));
+                   
+                case "Asc_Disease":
+                    return View("Family_History", db.Family_History.ToList().Where(f => f.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(f => f.Disease_Name));
+
+                case "Asc_Type":
+                    return View("Family_History", db.Family_History.ToList().Where(f => f.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(f => f.Disease_Type));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Family_History");
+        }
+
+        [HttpPost]
+        public ActionResult Order_By_Your_Disease()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            switch (Request.Form["Order_By"])
+            {
+                case "Desc_Disease":
+                    return View("Your_Diseases", db.Diseases.ToList().Where(d => d.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(d => d.Disease_Name));
+
+                case "Desc_Type":
+                    return View("Your_Diseases", db.Diseases.ToList().Where(d => d.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(d => d.Disease_Type));
+
+                case "Asc_Disease":
+                    return View("Your_Diseases", db.Diseases.ToList().Where(d => d.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(d => d.Disease_Name));
+
+                case "Asc_Type":
+                    return View("Your_Diseases", db.Diseases.ToList().Where(d => d.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(d => d.Disease_Type));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Your_Diseases");
+        }
+        [HttpPost]
+        public ActionResult Filter_Family_History()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            string str = Request["Filter"]; // for solve NotSupport Exception
+            var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && String.Compare(f.Disease_Type, str, true) == 0);
+             return View("Family_History", fm.ToList());
+        }
+        [HttpPost]
+        public ActionResult Filter_Your_Disease()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            string str = Request["Filter"]; // for solve NotSupport Exception
+            var ds = db.Diseases.Where(d => d.Patient_Id == pt.Patient_Id && String.Compare(d.Disease_Type, str, true) == 0);
+            return View("Your_Diseases", ds.ToList());
+        }
+
+        public ActionResult Examinations(long?id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            var exm = db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id);
+            return View(exm.ToList());
         }
 
         public ActionResult Reviews()
