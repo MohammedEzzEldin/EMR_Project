@@ -36,8 +36,8 @@
                 @Html.DropDownList("Order_By",new SelectList(new List<SelectListItem> {
                                                                        new SelectListItem{Value = "Hospital",  Text = "Hospital" },
                                                                        new SelectListItem{Value = "Doctor",  Text = "Doctor" },
-                                                                       new SelectListItem{Value= "Recent Dates",Text="Recent Dates"},
-                                                                       new SelectListItem{Value="Old Dates",Text="Old Dates"}
+                                                                       new SelectListItem{Value= "Recent_Dates",Text="Recent Dates"},
+                                                                       new SelectListItem{Value="Old_Dates",Text="Old Dates"}
                   }, "value", "text"), "Order By", new { @class = "form-control", required = true })
                 <input class="btn btn-outline-secondary my-2 my-sm-0" style="margin-left:5px" value="Arrange" type="submit">
             }

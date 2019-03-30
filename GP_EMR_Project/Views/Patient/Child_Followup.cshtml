@@ -5,6 +5,75 @@
     Layout = "~/Views/Shared/_Patient.cshtml";
 }
 
-<div style="text-align:center">
-    <h2>Child Followup</h2>
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey">Child FollowUp Form</h3>
+    <hr />
+    <button class="btn btn-outline-info my-2 my-sm-0" style=" margin-left: 45%; width:150px;" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+    <hr />
+    <div style="text-align:center">
+        <div class="u">
+            <div class="container stats text-center">
+
+                <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat members">
+                                Age (In Month)
+                                @if (Model.Age_In_Month > 0)
+                                {
+                                    <span><a href="">@Model.Age_In_Month</a></span>
+                                }
+                                else
+                                {
+                                    <span>Empty</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="stat members">
+                                Feed Type
+                                @if (Model.Feed_Type != null)
+                                {
+                                    <span><a href="">@Model.Feed_Type</a></span>
+                                }
+                                else
+                                {
+                                    <span>Empty</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="stat hospitals">
+                                Vaccination Date
+                                @if (Model.Vaccination_Date != null)
+                                {
+                                    <span><a href="">@Model.Vaccination_Date.Value.ToShortDateString()</a></span>
+                                }
+                                else
+                                {
+                                    <span>Empty</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="stat hospitals">
+                                Last Vaccination Type
+                                @if (Model.Vaccination_Type != null)
+                                {
+                                    <span><a href="">@Model.Vaccination_Type</a></span>
+                                }
+                                else
+                                {
+                                    <span>Empty</span>
+                                }
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<br />
