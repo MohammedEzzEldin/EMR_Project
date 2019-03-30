@@ -203,10 +203,63 @@ namespace GP_EMR_Project.Controllers
             {
                 db.Departments.Add(dep);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Manage_Department");
             }
             return View(dep);
         }
+
+        public ActionResult Edit_Department(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            return View(department);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit_Department(Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(department).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Manage_Department");
+            }
+            return View(department);
+        }
+
+        public ActionResult Delete_Department(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            return View(department);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete_Department(long id)
+        {
+            Department department = db.Departments.Find(id);
+            db.Departments.Remove(department);
+            db.SaveChanges();
+            return RedirectToAction("Manage_Department");
+        }
+
+
 
         [HttpPost]
         public ActionResult Upload_Photo(HttpPostedFileBase file)
