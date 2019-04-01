@@ -290,6 +290,7 @@
     <Content Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <Content Include="Content\Lab_Radio\30\Urine Anlysis1222018.pdf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -356,6 +357,8 @@
     <Content Include="Views\Medical_Organization\Index.cshtml" />
     <Content Include="Views\Medical_Organization\Delete_Department.cshtml" />
     <Content Include="Views\Medical_Organization\Edit_Department.cshtml" />
+    <Content Include="Views\Patient\Details_Lab_Radio.cshtml" />
+    <Content Include="Views\Patient\Show_Lab_Radio.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

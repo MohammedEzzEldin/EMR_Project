@@ -1,12 +1,92 @@
-﻿@model GP_EMR_Project.Models.Lab
+﻿@model  IEnumerable<GP_EMR_Project.Models.Lab>
 
 @{
     ViewBag.Title = "Laboratories_Radiology";
     Layout = "~/Views/Shared/_Patient.cshtml";
 }
 
-<div style="text-align:center">
-    <h2>Laboratories Radiology</h2>
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey">Laboratories & Radiology</h3>
+    <hr />
+    <div class="" style="width:100%;">
+        <div class="" style="width:40%; display:inline-block; margin-left:8%; border:5px solid silver; padding:10px;">
+            @using (Html.BeginForm("Search_In_Laboratories_Radiology", "Patient", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
+                @Html.DropDownList("Search_By", new SelectList(new List<SelectListItem>{
+                                                                         new SelectListItem{Value = "Hospital",  Text = "Hospital Name" },
+                                                                         new SelectListItem{Value = "Name",  Text = "Name" },
+                                                                         new SelectListItem{Value= "Type",Text="Type"},
+                                                                         }, "value", "text"), "Search By", new { @class = "form-control",required = true })
+                <input class=" ml-auto form-control mr-sm-auto" type="search" id="Search" name="Search" placeholder="Search" style="text-align:center;" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
+        </div>
+        <div class="" style="display:inline-block; border:5px solid silver; padding:10px">
+            <!--order by hospital or doctor or date or alpha diagnosis or alpha treatment-->
+            @using (Html.BeginForm("Order_Laboratories_Radiology", "Patient", FormMethod.Post, new { @class = "form-inline" }))
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
+                @Html.DropDownList("Order_By",new SelectList(new List<SelectListItem> {
+                                                                       new SelectListItem{Value = "Hospital",  Text = "Hospital" },
+                                                                       new SelectListItem{Value = "Name",  Text = "Name" },
+                                                                       new SelectListItem{Value = "Type",  Text = "Type" },
+                                                                       new SelectListItem{Value= "Recent_Dates",Text="Recent Dates"},
+                                                                       new SelectListItem{Value="Old_Dates",Text="Old Dates"}
+                  }, "value", "text"), "Order By", new { @class = "form-control", required = true })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" style="margin-left:5px" value="Arrange" type="submit">
+            }
+        </div>
+        <div style="display:inline-block; border:5px solid silver; padding:10px">
+            <!--Search by date-->
+            @using (Html.BeginForm("Search_Date_Laboratories_Radiology", "Patient", FormMethod.Post, new { @class = "form-inline" }))
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
+                <input class=" ml-auto form-control mr-sm-2" type="date" id="Search" name="Search" placeholder="Select Date" style="text-align:center" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
+        </div>
+    </div>
+    <hr />
+    <button class="btn btn-outline-info my-2 my-sm-0" style=" margin-left: 45%; width:150px;" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+    <hr />
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered table-hover text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Hospital</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="font-weight:bold">@item.Lab_Name</td>
+                        <td style="font-weight:bold">@item.Lab_Type</td>
+                        <td style="color:brown">@item.Lab_Date.Value.ToShortDateString()</td>
+                        <td style="color:blue">@item.Medical_Organization.Medical_Org_Name</td>
+                        <td>
+                            <a href=@Url.Action("Details_Lab_Radio","Patient", new {id = item.Patient_Id , name = item.Lab_Name , date = item.Lab_Date }) class="btn btn-outline-primary">Details</a>
+                            <a href=@Url.Action("Show_Lab_Radio","Patient",   new  {id = item.Patient_Id , name = item.Lab_Name , date = item.Lab_Date }) class="btn btn-outline-info" target="_blank">Show File</a>
+                            <a href=@Url.Action("Download_Lab_File","Patient",new { id = item.Patient_Id , name = item.Lab_Name , date = item.Lab_Date }) class="btn btn-outline-danger">Download File</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <hr />
+        </div>
+    </div>
 </div>
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,7 +16,15 @@ namespace GP_EMR_Project.Controllers
     {
         private EMR_GP_DBEntities db = new EMR_GP_DBEntities();
 
-
+        private bool Check_Login()
+        {
+            User sesstion = (User)Session["UserID"];
+            if (sesstion.User_Type == 4)
+            {
+                return true;
+            }
+            return false;
+        }
         // GET: Patient
         public ActionResult Index(long?id)
         {
@@ -98,6 +107,65 @@ namespace GP_EMR_Project.Controllers
                 return View(us);
             }
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Details_Lab_Radio(long? id ,string name,DateTime date)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            Lab lab = db.Labs.Where(lb => lb.Patient_Id == id && lb.Lab_Date == date && lb.Lab_Name == name).Single();
+                return View(lab);
+        }
+        public void Show_Lab_Radio(long? id, string name, DateTime date)
+        {
+            if (id != null)
+            {
+                Lab lab = db.Labs.Where(lb => lb.Patient_Id == id && lb.Lab_Date == date && lb.Lab_Name == name).Single();
+                if(lab != null)
+                {
+                    string filePath = Server.MapPath(lab.Lab_File);
+                    string ext = Path.GetExtension(filePath);
+                    string type = "";
+
+                    if (ext != null)
+                    {
+                        switch (ext.ToLower())
+                        {
+                            case ".txt":
+                                type = "text/plain";
+                                break;
+
+                            case ".GIF":
+                                type = "image/GIF";
+                                break;
+
+                            case ".pdf":
+                                type = "Application/pdf";
+                                break;
+
+                            case ".doc":
+                            case ".rtf":
+                                type = "Application/msword";
+                                break;
+                        }
+                        WebClient client = new WebClient();
+                        byte[] filebuffer = client.DownloadData(filePath);
+                        if (filebuffer != null && type != "")
+                        {
+                            Response.ContentType =type;
+                            Response.AddHeader("content-length", filebuffer.Length.ToString());
+                            Response.BinaryWrite(filebuffer);
+                        }
+                    } 
+                }
+            }
         }
 
         public ActionResult Manage_Account()
@@ -415,6 +483,34 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult Search_In_Laboratories_Radiology(string Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IQueryable<Lab> labs = db.Labs.Where(op => op.Patient_Id == pt.Patient_Id);
+            switch (Request.Form["Search_By"])
+            {
+                case "Hospital":
+                    return View("Laboratories_Radiology", db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id && lab.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                case "Name":
+                        return View("Laboratories_Radiology", db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id && lab.Lab_Name.Contains(Search)));
+                case "Type":
+                    return View("Laboratories_Radiology", db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id && lab.Lab_Type.Contains(Search)));
+                default:
+                    break;
+            }
+            return View("Laboratories_Radiology", labs.ToList());
+        }
+
+        [HttpPost]
         public ActionResult Search_Date_Examination(DateTime Search)
         {
             if (Request.Form["Patient_Id"] == null)
@@ -464,6 +560,25 @@ namespace GP_EMR_Project.Controllers
              op.Op_Date.Value.Month == Search.Month &&
              op.Op_Date.Value.Day == Search.Day);
             return View("Operations",opr);
+        }
+
+        [HttpPost]
+        public ActionResult Search_Date_Laboratories_Radiology(DateTime Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            var labs = db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id && lab.Lab_Date.Value.Day == Search.Day
+            && lab.Lab_Date.Value.Month == Search.Month
+            && lab.Lab_Date.Value.Year == Search.Year);
+            return View("Laboratories_Radiology", labs);
         }
 
         public ActionResult Your_Diseases(long? id)
@@ -648,6 +763,43 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult Order_Laboratories_Radiology()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            long patient_id = Int64.Parse(Request.Form["Patient_Id"]);
+            switch (Request.Form["Order_By"])
+            {
+                case "Hospital":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lab => lab.Patient_Id == patient_id).OrderByDescending(lab => lab.Medical_Organization.Medical_Org_Name));
+
+                case "Name":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lab => lab.Patient_Id == patient_id).OrderByDescending(lab => lab.Lab_Name));
+
+                case "Type":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lab => lab.Patient_Id == patient_id).OrderByDescending(lab => lab.Lab_Type));
+
+                case "Recent_Dates":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lab => lab.Patient_Id == patient_id).OrderByDescending(lab => lab.Lab_Date));
+
+                case "Old_Dates":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lab => lab.Patient_Id == patient_id).OrderBy(lab => lab.Lab_Date));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Laboratories_Radiology");
+        }
+
+        [HttpPost]
         public ActionResult Filter_Family_History()
         {
             if (Request.Form["Patient_Id"] == null)
@@ -730,9 +882,20 @@ namespace GP_EMR_Project.Controllers
             return View(opr.ToList());
         }
 
-        public ActionResult Laboratories_Radiology()
+        public ActionResult Laboratories_Radiology(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IEnumerable<Lab> labs = db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id); 
+            return View(labs.ToList());
         }
 
         public ActionResult Child_Followup(long?id)
@@ -782,6 +945,57 @@ namespace GP_EMR_Project.Controllers
                 return RedirectToAction("Manage_Account");
             }
             return RedirectToAction("Manage_Account");
+        }
+
+        public ActionResult Download_Lab_File(long? id, string name, DateTime date)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Lab lab = db.Labs.Where(lb => lb.Patient_Id == id && lb.Lab_Date == date && lb.Lab_Name == name).Single();
+            if(lab == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            string path = Server.MapPath(lab.Lab_File);
+            string filename = Path.GetFileName(path);
+            string type = "";
+            string ext = Path.GetExtension(path);
+            if (ext != null)
+            {
+                switch (ext.ToLower())
+                {
+                    case ".txt":
+                        type = "text/plain";
+                        break;
+
+                    case ".GIF":
+                        type = "image/GIF";
+                        break;
+
+                    case ".pdf":
+                        type = "Application/pdf";
+                        break;
+
+                    case ".doc":
+                    case ".rtf":
+                        type = "Application/msword";
+                        break;
+                }
+            }
+            FileInfo file = new FileInfo(path);
+
+            if(file.Exists && type != "")
+            {
+                Response.Clear();
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
+                Response.AddHeader("Content-Length", file.Length.ToString());
+                Response.ContentType = "application/octet-stream";
+                Response.WriteFile(file.FullName);
+                Response.End();
+            }
+            return RedirectToAction("Laboratories_Radiology",new { id = lab.Patient_Id});
         }
 
         public ActionResult Book(object obj)

@@ -1,0 +1,60 @@
+﻿@model GP_EMR_Project.Models.Lab
+
+@{
+    ViewBag.Title = "Details_Lab_Radio";
+    Layout = "~/Views/Shared/_Patient.cshtml";
+}
+
+<br />
+
+<h2  style="text-align:center; font-style:italic;color:gray">Details</h2>
+
+<div style="text-align:center">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd style="color:blue">
+            @Html.DisplayFor(model => model.Lab_Name)
+        </dd>
+        <hr style="width:30%;text-align:center" />
+
+        <dt>
+            Result
+        </dt>
+
+        <dd  style="color:blue">
+            @Html.DisplayFor(model => model.Lab_Description_Result)
+        </dd>
+
+        <hr style="width:30%;text-align:center" />
+
+        <dt>
+            Date
+        </dt>
+
+        <dd  style="color:blue">
+            @Model.Lab_Date.Value.ToShortDateString()
+        </dd>
+
+        <hr style="width:30%;text-align:center" />
+
+        <dt>
+            Medical Organizations
+        </dt>
+
+        <dd  style="color:blue">
+            @Html.DisplayFor(model => model.Medical_Organization.Medical_Org_Name)
+        </dd>
+
+        <hr style="width:30%;text-align:center" />
+
+    </dl>
+</div>
+<p style="text-align:center">
+    @Html.ActionLink("Back", "Laboratories_Radiology", new {  id = Model.Patient_Id  }) 
+</p>
+
+<br />
