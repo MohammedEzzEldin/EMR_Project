@@ -117,7 +117,7 @@
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Book", "Book", "Patient", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Book", "Book", "Patient", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "nav-link" })
                         </li>
 
                     }

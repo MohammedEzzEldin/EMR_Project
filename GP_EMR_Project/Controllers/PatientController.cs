@@ -18,10 +18,13 @@ namespace GP_EMR_Project.Controllers
 
         private bool Check_Login()
         {
-            User sesstion = (User)Session["UserID"];
-            if (sesstion.User_Type == 4)
-            {
-                return true;
+            User sesstion = null;
+            sesstion = (User) Session["UserID"];
+            if(sesstion !=  null){
+                if (sesstion.User_Type == 4)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -317,7 +320,6 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             ViewBag.Patient_Id = pt.Patient_Id;
-            List<SelectListItem> DiseaseTypes = new List<SelectListItem>();
             var fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id);     
             return View(fm.ToList());
         }
@@ -998,7 +1000,33 @@ namespace GP_EMR_Project.Controllers
             return RedirectToAction("Laboratories_Radiology",new { id = lab.Patient_Id});
         }
 
-        public ActionResult Book(object obj)
+        public ActionResult Book(long? id)
+        {
+            if(Check_Login())
+            {
+                if(id==null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                ViewBag.Patient_Id = id;
+                var ct = db.Medical_Organization.Select(model => model.User.City).Distinct().ToList();
+                List<SelectListItem> cities = new List<SelectListItem>();
+                foreach(var item in ct)
+                {
+                    cities.Add(new SelectListItem { Text = item, Value = item });
+                }
+                SelectList Cities = new SelectList(cities,"Value","Text");
+                ViewBag.Cities = Cities;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Book()
         {
             return null;
         }
