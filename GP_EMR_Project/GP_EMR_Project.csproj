@@ -360,6 +360,10 @@
     <Content Include="Views\Patient\Details_Lab_Radio.cshtml" />
     <Content Include="Views\Patient\Show_Lab_Radio.cshtml" />
     <Content Include="Views\Patient\Book.cshtml" />
+    <Content Include="Views\Patient\Select_Doctor_For_Book.cshtml" />
+    <Content Include="Views\Patient\Final_Booking.cshtml" />
+    <Content Include="Views\Patient\Details_Of_Booking.cshtml" />
+    <Content Include="Views\Patient\Select_Dep_For_Book.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

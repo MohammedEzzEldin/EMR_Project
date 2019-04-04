@@ -299,8 +299,18 @@ else if(Model.User_Type == 2)
             <td></td>
             <td></td>
             <td>
-                <a href="#" class="btn btn-outline-danger">Go To Book</a>
-                <a href="#" class="btn btn-outline-danger">Rate</a>
+                <!--Sleect_Dep_For_Book-->
+                @using (Html.BeginForm("Select_Dep_For_Book", "Patient", FormMethod.Get, new { style = "display:inline-block" }))
+                {
+                    @Html.Hidden("Patient_id", ((GP_EMR_Project.Models.User)Session["UserId"]).User_Id )
+                    @Html.Hidden("Med_Org_Id", Model.User_Id)
+                <button class="btn btn-outline-danger" type="submit">Go To Book</button>
+                }
+
+                @using (Html.BeginForm("", "Patient", FormMethod.Get, new { style = "display:inline-block" }))
+                {
+                    <button class="btn btn-outline-danger" type="submit">Rate</button>
+                }
             </td>
             <td></td>
             <td></td>

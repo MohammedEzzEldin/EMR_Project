@@ -19,7 +19,7 @@ namespace GP_EMR_Project.Models
         public string Lab_Name { get; set; }
         public string Lab_Description_Result { get; set; }
         public string Lab_Type { get; set; }
-        public Nullable<System.DateTime> Lab_Date { get; set; }
+        public System.DateTime Lab_Date { get; set; }
         public string Lab_File { get; set; }
     
         public virtual Medical_Organization Medical_Organization { get; set; }

@@ -16,6 +16,7 @@ namespace GP_EMR_Project.Controllers
     {
         private EMR_GP_DBEntities db = new EMR_GP_DBEntities();
 
+        [NonAction]
         private bool Check_Login()
         {
             User sesstion = null;
@@ -558,9 +559,9 @@ namespace GP_EMR_Project.Controllers
             }
             ViewBag.Patient_Id = pt.Patient_Id;
             var opr = db.Operations.Where(op => op.Patient_Id == pt.Patient_Id &&
-             op.Op_Date.Value.Year == Search.Year &&
-             op.Op_Date.Value.Month == Search.Month &&
-             op.Op_Date.Value.Day == Search.Day);
+             op.Op_Date.Year == Search.Year &&
+             op.Op_Date.Month == Search.Month &&
+             op.Op_Date.Day == Search.Day);
             return View("Operations",opr);
         }
 
@@ -577,9 +578,9 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             ViewBag.Patient_Id = pt.Patient_Id;
-            var labs = db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id && lab.Lab_Date.Value.Day == Search.Day
-            && lab.Lab_Date.Value.Month == Search.Month
-            && lab.Lab_Date.Value.Year == Search.Year);
+            var labs = db.Labs.Where(lab => lab.Patient_Id == pt.Patient_Id && lab.Lab_Date.Day == Search.Day
+            && lab.Lab_Date.Month == Search.Month
+            && lab.Lab_Date.Year == Search.Year);
             return View("Laboratories_Radiology", labs);
         }
 
@@ -1008,7 +1009,7 @@ namespace GP_EMR_Project.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                ViewBag.Patient_Id = id;
+                //ViewBag.Patient_Id = id;
                 var ct = db.Medical_Organization.Select(model => model.User.City).Distinct().ToList();
                 List<SelectListItem> cities = new List<SelectListItem>();
                 foreach(var item in ct)
@@ -1028,8 +1029,151 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Book()
         {
-            return null;
+            string search = Request.Form["Search"];
+            string city = Request.Form["Cities"];
+            string email = Request.Form["Email"];
+            string phone = Request.Form["Phone"];
+            IEnumerable<User> med = db.Users.Where(model => model.Medical_Organization.Medical_Org_Name.Contains(search));
+            if(city != "")
+            {
+                med = med.Where(model => model.City.Contains(city));
+            }
+            if(email != "")
+            {
+                med = med.Where(model => model.Email.Contains(email));
+            }
+            if ( phone != "")
+            {
+                med = med.Where(model => model.Phone.Contains(phone));
+            }
+            if(med == null)
+            {
+                var ct = db.Medical_Organization.Select(model => model.User.City).Distinct().ToList();
+                List<SelectListItem> cities = new List<SelectListItem>();
+                foreach (var item in ct)
+                {
+                    cities.Add(new SelectListItem { Text = item, Value = item });
+                }
+                SelectList Cities = new SelectList(cities, "Value", "Text");
+                ViewBag.Cities = Cities;
+
+                ModelState.AddModelError("Phone", "Not Found The Medical Organization");
+                return View();
+            }
+            return View("Search", med.ToList());
         }
 
+       [HttpGet]
+        public ActionResult Select_Dep_For_Book(long? Patient_id,long? Med_Org_Id)
+        {
+            if(Check_Login())
+            {
+                if (Patient_id == null || Med_Org_Id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Medical_Organization med = db.Medical_Organization.Find(Med_Org_Id);
+                if(Patient_id == ((User)Session["UserId"]).User_Id)
+                {
+                    if(med == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                    }
+
+                    var dep = med.Departments.ToList();
+                    List<SelectListItem> departments = new List<SelectListItem>();
+                    foreach (var item in dep)
+                    {
+                        departments.Add(new SelectListItem { Text = item.Department_Name, Value = item.Department_Id.ToString() });
+                    }
+                    SelectList Department = new SelectList(departments, "Value", "Text");
+                    ViewBag.Patient_Id = Patient_id;
+                    ViewBag.Med_Org_Id = Med_Org_Id;
+                    ViewBag.Depratment = Department;
+                    return View();
+                }
+            }
+            return RedirectToAction("Login","Home"); 
+        }
+
+
+        [HttpPost]
+        public ActionResult Select_Dep_For_Book()
+        {
+            long med_Id = Int64.Parse(Request.Form["Patient_Id"]);
+            long patient_Id = Int64.Parse(Request.Form["Med_Org_Id"]);
+            long dep_Id = Int64.Parse(Request.Form["Depratment"]);
+            if(med_Id <= 0 || patient_Id <= 0 || dep_Id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ViewBag.Patient_Id = patient_Id;
+            ViewBag.Med_Org_Id = med_Id;
+            ViewBag.Depratment = dep_Id;
+            Department dep = db.Departments.Find(dep_Id);
+            var doc = dep.Doctors.ToList();
+            List<SelectListItem> doctors = new List<SelectListItem>();
+            foreach (var item in doc)
+            {
+                doctors.Add(new SelectListItem { Text = item.Person.First_Name+" "+item.Person.Last_Name, Value = item.Doctor_Id.ToString() });
+            }
+            SelectList Doctors = new SelectList(doctors, "Value", "Text");
+            ViewBag.Doctors = Doctors;
+            return View("Select_Doctor_For_Book");
+        }
+
+        [HttpGet]
+        public ActionResult Final_Booking(long? Patient_Id,long? Doctor)
+        {
+            if(Patient_Id == null || Doctor == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ViewBag.Patient_Id = Patient_Id;
+            ViewBag.Doctor_Id = Doctor;
+            var table = db.Doctor_Schedule.Where(model => model.doctor_id == Doctor);
+            return View(table.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Final_Booking()
+        {
+            Permission pr = new Permission();
+            pr.Patient_Id = Int64.Parse(Request.Form["Patient_Id"]);
+            pr.Patient = db.Patients.Find(pr.Patient_Id);
+            pr.Doctor_Id = Int64.Parse(Request.Form["Doctor_Id"]);
+            pr.Doctor = db.Doctors.Find(pr.Doctor_Id);
+            pr.Booking_Date = DateTime.Parse(Request.Form["Booking_Date"]);
+            IEnumerable<Doctor_Schedule> table = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
+            //---------------------------------------------------------------------------------------------------------------------
+            try
+            {
+                IEnumerable<Doctor_Schedule> validation_booking_date = table.Where(model => model.day.Equals(pr.Booking_Date.DayOfWeek.ToString(), StringComparison.InvariantCultureIgnoreCase));
+                if (validation_booking_date == null)
+                {
+                    ViewBag.Patient_Id = pr.Patient_Id;
+                    ViewBag.Doctor_Id = pr.Doctor_Id;
+                    var schedule = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
+                    ModelState.AddModelError("Booking_Date", "Your select day out the schedule of doctor");
+                    return View(schedule.ToList());
+                }
+                db.Permissions.Add(pr);
+                db.SaveChanges();
+                return RedirectToAction("Details_Of_Booking", new { per = pr });
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("Booking_Date", ex.Message);
+                ViewBag.Patient_Id = pr.Patient_Id;
+                ViewBag.Doctor_Id = pr.Doctor_Id;
+                var schedule = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
+                return View(schedule.ToList());
+            }  
+        }
+
+        public ActionResult Details_Of_Booking(Permission pr)
+        {
+            return View(pr);
+        }
     }
 }

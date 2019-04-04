@@ -53,9 +53,13 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Doctor_Schedule' does not have a pri
           <Key>
             <PropertyRef Name="doctor_id" />
             <PropertyRef Name="day" />
+            
+            
           </Key>
           <Property Name="doctor_id" Type="bigint" Nullable="false" />
           <Property Name="day" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="from" Type="time" Precision="7" Nullable="false" />
+          <Property Name="to" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EMR_GP_DB.dbo.Evaluation_Doctor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -131,13 +135,14 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Labs' does not have a primary key de
             <PropertyRef Name="Org_Id" />
             <PropertyRef Name="Lab_Name" />
             <PropertyRef Name="Lab_Type" />
+            
           </Key>
           <Property Name="Patient_Id" Type="bigint" Nullable="false" />
           <Property Name="Org_Id" Type="bigint" Nullable="false" />
           <Property Name="Lab_Name" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="Lab_Description_Result" Type="nchar" MaxLength="500" />
           <Property Name="Lab_Type" Type="nchar" MaxLength="50" Nullable="false" />
-          <Property Name="Lab_Date" Type="date" />
+          <Property Name="Lab_Date" Type="date" Nullable="false" />
           <Property Name="Lab_File" Type="nchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Medical_Organization">
@@ -155,11 +160,12 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Operations' does not have a primary 
             <PropertyRef Name="Patient_Id" />
             <PropertyRef Name="Op_Name" />
             <PropertyRef Name="Op_Type" />
+            
           </Key>
           <Property Name="Patient_Id" Type="bigint" Nullable="false" />
           <Property Name="Op_Name" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="Op_Type" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="Op_Date" Type="date" />
+          <Property Name="Op_Date" Type="date" Nullable="false" />
           <Property Name="Doctor_Id" Type="bigint" />
           <Property Name="Organization_Id" Type="bigint" />
         </EntityType>
@@ -585,7 +591,9 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <EntitySet Name="Doctor_Schedule" EntityType="Self.Doctor_Schedule" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Doctor_Schedule].[doctor_id] AS [doctor_id], 
-    [Doctor_Schedule].[day] AS [day]
+    [Doctor_Schedule].[day] AS [day], 
+    [Doctor_Schedule].[from] AS [from], 
+    [Doctor_Schedule].[to] AS [to]
     FROM [dbo].[Doctor_Schedule] AS [Doctor_Schedule]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Evaluation_Doctor" EntityType="Self.Evaluation_Doctor" store:Type="Tables" store:Schema="dbo">
@@ -976,7 +984,7 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <Property Name="Lab_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Lab_Description_Result" Type="String" MaxLength="500" FixedLength="true" Unicode="true" />
           <Property Name="Lab_Type" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Lab_Date" Type="DateTime" Precision="0" />
+          <Property Name="Lab_Date" Type="DateTime" Precision="0" Nullable="false" />
           <Property Name="Lab_File" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Medical_Organization" Relationship="Self.FK_Labs_Org" FromRole="Labs" ToRole="Medical_Organization" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Labs_Patient" FromRole="Labs" ToRole="Patient" />
@@ -990,7 +998,7 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <Property Name="Patient_Id" Type="Int64" Nullable="false" />
           <Property Name="Op_Name" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Op_Type" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Op_Date" Type="DateTime" Precision="0" />
+          <Property Name="Op_Date" Type="DateTime" Precision="0" Nullable="false" />
           <Property Name="Doctor_Id" Type="Int64" />
           <Property Name="Organization_Id" Type="Int64" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_Operations_Doctor" FromRole="Operations" ToRole="Doctor" />
@@ -1490,6 +1498,8 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <Property Name="doctor_id" Type="Int64" Nullable="false" />
           <Property Name="day" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Doctor" Relationship="EMR_GP_DBModel.FK_Doctor_Schedule_Doctor" FromRole="Doctor_Schedule" ToRole="Doctor" />
+          <Property Name="from" Type="Time" Precision="7" Nullable="false" />
+          <Property Name="to" Type="Time" Precision="7" Nullable="false" />
         </EntityType>
         <Association Name="FK_Doctor_Schedule_Doctor">
           <End Type="EMR_GP_DBModel.Doctor" Role="Doctor" Multiplicity="1" />
@@ -1705,6 +1715,8 @@ warning 6002: The table/view 'EMR_GP_DB.dbo.Reviews' does not have a primary key
           <EntitySetMapping Name="Doctor_Schedule">
             <EntityTypeMapping TypeName="EMR_GP_DBModel.Doctor_Schedule">
               <MappingFragment StoreEntitySet="Doctor_Schedule">
+                <ScalarProperty Name="to" ColumnName="to" />
+                <ScalarProperty Name="from" ColumnName="from" />
                 <ScalarProperty Name="day" ColumnName="day" />
                 <ScalarProperty Name="doctor_id" ColumnName="doctor_id" />
               </MappingFragment>

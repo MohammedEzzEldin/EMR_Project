@@ -74,7 +74,7 @@
                     <tr>
                         <td style="font-weight:bold">@item.Lab_Name</td>
                         <td style="font-weight:bold">@item.Lab_Type</td>
-                        <td style="color:brown">@item.Lab_Date.Value.ToShortDateString()</td>
+                        <td style="color:brown">@item.Lab_Date.ToShortDateString()</td>
                         <td style="color:blue">@item.Medical_Organization.Medical_Org_Name</td>
                         <td>
                             <a href=@Url.Action("Details_Lab_Radio","Patient", new {id = item.Patient_Id , name = item.Lab_Name , date = item.Lab_Date }) class="btn btn-outline-primary">Details</a>

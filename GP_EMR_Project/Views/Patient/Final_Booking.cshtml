@@ -1,0 +1,78 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Doctor_Schedule>
+
+@{
+    ViewBag.Title = "Final_Booking";
+    Layout = "~/Views/Shared/_Patient.cshtml";
+}
+
+<br />
+<h2 style="text-align:center;color:gray">Select Booking Date</h2>
+<hr />
+
+<div class="row text-center">
+    <div class="col-12">
+        <table class="table table-hover table-bordered" style="margin-left:20%; width:60%; border:5px solid gray;">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>From</th>
+                    <th>To</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.day</td>
+                        <td>@item.from</td>
+                        <td>@item.to</td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+    </div>
+</div>
+  
+<hr />
+<div class="row text-center">
+    <div class="col-12">
+        @using (Html.BeginForm("Final_Booking", "Patient", FormMethod.Post, new { style = "text-align:center" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.Hidden("Patient_Id", (long)ViewBag.Patient_Id)
+            @Html.Hidden("Doctor_Id", (long)ViewBag.Doctor_Id)
+
+            <table class="table table-hover table-bordered" style="margin-left:20%; width:60%; border:5px solid gray;">
+                <thead>
+                    <tr>
+                        <th>Booking Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                        <tr>
+                            <td>
+                                        @Html.Editor("Booking_Date", new { htmlAttributes = new { @class = "form-control", type = "date", style = "text-align:center;font-weight:bold;",required= true } })
+                                        @Html.ValidationMessage("Booking_Date", "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td>
+                            <button type="submit" class="btn btn-primary btn-lg" style="margin-left:10px"> Next </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+          
+        }
+    </div>
+</div>
+<br />
+<br />
+

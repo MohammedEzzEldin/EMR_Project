@@ -17,7 +17,7 @@ namespace GP_EMR_Project.Models
         public long Patient_Id { get; set; }
         public string Op_Name { get; set; }
         public string Op_Type { get; set; }
-        public Nullable<System.DateTime> Op_Date { get; set; }
+        public System.DateTime Op_Date { get; set; }
         public Nullable<long> Doctor_Id { get; set; }
         public Nullable<long> Organization_Id { get; set; }
     

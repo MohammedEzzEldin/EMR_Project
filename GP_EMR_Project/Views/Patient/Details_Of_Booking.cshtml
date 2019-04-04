@@ -1,0 +1,35 @@
+﻿@model GP_EMR_Project.Models.Permission
+
+@{
+    ViewBag.Title = "Details_Of_Booking";
+    Layout = "~/Views/Shared/_Patient.cshtml";
+}
+
+<h2>Details_Of_Booking</h2>
+
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.Acadimic_Degree)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.Acadimic_Degree)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.Learning_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.Learning_Status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

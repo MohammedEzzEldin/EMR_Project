@@ -107,7 +107,7 @@ namespace GP_EMR_Project.Controllers
                 if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
                 {
                     medical_Organization.User.Password = Request.Form["User.Password"];
-                    return View(medical_Organization);
+                    //return View(medical_Organization);
                 }
                 else
                 {

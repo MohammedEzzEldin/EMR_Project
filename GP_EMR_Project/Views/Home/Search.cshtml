@@ -18,11 +18,14 @@
     <hr />
 </div>
 <!-- end carousel -->
+@if (Model.Where(model => model.User_Type == 3).SingleOrDefault() != null)
+{
+    <div style="text-align:center">
+        <h3>Doctors</h3>
+        <hr />
+    </div>
+}
 
-<div style="text-align:center">
-    <h3>Doctors</h3>
-    <hr />
-</div>
 @foreach (var item in Model)
 {
     if (item.Status_Of_Account == 1)
@@ -87,7 +90,7 @@
                                         </small-star-rating>
                                     </h4>
                                     <div class="card-body "><h3>@item.Person.First_Name @item.Person.Last_Name</h3></div>
-                                    </a>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -98,11 +101,13 @@
 }
 
 <hr />
-
-<div style="text-align:center">
-    <h3>Hospital</h3>
-    <hr />
-</div>
+@if (Model.Where(model => model.User_Type == 2).SingleOrDefault() != null)
+{
+    <div style="text-align:center">
+        <h3>Hospital</h3>
+        <hr />
+    </div>
+}
 
 @foreach (var item in Model)
 {
@@ -168,7 +173,7 @@
                                         </small-star-rating>
                                     </h4>
                                     <div class="card-body "><h3>@item.Medical_Organization.Medical_Org_Name</h3></div>
-                                    </a>
+                                </a>
                             </div>
                         </div>
                     </div>

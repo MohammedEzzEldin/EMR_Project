@@ -16,6 +16,8 @@ namespace GP_EMR_Project.Models
     {
         public long doctor_id { get; set; }
         public string day { get; set; }
+        public System.TimeSpan from { get; set; }
+        public System.TimeSpan to { get; set; }
     
         public virtual Doctor Doctor { get; set; }
     }

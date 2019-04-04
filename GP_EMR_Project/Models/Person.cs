@@ -11,11 +11,9 @@ namespace GP_EMR_Project.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class Person
     {
-
         public long Person_Id { get; set; }
         public string First_Name { get; set; }
         public string Last_Name { get; set; }

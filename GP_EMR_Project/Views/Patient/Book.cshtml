@@ -8,7 +8,7 @@
 <br />
 <h2 style="text-align:center;color:gray">Book</h2>
 <hr />
-<!--ViewBag.Cities-->
+
 
 <div class="row">
     <div class="col-12">
@@ -18,8 +18,20 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="row" style="margin-left:25% ">
                 <div class="col-md-8 col-6">
-                    @Html.Editor("Search", new { htmlAttributes = new { @class = "form-control", type = "search", maxlength = "100", placeholder = "Search by name", style = "text-align:center;",required=true } })
+                    @Html.Editor("Search", new { htmlAttributes = new { @class = "form-control", type = "search", maxlength = "100", placeholder = "Search by name", style = "text-align:center;", required = true } })
                     @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+
+            <h5 style="color:gray">Optional</h5>
+            <hr />
+
+            <div class="row" style="margin-left:25% ">
+                <div class="col-md-8 col-6">
+                    @Html.DropDownList("Cities", (SelectList)ViewBag.Cities, "City", new { @class = "form-control", style = "text-align:center;font-weight:bold" })
+                    @Html.ValidationMessage("Cities", "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -27,12 +39,21 @@
 
             <div class="row" style="margin-left:25% ">
                 <div class="col-md-8 col-6">
-                    @Html.DropDownList("Cities", (SelectList)ViewBag.Cities, "City", new { @class = "form-control",style= "text-align:center;font-weight:bold" })
-                    @Html.ValidationMessage("Cities", "", new { @class = "text-danger" })
+                    @Html.Editor("Email", new { htmlAttributes = new { @class = "form-control", type = "email", maxlength = "100", placeholder = "email", style = "text-align:center;" } })
+                    @Html.ValidationMessage("Email", "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            // more filters
+            <br />
+
+            <div class="row" style="margin-left:25% ">
+                <div class="col-md-8 col-6">
+                    @Html.Editor("Phone", new { htmlAttributes = new { @class = "form-control", type = "tel", maxlength = "15", placeholder = "phone number", style = "text-align:center;" } })
+                    @Html.ValidationMessage("Phone", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
             <hr />
             <div class="row" style="margin-left:16%;">
                 <div class="col-md-8 col-6">
