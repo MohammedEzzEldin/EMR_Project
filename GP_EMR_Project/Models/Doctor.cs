@@ -17,12 +17,12 @@ namespace GP_EMR_Project.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Doctor()
         {
+            this.Doctor_Schedule = new HashSet<Doctor_Schedule>();
             this.Evaluation_Doctor = new HashSet<Evaluation_Doctor>();
             this.Examinations = new HashSet<Examination>();
             this.Operations = new HashSet<Operation>();
             this.Permissions = new HashSet<Permission>();
             this.Reviews = new HashSet<Review>();
-            this.Doctor_Schedule = new HashSet<Doctor_Schedule>();
         }
     
         public long Doctor_Id { get; set; }
@@ -36,6 +36,8 @@ namespace GP_EMR_Project.Models
         public virtual Department Department { get; set; }
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Doctor_Schedule> Doctor_Schedule { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Evaluation_Doctor> Evaluation_Doctor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Examination> Examinations { get; set; }
@@ -45,7 +47,5 @@ namespace GP_EMR_Project.Models
         public virtual ICollection<Permission> Permissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Doctor_Schedule> Doctor_Schedule { get; set; }
     }
 }

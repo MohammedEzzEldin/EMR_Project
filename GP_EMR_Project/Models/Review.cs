@@ -20,6 +20,7 @@ namespace GP_EMR_Project.Models
         public System.DateTime rev_date { get; set; }
         public string rev_midicine { get; set; }
         public string rev_description_result { get; set; }
+        public long review_Id { get; set; }
     
         public virtual Doctor Doctor { get; set; }
         public virtual Medical_Organization Medical_Organization { get; set; }

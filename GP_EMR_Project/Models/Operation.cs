@@ -19,7 +19,8 @@ namespace GP_EMR_Project.Models
         public string Op_Type { get; set; }
         public System.DateTime Op_Date { get; set; }
         public Nullable<long> Doctor_Id { get; set; }
-        public Nullable<long> Organization_Id { get; set; }
+        public long Organization_Id { get; set; }
+        public long Operation_Id { get; set; }
     
         public virtual Doctor Doctor { get; set; }
         public virtual Medical_Organization Medical_Organization { get; set; }

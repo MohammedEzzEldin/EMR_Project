@@ -20,6 +20,7 @@ namespace GP_EMR_Project.Models
         public System.DateTime exm_date { get; set; }
         public string exm_description_result { get; set; }
         public string exm_midicine { get; set; }
+        public long examination_Id { get; set; }
     
         public virtual Doctor Doctor { get; set; }
         public virtual Medical_Organization Medical_Organization { get; set; }

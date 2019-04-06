@@ -514,6 +514,12 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult Search_In_Bookings(DateTime Search)
+        {
+            return null;
+        }
+
+        [HttpPost]
         public ActionResult Search_Date_Examination(DateTime Search)
         {
             if (Request.Form["Patient_Id"] == null)
@@ -800,6 +806,12 @@ namespace GP_EMR_Project.Controllers
                     break;
             }
             return RedirectToAction("Laboratories_Radiology");
+        }
+
+        [HttpPost]
+        public ActionResult Order_By_Bookings()
+        {
+            return null;
         }
 
         [HttpPost]
@@ -1100,8 +1112,8 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Select_Dep_For_Book()
         {
-            long med_Id = Int64.Parse(Request.Form["Patient_Id"]);
-            long patient_Id = Int64.Parse(Request.Form["Med_Org_Id"]);
+            long med_Id = Int64.Parse(Request.Form["Med_Org_Id"]); 
+            long patient_Id = Int64.Parse(Request.Form["Patient_Id"]);
             long dep_Id = Int64.Parse(Request.Form["Depratment"]);
             if(med_Id <= 0 || patient_Id <= 0 || dep_Id <= 0)
             {
@@ -1146,7 +1158,7 @@ namespace GP_EMR_Project.Controllers
             pr.Booking_Date = DateTime.Parse(Request.Form["Booking_Date"]);
             IEnumerable<Doctor_Schedule> table = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
             //---------------------------------------------------------------------------------------------------------------------
-            try
+          try
             {
                 IEnumerable<Doctor_Schedule> validation_booking_date = table.Where(model => model.day.Equals(pr.Booking_Date.DayOfWeek.ToString(), StringComparison.InvariantCultureIgnoreCase));
                 if (validation_booking_date == null)
@@ -1159,7 +1171,7 @@ namespace GP_EMR_Project.Controllers
                 }
                 db.Permissions.Add(pr);
                 db.SaveChanges();
-                return RedirectToAction("Details_Of_Booking", new { per = pr });
+                return RedirectToAction("Details_Of_Booking", pr.Patient_Id);
             }
             catch(Exception ex)
             {
@@ -1171,9 +1183,55 @@ namespace GP_EMR_Project.Controllers
             }  
         }
 
-        public ActionResult Details_Of_Booking(Permission pr)
+        public ActionResult Details_Of_Booking(long? id)
         {
-            return View(pr);
+            if(Check_Login())
+            {
+                if(id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Patient pt = db.Patients.Find(id);
+                if(pt == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                }
+                IEnumerable<Permission> pr = db.Permissions.Where(p => p.Patient_Id == pt.Patient_Id);
+                pr = DeletePastBookings(pr);
+                ViewBag.Patient_Id = pt.Patient_Id;
+                return View(pr.ToList());
+            }
+            return RedirectToAction("Login","Home");
+        }
+
+        // delete bookings that in past
+        [NonAction]
+        public IEnumerable<Permission> DeletePastBookings(IEnumerable<Permission> pr)
+        {
+            DateTime date = DateTime.Now;
+            foreach(var item in pr)
+            {
+                if(item.Booking_Date < date)
+                {
+                    try
+                    {
+                        pr.ToList().Remove(item);
+                        db.Permissions.Remove(item);
+                        db.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+            }
+            return pr;
+        }
+
+        [HttpPost]
+        public ActionResult DeleteBooking()
+        {
+            return RedirectToAction("Details_Of_Booking", "Patient"); // do not forget send id to action
         }
     }
 }

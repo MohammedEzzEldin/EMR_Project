@@ -283,6 +283,7 @@
     <Content Include="Content\MainPageBootstrap\pic\sssss\sssss.layout" />
     <Content Include="Content\MainPageBootstrap\pic\test\obj\Debug\main.o" />
     <Content Include="Content\MainPageBootstrap\pic\test\test.cbp" />
+    <Content Include="Content\Lab_Radio\30\Urine Anlysis1222018.pdf" />
     <EntityDeploy Include="Models\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
@@ -290,7 +291,6 @@
     <Content Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\Lab_Radio\30\Urine Anlysis1222018.pdf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

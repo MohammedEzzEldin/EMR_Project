@@ -17,6 +17,7 @@ namespace GP_EMR_Project.Models
         public long Patient_Id { get; set; }
         public string Disease_Name { get; set; }
         public string Disease_Type { get; set; }
+        public long disease_Id { get; set; }
     
         public virtual Patient Patient { get; set; }
     }

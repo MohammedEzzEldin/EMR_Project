@@ -27,21 +27,21 @@ namespace GP_EMR_Project.Models
     
         public virtual DbSet<Child_FollowUp_Form> Child_FollowUp_Form { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
-        public virtual DbSet<Doctor> Doctors { get; set; }
-        public virtual DbSet<General_Examination> General_Examination { get; set; }
-        public virtual DbSet<Medical_Organization> Medical_Organization { get; set; }
-        public virtual DbSet<Patient> Patients { get; set; }
-        public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Disease> Diseases { get; set; }
+        public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<Doctor_Schedule> Doctor_Schedule { get; set; }
         public virtual DbSet<Evaluation_Doctor> Evaluation_Doctor { get; set; }
         public virtual DbSet<Evaluation_Medical_Org> Evaluation_Medical_Org { get; set; }
         public virtual DbSet<Examination> Examinations { get; set; }
         public virtual DbSet<Family_History> Family_History { get; set; }
+        public virtual DbSet<General_Examination> General_Examination { get; set; }
         public virtual DbSet<Lab> Labs { get; set; }
+        public virtual DbSet<Medical_Organization> Medical_Organization { get; set; }
         public virtual DbSet<Operation> Operations { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
-        public virtual DbSet<Doctor_Schedule> Doctor_Schedule { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

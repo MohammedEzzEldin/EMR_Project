@@ -17,6 +17,7 @@ namespace GP_EMR_Project.Models
         public long Doctor_Id { get; set; }
         public long Patient_Id { get; set; }
         public double Rate { get; set; }
+        public long Evaluation_Doctor_Id { get; set; }
     
         public virtual Doctor Doctor { get; set; }
         public virtual Patient Patient { get; set; }

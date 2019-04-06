@@ -17,6 +17,7 @@ namespace GP_EMR_Project.Models
         public long Medical_Org_Id { get; set; }
         public long Patient_Id { get; set; }
         public double Rate { get; set; }
+        public long Evaluation_Medical_Id { get; set; }
     
         public virtual Medical_Organization Medical_Organization { get; set; }
         public virtual Patient Patient { get; set; }

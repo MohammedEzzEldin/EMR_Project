@@ -21,6 +21,7 @@ namespace GP_EMR_Project.Models
         public string Lab_Type { get; set; }
         public System.DateTime Lab_Date { get; set; }
         public string Lab_File { get; set; }
+        public long Lab_Id { get; set; }
     
         public virtual Medical_Organization Medical_Organization { get; set; }
         public virtual Patient Patient { get; set; }

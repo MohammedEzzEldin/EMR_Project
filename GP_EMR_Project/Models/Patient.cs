@@ -37,7 +37,6 @@ namespace GP_EMR_Project.Models
         public string Reason_Death { get; set; }
     
         public virtual Child_FollowUp_Form Child_FollowUp_Form { get; set; }
-        public virtual General_Examination General_Examination { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Disease> Diseases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -48,6 +47,7 @@ namespace GP_EMR_Project.Models
         public virtual ICollection<Examination> Examinations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Family_History> Family_History { get; set; }
+        public virtual General_Examination General_Examination { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lab> Labs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
