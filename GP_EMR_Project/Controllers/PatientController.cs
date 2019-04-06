@@ -516,7 +516,22 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Search_In_Bookings(DateTime Search)
         {
-            return null;
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IEnumerable<Permission> result = db.Permissions.Where(p => p.Patient_Id == pt.Patient_Id && p.Booking_Date.Year == Search.Year && p.Booking_Date.Month == Search.Month && p.Booking_Date.Day == Search.Day);
+            if(result.Count() == 0)
+            {
+                return RedirectToAction("Details_Of_Booking", new { id = pt.Patient_Id });
+            }
+            return View("Details_Of_Booking",  result.ToList());
         }
 
         [HttpPost]
@@ -805,13 +820,35 @@ namespace GP_EMR_Project.Controllers
                 default:
                     break;
             }
-            return RedirectToAction("Laboratories_Radiology");
+            return RedirectToAction("Laboratories_Radiology",new { id = pt.Patient_Id});
         }
 
         [HttpPost]
         public ActionResult Order_By_Bookings()
         {
-            return null;
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            long patient_id = Int64.Parse(Request.Form["Patient_Id"]);
+            switch (Request.Form["Order_By"])
+            {
+                case "last_dates":
+                    return View("Details_Of_Booking", db.Permissions.ToList().Where(p => p.Patient_Id == patient_id).OrderByDescending(p => p.Booking_Date));
+
+                case "old_dates":
+                    return View("Details_Of_Booking", db.Permissions.ToList().Where(p => p.Patient_Id == patient_id).OrderBy(p => p.Booking_Date));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Details_Of_Booking",new { id = patient_id });
         }
 
         [HttpPost]
@@ -1169,6 +1206,14 @@ namespace GP_EMR_Project.Controllers
                     ModelState.AddModelError("Booking_Date", "Your select day out the schedule of doctor");
                     return View(schedule.ToList());
                 }
+                if(pr.Booking_Date < DateTime.Today)
+                {
+                    ViewBag.Patient_Id = pr.Patient_Id;
+                    ViewBag.Doctor_Id = pr.Doctor_Id;
+                    var schedule = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
+                    ModelState.AddModelError("Booking_Date", "You cannot book this date");
+                    return View(schedule.ToList());
+                }
                 db.Permissions.Add(pr);
                 db.SaveChanges();
                 return RedirectToAction("Details_Of_Booking", pr.Patient_Id);
@@ -1199,7 +1244,7 @@ namespace GP_EMR_Project.Controllers
                 IEnumerable<Permission> pr = db.Permissions.Where(p => p.Patient_Id == pt.Patient_Id);
                 pr = DeletePastBookings(pr);
                 ViewBag.Patient_Id = pt.Patient_Id;
-                return View(pr.ToList());
+                return View(pr.ToList().OrderByDescending(p => p.Booking_Date));
             }
             return RedirectToAction("Login","Home");
         }
@@ -1208,10 +1253,9 @@ namespace GP_EMR_Project.Controllers
         [NonAction]
         public IEnumerable<Permission> DeletePastBookings(IEnumerable<Permission> pr)
         {
-            DateTime date = DateTime.Now;
             foreach(var item in pr)
             {
-                if(item.Booking_Date < date)
+                if(item.Booking_Date < DateTime.Today)
                 {
                     try
                     {
@@ -1230,8 +1274,25 @@ namespace GP_EMR_Project.Controllers
 
         [HttpPost]
         public ActionResult DeleteBooking()
-        {
-            return RedirectToAction("Details_Of_Booking", "Patient"); // do not forget send id to action
+        { 
+            long id =Int64.Parse(Request.Form["Booking_Id"]);
+            Permission pr = db.Permissions.Find(id);
+            if(pr == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            long patient_id = pr.Patient_Id;
+            try
+            {
+                db.Permissions.Remove(pr);
+                db.SaveChanges();
+                return RedirectToAction("Details_Of_Booking", "Patient", new { id = patient_id });
+            }
+           catch(Exception ex)
+            {
+                ModelState.AddModelError("DeleteBooking", ex.Message);
+            }
+            return RedirectToAction("Details_Of_Booking", "Patient", new { id =((User)Session["UserId"]).User_Id });
         }
     }
 }
