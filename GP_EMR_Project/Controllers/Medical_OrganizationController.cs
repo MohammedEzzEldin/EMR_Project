@@ -107,7 +107,7 @@ namespace GP_EMR_Project.Controllers
                 if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
                 {
                     medical_Organization.User.Password = Request.Form["User.Password"];
-                    //return View(medical_Organization);
+                    return View(medical_Organization);
                 }
                 else
                 {
@@ -168,7 +168,114 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Manage_Doctors()
         {
+            User user = (User)Session["UserID"];
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (user.User_Type != 2)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            Medical_Organization medical_Organization = db.Medical_Organization.Find(user.User_Id);
+            //list of doctors
+            var doctor_list = db.Doctors.Where(d => d.Medical_Org_Id == medical_Organization.Medical_Org_Id);
+
+            return View(doctor_list);
+        }
+
+        [HttpGet]
+        public ActionResult Add_New_Doctor()
+        {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Add_New_Doctor([Bind(Include = "Email,Address,City,Password,Phone,User_Type,Status_Of_Account")] User user)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+                return RedirectToAction("Doctor_Personal_Data", new { id = user.User_Id });
+            }
+            return View(user);
+        }
+
+        [HttpGet]
+        public ActionResult Doctor_Personal_Data(long id)
+        {
+            if (id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Person pr = new Person();
+            pr.Person_Id = id;
+
+            if (pr == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return View(pr);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Doctor_Personal_Data([Bind(Include = "First_Name,Last_Name,National_Id,Birth_Date,Gender,Nationality,Person_Id")] Person pr)
+        {
+            if (ModelState.IsValid)
+            {
+                if (pr.Birth_Date > DateTime.Now)
+                {
+                    ModelState.AddModelError("Birth_Date", "Wrong Date");
+                }
+                else
+                {
+                    db.People.Add(pr);
+                    db.SaveChanges();
+                    return RedirectToAction("Register_Doctor", new { id = pr.Person_Id });
+                }
+            }
+            return View(pr);
+        }
+
+        [HttpGet]
+        public ActionResult Register_Doctor(long id)
+        {
+            User user = (User)Session["UserID"];
+            var medicalOrgID = user.User_Id;
+            ViewData["medicalOrgID"] = medicalOrgID;
+            Medical_Organization medical_Organization = db.Medical_Organization.Find(user.User_Id);
+            var getdepartmentslist = medical_Organization.Departments.ToList();
+            getdepartmentslist.Insert(0, new Department { Department_Id = 0, Department_Name = "Select" });
+            ViewBag.ListOfDepartments = getdepartmentslist;
+            if (id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Doctor doctor = new Doctor();
+            doctor.Doctor_Id = id;
+            if (doctor == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return View(doctor);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register_Doctor(Doctor doctor)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Doctors.Add(doctor);
+                db.SaveChanges();
+                return RedirectToAction("Manage_Doctors");
+            }
+            return View(doctor);
         }
 
         public ActionResult Manage_Department()

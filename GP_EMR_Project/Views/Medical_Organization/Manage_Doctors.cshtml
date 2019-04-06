@@ -1,4 +1,4 @@
-﻿@model GP_EMR_Project.Models.Department
+﻿@model IEnumerable<GP_EMR_Project.Models.Doctor>
 
 @{
     ViewBag.Title = "Manage_Doctors";
@@ -25,61 +25,38 @@
             </div>
         </div>
     </div>
+    <p>
+        <a href="@Url.Action("Add_New_Doctor","Medical_Organization")" class="btn btn-dark e"><i class="fa fa-plus"></i>Add New Doctor</a>
+    </p>
     <div class="container">
         <div class="table-responsive">
             <table class=" main-table table table-bordered text-center">
                 <tr>
                     <th>Doctor Name</th>
+                    <th>Doctor Speciality</th>
                     <th>Control Doctor</th>
                 </tr>
                 <tr>
-                    <td></td>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Person.First_Name)
+                        @Html.DisplayFor(modelItem => item.Person.Last_Name)
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Spacialization)</td>
                     <td>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Block</a>
+                        @Html.ActionLink("Details", "#", "", new { @class = "btn btn-success" })
+                        @Html.ActionLink("Edit", "#", "", new { @class = "btn btn-secondary" })
+                        @Html.ActionLink("Delete", "#", "", new { @class = "btn btn-danger" })
                     </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Block</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Block</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Block</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
+            }
+                </table>
+            </div>
 
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Block</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a href="#" class="btn btn-primary">Details</a>
-                        <a href="#" class="btn btn-danger">Block</a>
-                    </td>
-                </tr>
-            </table>
         </div>
-
     </div>
-</div>
 
 
  

@@ -364,6 +364,9 @@
     <Content Include="Views\Patient\Final_Booking.cshtml" />
     <Content Include="Views\Patient\Details_Of_Booking.cshtml" />
     <Content Include="Views\Patient\Select_Dep_For_Book.cshtml" />
+    <Content Include="Views\Medical_Organization\Add_New_Doctor.cshtml" />
+    <Content Include="Views\Medical_Organization\Doctor_Personal_Data.cshtml" />
+    <Content Include="Views\Medical_Organization\Register_Doctor.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

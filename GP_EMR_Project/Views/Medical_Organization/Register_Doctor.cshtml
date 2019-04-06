@@ -1,0 +1,72 @@
+﻿@model GP_EMR_Project.Models.Doctor
+
+@{
+    ViewBag.Title = "Register_Doctor";
+    Layout = "~/Views/Shared/_Medical_Organization.cshtml";
+}
+
+<br /><br />
+<h2 class="text-center">Register Doctor</h2>
+
+@{ 
+    var medicalOrgID = ViewData["medicalOrgID"];
+}
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+<div class="col-12" style="margin-left:20px">
+    <hr />
+    @Html.HiddenFor(model => model.Medium_Rate, new { @Value = 0 })
+    @Html.HiddenFor(model => model.Medical_Org_Id, new { @Value = medicalOrgID })
+    @Html.HiddenFor(model=>model.Doctor_Id)
+
+    <div class="form-group">
+        <label>Academic Degree</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Acadimic_Degree, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Acadimic_Degree, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Functional Degree</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Functional_Degree, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Functional_Degree, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Spacialization, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Spacialization, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Spacialization, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Department</label>
+        <div class="col-md-10">
+            @Html.DropDownListFor(model=>model.Department_Id, new SelectList(ViewBag.ListOfDepartments, "Department_Id", "Department_Name"),new { @class="form-control",required=true})
+            @Html.ValidationMessageFor(model => model.Department_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+        </div>
+
+        <br /><br />
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
