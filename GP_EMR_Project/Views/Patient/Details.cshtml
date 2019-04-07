@@ -38,15 +38,15 @@
                         <div class="star "></div>
                         <div class="star "></div>
                         <div class="star"></div>
-                    }
-                    else
-                    {
-                        for (int j = 1; j <= 5; j++)
-                        {
-                            if (j > (int)rate)
+                            }
+                            else
                             {
-                                if (0.8 <= fraction)
+                                for (int j = 1; j <= 5; j++)
                                 {
+                                 if (j > (int)rate)
+                                {
+                                 if (0.8 <= fraction)
+                                 {       
                                     <div class="star full"></div>
                                 }
                                 else if (0.4 <= fraction)
@@ -57,6 +57,7 @@
                                 {
                                     <div class="star"></div>
                                 }
+                                fraction = 0;
                             }
                             else
                             {
@@ -191,12 +192,41 @@
 
 
                 <tr style="text-align:center">
-                    <td></td>
-                    <td></td>
-                    <td><a href="#" class="btn btn-outline-danger">Book</a></td>
-                    <td><a href="#" class="btn btn-outline-danger">Rate</a></td>
-                    <td></td>
-                    <td></td>
+
+                    @using (Html.BeginForm("Rating", "Patient", FormMethod.Post, new { style = "display:inline-block" }))
+                    {
+                        <td>
+
+                            @Html.DropDownList("Rate",new SelectList (new List<SelectListItem> {
+                           new SelectListItem {Value="0", Text = "0"},
+                           new SelectListItem {Value="0.5", Text = "0.5"},
+                           new SelectListItem {Value="1", Text = "1"},
+                           new SelectListItem {Value="1,5", Text = "1.5"},
+                           new SelectListItem {Value="2", Text = "2"},
+                           new SelectListItem {Value="2.5", Text = "2.5"},
+                           new SelectListItem {Value="3", Text = "3"},
+                           new SelectListItem {Value="3.5", Text = "3.5"},
+                           new SelectListItem {Value="4", Text = "4"},
+                           new SelectListItem {Value="4.5", Text = "4.5"},
+                           new SelectListItem {Value="5", Text = "5"}
+                           }, "Value","Text"),"Rate",new { @class="form-control",required = "true",style="display:inline-block"})
+                        </td>
+
+                        <td>
+                            @Html.HiddenFor(model => model.User_Id)
+                            <button class="btn btn-outline-danger" type="submit" style="">Rate</button>
+
+                        </td>
+                    }
+
+                    <td>
+                        @using (Html.BeginForm("Select_Dep_For_Book", "Patient", FormMethod.Get, new { style = "display:inline-block" }))
+                        {
+                            @Html.Hidden("Patient_id", ((GP_EMR_Project.Models.User)Session["UserId"]).User_Id)
+                            @Html.Hidden("Med_Org_Id", Model.Person.Doctor.Medical_Org_Id)
+                            <button class="btn btn-outline-danger" type="submit">Book</button>
+                        }
+                    </td>
                 </tr>
             }
 
@@ -247,6 +277,7 @@ else if(Model.User_Type == 2)
                             {
                                 <div class="star"></div>
                             }
+                            fraction = 0;
                         }
                         else
                         {
@@ -278,43 +309,53 @@ else if(Model.User_Type == 2)
         </tr>
 
         <tr style="text-align:center;">
-            <th></th>
-            <th></th>
+ 
             <th>
                 Number of Departments
             </th>
-            <th></th>
-            <th></th>
+ 
         </tr>
 
         <tr style="text-align:center; color:blue">
-            <td></td>
-            <td></td>
             <td>@Model.Medical_Organization.Departments.Count()</td>
-            <td></td>
-            <td></td>
-        </tr>
 
-        <tr style="text-align:center;">
-            <td></td>
-            <td></td>
+            @using (Html.BeginForm("Rating", "Patient", FormMethod.Post, new { style = "display:inline-block" }))
+            {
+                <td>
+
+                    @Html.DropDownList("Rate",new SelectList (new List<SelectListItem> {
+                   new SelectListItem {Value="0", Text = "0"},
+                   new SelectListItem {Value="0.5", Text = "0.5"},
+                   new SelectListItem {Value="1", Text = "1"},
+                   new SelectListItem {Value="1,5", Text = "1.5"},
+                   new SelectListItem {Value="2", Text = "2"},
+                   new SelectListItem {Value="2.5", Text = "2.5"},
+                   new SelectListItem {Value="3", Text = "3"},
+                   new SelectListItem {Value="3.5", Text = "3.5"},
+                   new SelectListItem {Value="4", Text = "4"},
+                   new SelectListItem {Value="4.5", Text = "4.5"},
+                   new SelectListItem {Value="5", Text = "5"}
+                   }, "Value","Text"),"Rate",new { @class="form-control",required = "true",style="display:inline-block"})
+                </td>
+
+                <td>
+                    @Html.HiddenFor(model => model.User_Id)
+                    <button class="btn btn-outline-danger" type="submit" style="">Rate</button>
+
+                </td>
+            }
+
             <td>
                 <!--Sleect_Dep_For_Book-->
                 @using (Html.BeginForm("Select_Dep_For_Book", "Patient", FormMethod.Get, new { style = "display:inline-block" }))
                 {
-                    @Html.Hidden("Patient_id", ((GP_EMR_Project.Models.User)Session["UserId"]).User_Id )
+                    @Html.Hidden("Patient_id", ((GP_EMR_Project.Models.User)Session["UserId"]).User_Id)
                     @Html.Hidden("Med_Org_Id", Model.User_Id)
-                <button class="btn btn-outline-danger" type="submit">Go To Book</button>
-                }
-
-                @using (Html.BeginForm("", "Patient", FormMethod.Get, new { style = "display:inline-block" }))
-                {
-                    <button class="btn btn-outline-danger" type="submit">Rate</button>
+                    <button class="btn btn-outline-danger" type="submit">Go To Book</button>
                 }
             </td>
-            <td></td>
-            <td></td>
         </tr>
+
     </table>
 }
 <br />

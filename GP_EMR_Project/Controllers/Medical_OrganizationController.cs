@@ -104,16 +104,19 @@ namespace GP_EMR_Project.Controllers
                 medical_Organization.User.Phone = Request.Form["User.Phone"];
                 medical_Organization.User.City = Request.Form["User.City"];
                 medical_Organization.User.Address = Request.Form["User.Address"];
-                if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
+                if(Request.Form["User.Password"] != "")
                 {
-                    medical_Organization.User.Password = Request.Form["User.Password"];
-                    return View(medical_Organization);
-                }
-                else
-                {
-                    ModelState.AddModelError("Confirm_Password", "Password do not match Confirm Password Feild");
-                    return View(medical_Organization);
-                }
+                    if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
+                    {
+                        medical_Organization.User.Password = Request.Form["User.Password"];
+                        return View(medical_Organization);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Confirm_Password", "Password do not match Confirm Password Feild");
+                        return View(medical_Organization);
+                    }
+                }    
                 db.Entry(medical_Organization).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

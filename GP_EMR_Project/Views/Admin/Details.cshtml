@@ -139,18 +139,46 @@
             </td>
 
             <td>
-                @{
-                    var rate = Model.Person.Doctor.Medium_Rate;
-                    if (rate / 10 >= 5)
-                    {
-                        rate = rate + 1;
+                <small-star-rating>
+                    @{
+                        var rate = Model.Person.Doctor.Medium_Rate;
+                        var fraction = Model.Person.Doctor.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                        if (rate == null || rate == 0)
+                        {
+                            <div class="star"></div>
+                            <div class="star"></div>
+                            <div class="star "></div>
+                            <div class="star "></div>
+                            <div class="star"></div>
+                        }
+                        else
+                        {
+                            for (int j = 1; j <= 5; j++)
+                            {
+                                if (j > (int)rate)
+                                {
+                                    if (0.8 <= fraction)
+                                    {
+                                        <div class="star full"></div>
+                                    }
+                                    else if (0.4 <= fraction)
+                                    {
+                                        <div class="star Halfstar"></div>
+                                    }
+                                    else if (0.3 >= fraction)
+                                    {
+                                        <div class="star"></div>
+                                    }
+                                    fraction = 0;
+                                }
+                                else
+                                {
+                                    <div class="star full"></div>
+                                }
+                            }
+                        }
                     }
-                }
-
-                @for (var i = 0; i < rate; i++)
-                {
-                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
-                }
+                </small-star-rating>
             </td>
         </tr>
 
@@ -224,18 +252,46 @@ else
             <td>@Html.DisplayFor(model => model.City)</td>
             <td>@Html.DisplayFor(model => model.Address)</td>
             <td>
-                @{
-                    var rate = Model.Medical_Organization.Medium_Rate;
-                    if (rate / 10 >= 5)
-                    {
-                        rate = rate + 1;
+                <small-star-rating>
+                    @{
+                        var rate = Model.Medical_Organization.Medium_Rate;
+                        var fraction = Model.Medical_Organization.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                        if (rate == null || rate == 0)
+                        {
+                            <div class="star"></div>
+                            <div class="star"></div>
+                            <div class="star "></div>
+                            <div class="star "></div>
+                            <div class="star"></div>
+                        }
+                        else
+                        {
+                            for (int j = 1; j <= 5; j++)
+                            {
+                                if (j > (int)rate)
+                                {
+                                    if (0.8 <= fraction)
+                                    {
+                                        <div class="star full"></div>
+                                    }
+                                    else if (0.4 <= fraction)
+                                    {
+                                        <div class="star Halfstar"></div>
+                                    }
+                                    else if (0.3 >= fraction)
+                                    {
+                                        <div class="star"></div>
+                                    }
+                                    fraction = 0;
+                                }
+                                else
+                                {
+                                    <div class="star full"></div>
+                                }
+                            }
+                        }
                     }
-                }
-
-                @for (var i = 0; i < rate; i++)
-                {
-                    <span><i class="fa fa-star fa-lg" style="color:gold"></i></span>
-                }
+                </small-star-rating>
             </td>
             <!--In Activated-->
             @if (Model.Status_Of_Account == 0)

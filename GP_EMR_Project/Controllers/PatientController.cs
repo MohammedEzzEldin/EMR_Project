@@ -1294,5 +1294,79 @@ namespace GP_EMR_Project.Controllers
             }
             return RedirectToAction("Details_Of_Booking", "Patient", new { id =((User)Session["UserId"]).User_Id });
         }
+
+        [HttpPost]
+        public ActionResult Rating()
+        {
+            long patient_id = ((User)Session["UserID"]).User_Id;
+            if (Check_Login())
+            {
+                long id = Int64.Parse(Request.Form["User_Id"]);
+                User us = db.Users.Find(id);
+                if(us == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                }
+                if(us.User_Type == 2)
+                {
+                    Evaluation_Medical_Org ev = new Evaluation_Medical_Org();
+                    ev.Medical_Org_Id = us.User_Id;
+                    ev.Patient_Id = patient_id;
+                    ev.Rate = float.Parse(Request.Form["Rate"]);
+                    if(us.Medical_Organization.Medium_Rate == 0 || us.Medical_Organization.Medium_Rate == null)
+                    {
+                        us.Medical_Organization.Medium_Rate = ev.Rate;
+                    }
+                    else
+                    {
+                        us.Medical_Organization.Medium_Rate = (ev.Rate + us.Medical_Organization.Medium_Rate) / 2;
+                    }
+                    db.Entry(us.Medical_Organization).State = EntityState.Modified;
+                    db.SaveChanges();
+                    try
+                    {
+                        var e = db.Evaluation_Medical_Org.Where(model => model.Patient_Id == patient_id && model.Medical_Org_Id == us.User_Id).Single();
+                        ev.Evaluation_Medical_Id = e.Evaluation_Medical_Id;
+                        db.Entry(ev).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    catch (Exception) {
+                        db.Evaluation_Medical_Org.Add(ev);
+                        db.SaveChanges();
+                    }
+                }
+                if(us.User_Type == 3)
+                {
+                    Evaluation_Doctor evd = new Evaluation_Doctor();
+                    evd.Patient_Id = patient_id;
+                    evd.Doctor_Id = us.User_Id;
+                    evd.Rate = float.Parse(Request.Form["Rate"]);
+                    if(us.Person.Doctor.Medium_Rate == 0 || us.Person.Doctor.Medium_Rate == null)
+                    {
+                        us.Person.Doctor.Medium_Rate = evd.Rate;
+                    }
+                    else
+                    {
+                        us.Person.Doctor.Medium_Rate = (evd.Rate + us.Person.Doctor.Medium_Rate) / 2;
+                    }
+                    db.Entry(us.Person.Doctor).State = EntityState.Modified;
+                    db.SaveChanges();
+                    try
+                    {
+                        var e = db.Evaluation_Doctor.Where(model => model.Patient_Id == patient_id && model.Doctor_Id == us.User_Id).Single();
+                        evd.Evaluation_Doctor_Id = e.Evaluation_Doctor_Id;
+                        db.Entry(evd).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    catch (Exception) {
+
+                        db.Evaluation_Doctor.Add(evd);
+                        db.SaveChanges();
+                    }   
+                }
+            }
+            return RedirectToAction("Index",new { id =patient_id});
+        }
+        
     }
 }
