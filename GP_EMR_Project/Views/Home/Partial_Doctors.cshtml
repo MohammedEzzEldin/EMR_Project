@@ -1,82 +1,73 @@
 ﻿@model IEnumerable<GP_EMR_Project.Models.Doctor>
 
 
-@{
-    int i = 0;
-}
-
 @foreach (var item in Model)
 {
-    if (i == 1)
+    if (item.Person.User.Status_Of_Account == 1)
     {
-        break;
-    }
-
-    if (item.Person.Doctor.Medium_Rate > 4.5)
-    {
-<div>
-    <div class="item">
-        <div class="card">
-            <a class=" hvr-border-fade nav-link " href="@Url.Action("Details_Of_Doctor",new { id = item.Doctor_Id})">
-                <small-star-rating style="margin-left:30px">
-                    @{
-                        var rate = item.Medium_Rate;
-                        var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
-                        if (rate == null || rate == 0)
-                        {
-                            <div class="star"></div>
-                            <div class="star"></div>
-                            <div class="star "></div>
-                            <div class="star "></div>
-                            <div class="star"></div>
-                        }
-                        else
-                        {
-                            for (int j = 1; j <= 5; j++)
-                            {
-                                if (j > (int)rate)
+        <div>
+            <div class="item">
+                <div class="card">
+                    <a class=" hvr-border-fade nav-link " href="@Url.Action("Details_Of_Doctor",new { id = item.Doctor_Id})">
+                        <small-star-rating style="margin-left:30px">
+                            @{
+                                var rate = item.Medium_Rate;
+                                var fraction = item.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                                if (rate == null || rate == 0)
                                 {
-                                    if (0.8 <= fraction)
-                                    {
-                                        <div class="star full"></div>
-                                    }
-                                    else if (0.4 <= fraction)
-                                    {
-                                        <div class="star Halfstar"></div>
-                                    }
-                                    else if (0.3 >= fraction)
-                                    {
-                                        <div class="star"></div>
-                                    }
-                                    fraction = 0;
+                                    <div class="star"></div>
+                                    <div class="star"></div>
+                                    <div class="star "></div>
+                                    <div class="star "></div>
+                                    <div class="star"></div>
                                 }
                                 else
                                 {
-                                    <div class="star full"></div>
+                                    for (int j = 1; j <= 5; j++)
+                                    {
+                                        if (j > (int)rate)
+                                        {
+                                            if (0.8 <= fraction)
+                                            {
+                                                <div class="star full"></div>
+                                            }
+                                            else if (0.4 <= fraction)
+                                            {
+                                                <div class="star Halfstar"></div>
+                                            }
+                                            else if (0.3 >= fraction)
+                                            {
+                                                <div class="star"></div>
+                                            }
+                                            fraction = 0;
+                                        }
+                                        else
+                                        {
+                                            <div class="star full"></div>
+                                        }
+                                    }
                                 }
                             }
+                        </small-star-rating>
+
+                        @{
+                            var src = "";
+                            try
+                            {
+                                src = item.Person.User.Photo_Url.Split(' ')[0];
+                            }
+                            catch (Exception) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                         }
-                    }
-                </small-star-rating>
+                        <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" style="" />
 
-                @{
-                    var src = "";
-                    try
-                    {
-                        src = item.Person.User.Photo_Url.Split(' ')[0];
-                    }
-                    catch (Exception) { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
-                }
-                <img src="@Url.Content(src)" alt="doctor img" class="card-img-top nav-link" style=""/>
-
-                <div class="card-body ">
-                    <h3>@item.Person.First_Name @item.Person.Last_Name</h3>
+                        <div class="card-body ">
+                            <h3>@item.Person.First_Name @item.Person.Last_Name</h3>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
-    </div>
-</div>
     }
-    i++;
 }
+
 

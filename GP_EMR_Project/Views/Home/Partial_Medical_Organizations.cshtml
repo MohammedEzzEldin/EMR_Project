@@ -1,15 +1,9 @@
 ﻿@model IEnumerable<GP_EMR_Project.Models.Medical_Organization>
 
-@{
-    int i = 0;
-        }
+
 
     @foreach (var item in Model)
     {
-        if (i == 10)
-        {
-            break;
-        }
         if (item.User.Status_Of_Account == 1)
         {
 <div class="col-lg-4 col-md-6 col-sm-12">
@@ -68,6 +62,5 @@
     </a>
 </div>  
     }
-        i++;
 }
 

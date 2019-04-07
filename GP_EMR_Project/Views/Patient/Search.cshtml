@@ -7,7 +7,7 @@
 
 <br />
 
-@if (Model.Where(model => model.User_Type == 3).SingleOrDefault() != null)
+@if (Model.Where(model => model.User_Type == 3).Count() > 0)
 {
     <div style="text-align:center">
         <h3>Doctors</h3>
@@ -90,7 +90,7 @@
     }
 }
 
-@if (Model.Where(model => model.User_Type == 2).SingleOrDefault() != null)
+@if (Model.Where(model => model.User_Type == 2).Count() > 0)
 {
     <hr />
 
@@ -118,6 +118,10 @@
                                         try
                                         {
                                             src = item.Photo_Url.Split(' ')[0];
+                                            if(src == "")
+                                            {
+                                                src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+                                            }
                                         }
                                         catch { src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png"; }
                                     }
