@@ -254,18 +254,22 @@ namespace GP_EMR_Project.Controllers
                     patient.Learning_Status = Request.Form["Learning_Status"];
                     patient.Social_Status = Request.Form["Social_Status"];
                     patient.Job = Request.Form["Job"];
-                    if (Request.Form["Person.User.Password"].Split(' ')[0] == Request.Form["Confirm_Password"].Split(' ')[0])
+                    if(Request.Form["Person.User.Password"].Split(' ')[0] != patient.Person.User.Password.Split(' ')[0])
                     {
-                        patient.Person.User.Password = Request.Form["Person.User.Password"].Split(' ')[0];
+                        if (Request.Form["Person.User.Password"].Split(' ')[0] == Request.Form["Confirm_Password"].Split(' ')[0])
+                        {
+                            patient.Person.User.Password = Request.Form["Person.User.Password"].Split(' ')[0];
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Confirm_Password", "Password do not Match Confirm Password, Password do not change");
+                            return View(patient);
+                        }
                     }
-                    else
-                    {
-                        ModelState.AddModelError("Confirm_Password", "Password do not Match Confirm Password, Password do not change");
-                        return View(patient);
-                    }
+                    
                     db.Entry(patient).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index",new { id = patient.Patient_Id});
                 }
             }
             ViewBag.Patient_Id = new SelectList(db.Child_FollowUp_Form, "Patient_Id", "Feed_Type", patient.Patient_Id);

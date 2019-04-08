@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Doctor_Schedule>
+
+@{
+    ViewBag.Title = "Schedule";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+<h2>Schedule</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.day)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.from)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.to)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Doctor.Acadimic_Degree)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.day)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.from)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.to)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Doctor.Acadimic_Degree)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Schedule_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Schedule_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Schedule_Id })
+        </td>
+    </tr>
+}
+
+</table>

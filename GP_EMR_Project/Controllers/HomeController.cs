@@ -71,7 +71,7 @@ namespace GP_EMR_Project.Controllers
                             }
                             if (user.User_Type == 3)
                             {
-                                return RedirectToAction("Index", "Doctor");
+                                return RedirectToAction("Index", "Doctor",new { id = user.User_Id});
                             }
                             if (user.User_Type == 4)
                             {

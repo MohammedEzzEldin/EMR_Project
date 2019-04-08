@@ -104,7 +104,7 @@ namespace GP_EMR_Project.Controllers
                 medical_Organization.User.Phone = Request.Form["User.Phone"];
                 medical_Organization.User.City = Request.Form["User.City"];
                 medical_Organization.User.Address = Request.Form["User.Address"];
-                if(Request.Form["User.Password"] != "")
+                if(Request.Form["User.Password"] != medical_Organization.User.Password.Split(' ')[0])
                 {
                     if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
                     {

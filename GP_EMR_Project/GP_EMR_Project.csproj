@@ -367,6 +367,8 @@
     <Content Include="Views\Medical_Organization\Add_New_Doctor.cshtml" />
     <Content Include="Views\Medical_Organization\Doctor_Personal_Data.cshtml" />
     <Content Include="Views\Medical_Organization\Register_Doctor.cshtml" />
+    <Content Include="Views\Doctor\Schedule.cshtml" />
+    <Content Include="Views\Doctor\Index_Patients.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

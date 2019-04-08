@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/Registration.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/owl.theme.default.css" />
     <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/StarRating.css" />
-
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/UserProfile.css" />
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/AdminDashbord.css" />
+    <link rel="stylesheet" href="~/Content/MainPageBootstrap/css/manage hospital account.css" />
 </head>
 
 <body>
@@ -29,21 +31,23 @@
                         <span class="h">Health</span><span class="c">Care</span>
                     </div>
                 </div>
-                <div class=" f col-lg-6 col-sm-7">
+                @*
+        <div class=" f col-lg-6 col-sm-7">
 
-                    @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
-                    {
-                        @Html.DropDownList("Filter_by",new List<SelectListItem>
-                       {
-                           new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
-                           new SelectListItem(){Text="Doctors",Value="Doctors"},
-                            new SelectListItem(){Text="Patients",Value="Patients"},
-                       },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
-                        @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search", placeholder = "email or name" } })
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    }
+            @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+            {
+                @Html.DropDownList("Filter_by",new List<SelectListItem>
+               {
+                   new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
+                   new SelectListItem(){Text="Doctors",Value="Doctors"},
+                    new SelectListItem(){Text="Patients",Value="Patients"},
+               },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
+                @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search", placeholder = "email or name" } })
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            }
 
-                </div>
+        </div>
+                *@
             </div>
         </div>
     </div>
@@ -93,23 +97,19 @@
                         </li>
 
                         <li>
-                            @Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Index", "Index", "Doctor", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Reports", "Index", "Reports", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Manage Account", "Manage_Account", "Doctor", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Patients", "Index_Patients", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Schedule", "Schedule", "Doctor", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "nav-link" })
                         </li>
 
                         <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Medical Organizations", "Index_Medical_Org", "Admin", null, new { @class = "nav-link" })
-                        </li>
-
-                        <li class="nav-item hvr-grow">
-                            @Html.ActionLink("Doctors", "Index_Doctors", "Admin", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Patients", "Index_Patients", "Doctor", new { id = ((GP_EMR_Project.Models.User)Session["UserID"]).User_Id }, new { @class = "nav-link" })
                         </li>
                     }
 
@@ -148,14 +148,14 @@
                 <div class="col ">
                     <h3 class="">Links</h3>
                     <ul class="list-unstyled">
-                        <li class="icon">@Html.ActionLink("Home","Index","Admin")</li>
+                        <li class="icon">@Html.ActionLink("Home","Index","Doctor")</li>
                     </ul>
                 </div>
 
                 <div class="col">
                     <h3 class="">Links</h3>
                     <ul class="list-unstyled">
-                        <li class="icon">@Html.ActionLink("Home", "Index", "Admin")</li>
+                        <li class="icon">@Html.ActionLink("Home", "Index", "Doctor")</li>
                     </ul>
                 </div>
 

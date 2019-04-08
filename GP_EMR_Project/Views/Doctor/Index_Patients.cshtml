@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Permission>
+
+@{
+    ViewBag.Title = "Index_Patients";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+<h2>Index_Patients</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Booking_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.hour)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Doctor.Acadimic_Degree)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Patient.Learning_Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Booking_Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hour)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Doctor.Acadimic_Degree)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Patient.Learning_Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Permission_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Permission_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Permission_Id })
+        </td>
+    </tr>
+}
+
+</table>

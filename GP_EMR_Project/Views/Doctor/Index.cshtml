@@ -1,70 +1,117 @@
-﻿@model IEnumerable<GP_EMR_Project.Models.Doctor>
+﻿@model GP_EMR_Project.Models.Doctor
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Doctor.cshtml";
 }
 
-<h2>Index</h2>
+<div class="content" style="background-color:beige">
+    <div style=" text-align:center">
+        @{
+            var src = "";
+            try
+            {
+                src = Model.Person.User.Photo_Url.Split(' ')[0];
+            }
+            catch (Exception ex)
+            {
+                src = "~/Content/MainPageBootstrap/pic/c3-healthcare-logo-md.png";
+            }
+        }
+        <img src="@Url.Content(src)" alt="patient img" class="img-thumbnail im" style="border-radius:50%;" />
+        <center>
+            <small-star-rating>
+                @{
+                    var rate = Model.Medium_Rate;
+                    var fraction = Model.Medium_Rate - Math.Truncate(Double.Parse(rate.ToString()));
+                    if (rate == null || rate == 0)
+                    {
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star "></div>
+                        <div class="star "></div>
+                        <div class="star"></div>
+                    }
+                    else
+                    {
+                        for (int j = 1; j <= 5; j++)
+                        {
+                            if (j > (int)rate)
+                            {
+                                if (0.8 <= fraction)
+                                {
+                                    <div class="star full"></div>
+                                }
+                                else if (0.4 <= fraction)
+                                {
+                                    <div class="star Halfstar"></div>
+                                }
+                                else if (0.3 >= fraction)
+                                {
+                                    <div class="star"></div>
+                                }
+                                fraction = 0;
+                            }
+                            else
+                            {
+                                <div class="star full"></div>
+                            }
+                        }
+                    }
+                }
+            </small-star-rating>
+        </center>
+        <h3 style="color:blue;">@Model.Person.First_Name<span style="color:green">@Model.Person.Last_Name </span> </h3>
+        <hr style="width:50%" />
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Medium_Rate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Acadimic_Degree)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Functional_Degree)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Spacialization)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Medical_Org_Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Department.Department_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Person.First_Name)
-        </th>
-        <th></th>
-    </tr>
+    <div style="text-align:center">
+        <div class="u">
+            <div class="container stats text-center">
+                <h1>Hello Doctor</h1> <br />
+                <div class="row">
+                    @if (Model.Department != null)
+                    {
+                        <div class="col-md-3">
+                            <div class="stat members">
+                                Department Name
+                                <span><h2>@Model.Department.Department_Name</h2></span>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-3">
+                        <div class="stat hospitals">
+                            Medical Organization Name
+                            <span><h2>@Html.Display("Medical Organization Name", (string)ViewBag.Medical_Organization)</h2></span>
+                        </div>
+                    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medium_Rate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Acadimic_Degree)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Functional_Degree)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Spacialization)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Medical_Org_Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department.Department_Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Person.First_Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Doctor_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Doctor_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Doctor_Id })
-        </td>
-    </tr>
-}
+                    <div class="col-md-3">
+                        <div class="stat members">
+                            Acadimic Degree
+                            <span><h2>@Model.Acadimic_Degree</h2></span>
+                        </div>
+                    </div>
 
-</table>
+                    <div class="col-md-3">
+                        <div class="stat " style="background-color:chocolate">
+                            Functional Degree
+                            <span><h2>@Model.Functional_Degree</h2></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="stat pending">
+                            Spacialization
+                            <span><h2>@Model.Spacialization</h2></span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-info" style="text-align:center; margin-top:15px; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+    </div>
+    <hr />
+</div>
