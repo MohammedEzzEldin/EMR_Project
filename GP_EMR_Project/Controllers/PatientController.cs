@@ -1194,12 +1194,11 @@ namespace GP_EMR_Project.Controllers
             pr.Doctor = db.Doctors.Find(pr.Doctor_Id);
             pr.Booking_Date = DateTime.Parse(Request.Form["Booking_Date"]);
             pr.hour = decimal.Parse(Request.Form["hour"]);
-            IEnumerable<Doctor_Schedule> table = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
             //---------------------------------------------------------------------------------------------------------------------
           try
             {
-                IEnumerable<Doctor_Schedule> validation_booking_date = table.Where(model => model.day.Equals(pr.Booking_Date.DayOfWeek.ToString(), StringComparison.InvariantCultureIgnoreCase));
-                if (validation_booking_date == null)
+                var table = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id && model.day.Equals(pr.Booking_Date.DayOfWeek.ToString(), StringComparison.InvariantCultureIgnoreCase) && model.from.Hours <= pr.hour && pr.hour <= model.to.Hours);
+                if (table.Count() == 0)
                 {
                     ViewBag.Patient_Id = pr.Patient_Id;
                     ViewBag.Doctor_Id = pr.Doctor_Id;
@@ -1217,7 +1216,7 @@ namespace GP_EMR_Project.Controllers
                 }
                 db.Permissions.Add(pr);
                 db.SaveChanges();
-                return RedirectToAction("Details_Of_Booking", pr.Patient_Id);
+                return RedirectToAction("Details_Of_Booking",new { id = pr.Patient_Id });
             }
             catch(Exception ex)
             {
