@@ -43,6 +43,7 @@
                     <th>Doctor Name</th>
                     <th>Department</th>
                     <th>Medical Organization</th>
+                    <th>Hour</th>
                     <th></th>
                 </tr>
 
@@ -58,6 +59,7 @@
                         <td>@dc.Person.First_Name @dc.Person.Last_Name</td>
                         <td>@dc.Department.Department_Name</td>
                         <td>@med.Medical_Org_Name</td>
+                        <td>@item.hour</td>
                         <td>
                             @using(Html.BeginForm("DeleteBooking", "Patient"))
                             {

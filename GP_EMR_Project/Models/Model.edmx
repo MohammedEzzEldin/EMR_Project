@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EMR_GP_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EMR_GP_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Child_FollowUp_Form">
           <Key>
             <PropertyRef Name="Patient_Id" />
@@ -160,6 +160,7 @@
           <Property Name="Doctor_Id" Type="bigint" Nullable="false" />
           <Property Name="Booking_Date" Type="date" Nullable="false" />
           <Property Name="Permission_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hour" Type="decimal" Precision="23" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -668,8 +669,7 @@
             <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EMR_GP_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -876,6 +876,7 @@
           <Property Name="Permission_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_Permission_Doctor" FromRole="Permission" ToRole="Doctor" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Permission_Patient" FromRole="Permission" ToRole="Patient" />
+          <Property Name="hour" Type="Decimal" Nullable="false" Precision="23" Scale="0" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -1562,6 +1563,7 @@
           <EntitySetMapping Name="Permissions">
             <EntityTypeMapping TypeName="EMR_GP_DBModel.Permission">
               <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="hour" ColumnName="hour" />
                 <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
                 <ScalarProperty Name="Doctor_Id" ColumnName="Doctor_Id" />
                 <ScalarProperty Name="Booking_Date" ColumnName="Booking_Date" />

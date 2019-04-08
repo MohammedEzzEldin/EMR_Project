@@ -18,6 +18,7 @@ namespace GP_EMR_Project.Models
         public long Doctor_Id { get; set; }
         public System.DateTime Booking_Date { get; set; }
         public long Permission_Id { get; set; }
+        public decimal hour { get; set; }
     
         public virtual Doctor Doctor { get; set; }
         public virtual Patient Patient { get; set; }

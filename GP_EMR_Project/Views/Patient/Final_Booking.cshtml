@@ -49,6 +49,7 @@
                 <thead>
                     <tr>
                         <th>Booking Date</th>
+                        <th>Hour</th>
                     </tr>
                 </thead>
 
@@ -58,6 +59,35 @@
                                         @Html.Editor("Booking_Date", new { htmlAttributes = new { @class = "form-control", type = "date", style = "text-align:center;font-weight:bold;",required= true } })
                                         @Html.ValidationMessage("Booking_Date", "", new { @class = "text-danger" })
                             </td>
+
+                            <td>
+                                @Html.DropDownList("hour",new SelectList( new List<SelectListItem> {
+                               new SelectListItem {Value ="0",Text = "0"},
+                               new SelectListItem {Value ="1",Text = "1"},
+                                new SelectListItem {Value ="2",Text = "2"},
+                                 new SelectListItem {Value ="3",Text = "3"},
+                                  new SelectListItem {Value ="4",Text = "4"},
+                                   new SelectListItem {Value ="5",Text = "5"},
+                                    new SelectListItem {Value ="6",Text = "6"},
+                                     new SelectListItem {Value ="7",Text = "7"},
+                                      new SelectListItem {Value ="8",Text = "8"},
+                                       new SelectListItem {Value ="9",Text = "9"},
+                                        new SelectListItem {Value ="10",Text = "10"},
+                                         new SelectListItem {Value ="11",Text = "11"},
+                                          new SelectListItem {Value ="12",Text = "12"},
+                                           new SelectListItem {Value ="13",Text = "13"},
+                                            new SelectListItem {Value ="14",Text = "14"},
+                                             new SelectListItem {Value ="15",Text = "15"},
+                                              new SelectListItem {Value ="16",Text = "16"},
+                                               new SelectListItem {Value ="17",Text = "17"},
+                                                new SelectListItem {Value ="18",Text = "18"},
+                                                 new SelectListItem {Value ="19",Text = "19"},
+                                                  new SelectListItem {Value ="20",Text = "20"},
+                                                   new SelectListItem {Value ="21",Text = "21"},
+                                                    new SelectListItem {Value ="22",Text = "22"},
+                                                     new SelectListItem {Value ="23",Text = "23"}
+                               } , "Value", "Text"),"Hour",new { @class="form-control",required = "true"})
+                           </td>
                         </tr>
                 </tbody>
 
@@ -65,6 +95,9 @@
                     <tr>
                         <td>
                             <button type="submit" class="btn btn-primary btn-lg" style="margin-left:10px"> Next </button>
+                        </td>
+                        <td>
+
                         </td>
                     </tr>
                 </tfoot>

@@ -1193,6 +1193,7 @@ namespace GP_EMR_Project.Controllers
             pr.Doctor_Id = Int64.Parse(Request.Form["Doctor_Id"]);
             pr.Doctor = db.Doctors.Find(pr.Doctor_Id);
             pr.Booking_Date = DateTime.Parse(Request.Form["Booking_Date"]);
+            pr.hour = decimal.Parse(Request.Form["hour"]);
             IEnumerable<Doctor_Schedule> table = db.Doctor_Schedule.Where(model => model.doctor_id == pr.Doctor_Id);
             //---------------------------------------------------------------------------------------------------------------------
           try
