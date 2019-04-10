@@ -320,7 +320,12 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Examine(long? id)
         {
-            if(id == null)
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -339,27 +344,148 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Examine()
         {
-            return RedirectToAction("Logout", "Home");
+            if(ModelState.IsValid)
+            {
+                General_Examination g = db.General_Examination.Find(Int64.Parse(Request.Form["Patient_Id"]));
+                g.Length =Int32.Parse(Request.Form["Length"]);
+                g.Weight = Int32.Parse(Request.Form["Weight"]);
+                g.Diabetes = Int32.Parse(Request.Form["Diabetes"]);
+                g.Temperature = Int32.Parse(Request.Form["Temperature"]);
+                g.Blood_Type = Request.Form["Blood_Type"];
+                g.Blood_Pressure = Request.Form["Blood_Pressure"];
+                db.Entry(g).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Examine",new { id = Int64.Parse(Request.Form["Patient_Id"]) });
         }
 
         public ActionResult Show_Habits(long?id)
         {
+            if(!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
             if(id ==null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            General_Examination g = db.General_Examination.Find(id);
+            Patient pt = db.Patients.Find(id);
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
             ViewBag.Patient_Id = id;
-
+            List<Habit> h = db.Habits.Where(model => model.Patient_Id == id).ToList();
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach(var item in h)
+            {
+                list.Add(new SelectListItem { Text = item.Habit_Name, Value = item.Habit_Id.ToString() });
+            }
+            if(list.Count() == 0)
+            {
+                list.Add(new SelectListItem { Text = "Empty", Value = "-1" });
+            }
+            SelectList habits = new SelectList(list,"Value","Text");
+            ViewBag.Habits = habits;
             return View();
         }
 
+        public ActionResult Show_Allergies(long? id)
+        {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = id;
+            List<Allergy> a = db.Allergies.Where(model => model.Patient_Id == id).ToList();
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in a)
+            {
+                list.Add(new SelectListItem { Text = item.Allergies_Name, Value = item.Allergies_Id.ToString() });
+            }
+            if (list.Count() == 0)
+            {
+                list.Add(new SelectListItem { Text = "Empty", Value = "-1" });
+            }
+            SelectList allergies = new SelectList(list, "Value", "Text");
+            ViewBag.Allergies = allergies;
+            return View();
+        }
         [HttpPost]
         public ActionResult Add_New_Habit()
         {
-          
-            return RedirectToAction("Examine");
+            long Id = Int64.Parse( Request.Form["Patient_Id"]);
+            if(Id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Habit h = new Habit();
+            if (Request.Form["Habits"] == "")
+            {
+                return RedirectToAction("Show_Habits", new { id = Id });
+            }
+            h.Habit_Name = Request.Form["Habits"];
+            h.Patient_Id = Id;
+            db.Habits.Add(h);
+            db.SaveChanges();
+            return RedirectToAction("Show_Habits", new { id = Id});
         }
+
+        [HttpPost]
+        public ActionResult Add_New_Allergies()
+        {
+            long Id = Int64.Parse(Request.Form["Patient_Id"]);
+            if (Id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Allergy h = new Allergy();
+            if (Request.Form["Allergies"] == "")
+            {
+                return RedirectToAction("Show_Allergies", new { id = Id });
+            }
+            h.Allergies_Name = Request.Form["Allergies"];
+            h.Patient_Id = Id;
+            db.Allergies.Add(h);
+            db.SaveChanges();
+            return RedirectToAction("Show_Allergies", new { id = Id });
+        }
+
+        [HttpPost]
+        public ActionResult Delete_Habit()
+        {
+            long Id =Int64.Parse(Request.Form["Habits"]);
+            if(Id != -1)
+            {
+                Habit h = db.Habits.Find(Id);
+                db.Habits.Remove(h);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Show_Habits", new { id = Id });
+        }
+
+        [HttpPost]
+        public ActionResult Delete_Allergies()
+        {
+            long Id = Int64.Parse(Request.Form["Allergies"]);
+            if (Id != -1)
+            {
+                Allergy h = db.Allergies.Find(Id);
+                db.Allergies.Remove(h);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Show_Allergies", new { id = Id });
+        }
+
         [HttpPost]
         public ActionResult Upload_Photo(HttpPostedFileBase file)
         {
@@ -392,6 +518,82 @@ namespace GP_EMR_Project.Controllers
                 return RedirectToAction("Manage_Account", new { id = Int64.Parse(Request.Form["Doctor_Id"]) });
             }
             return RedirectToAction("Manage_Account", new { id = Int64.Parse(Request.Form["Doctor_Id"]) });
+        }
+
+        public ActionResult Family_History(long?id)
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Family_History()
+        {
+            return View();
+        }
+
+        public ActionResult Diseases(long? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Diseases()
+        {
+            return View();
+        }
+
+        public ActionResult Examinations(long? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Examinations()
+        {
+            return View();
+        }
+
+        public ActionResult Reviews(long? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Reviews()
+        {
+            return View();
+        }
+
+        public ActionResult Operations(long? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Operations()
+        {
+            return View();
+        }
+
+        public ActionResult Laboratories_Radiology(long? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Laboratories_Radiology()
+        {
+            return View();
+        }
+
+        public ActionResult Child_FollowUp_Form(long? id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Child_FollowUp_Form()
+        {
+            return View();
         }
     }
 }

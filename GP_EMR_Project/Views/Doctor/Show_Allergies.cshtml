@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Show_Allergies";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+<br />
+<div class="text-center">
+    <div class="contentt">
+        <h3 class="text-center" style="color:gray;">Allergies</h3>
+
+        <hr />
+        <div style="margin-left:15%">
+            <div class="col-md-10" style="margin-top:5px">
+                @using (Html.BeginForm("Delete_Allergies", "Doctor", FormMethod.Post, new { style = "display:inline-block" }))
+                {
+                    @Html.DropDownList("Allergies", (SelectList)ViewBag.Allergies, "Allergies", new { @class = "form-control", required = "true", style = "display:inline-block" })
+                    @Html.ValidationMessage("Delete", "", new { @class = "text-danger" })
+                    <button type="submit" class="btn btn-danger" style="margin-top:5px;display:inline-block">Delete Element</button>
+                }
+            </div>
+            <div class="col-md-10" style="margin-top:5px">
+                @using (Html.BeginForm("Add_New_Allergies", "Doctor", FormMethod.Post, new { style = "display:inline-block" }))
+                {
+                    @Html.Hidden("Patient_Id", (long)ViewBag.Patient_Id)
+                    <input type="text" class="form-control" name="Allergies" placeholder="add new" maxlength="50" required />
+                    @Html.ValidationMessage("Allergies", "", new { @class = "text-danger" })
+                    <button type="submit" class="btn btn-danger" style="margin-top:5px">Add New</button>
+                }
+
+            </div>
+        </div>
+    </div>
+    <hr />
+    <br />
+</div>
+
+

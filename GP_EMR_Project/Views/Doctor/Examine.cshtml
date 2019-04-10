@@ -6,107 +6,125 @@
 }
 
     <br />
-    <div class="contentt">
+    <div class="contentt" >
         <h3 class="text-center" style="color:grey">General Examintion</h3>
         <hr />
-        <div class="container">
-            <div class="table-responsive">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light text-center" style="width:20%; margin-left:40%;">
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav" style="text-align:center;">
+                        <li class="nav-item  dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Medical Record
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href=@Url.Action("Family_History","Doctor",new { id = Model.Patient_Id})>Family History</a>
+                                <a class="dropdown-item" href=@Url.Action("Diseases","Doctor",new { id = Model.Patient_Id})>Diseases</a>
+                                <a class="dropdown-item" href=@Url.Action("Examinations","Doctor",new { id = Model.Patient_Id})>Examinations</a>
+                                <a class="dropdown-item" href=@Url.Action("Reviews","Doctor",new { id = Model.Patient_Id})>Reviews</a>
+                                <a class="dropdown-item" href=@Url.Action("Operations","Doctor",new { id = Model.Patient_Id})>Operations</a>
+                                <a class="dropdown-item" href=@Url.Action("Laboratories_Radiology","Doctor",new { id = Model.Patient_Id})>Laboratories & Radiology</a>
+                                <a class="dropdown-item" href=@Url.Action("Child_FollowUp_Form","Doctor",new { id = Model.Patient_Id})>Child FollowUp Form</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                </nav>
+        <br />
+                <div class="container">
+                    <div class="table-responsive">
+                        <table class=" main-table table table-bordered table-hover text-center">
 
-                <table class=" main-table table table-bordered table-hover text-center">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.Patient_Id)
 
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        @Html.HiddenFor(model => model.Patient_Id)
+                                <tr>
+                                    <th>@Html.LabelFor(model => model.Length)</th>
+                                    <th>@Html.LabelFor(model => model.Weight)</th>
+                                    <th>@Html.LabelFor(model => model.Diabetes)</th>
+                                    <th> @Html.LabelFor(model => model.Temperature)</th>
+                                </tr>
 
-                        <tr>
-                            <th>@Html.LabelFor(model => model.Length)</th>
-                            <th>@Html.LabelFor(model => model.Weight)</th>
-                            <th>@Html.LabelFor(model => model.Diabetes)</th>
-                            <th> @Html.LabelFor(model => model.Temperature)</th>
-                        </tr>
+                                <tr>
+                                    <td>
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Length, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Length, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
 
-                        <tr>
-                            <td>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Length, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Length, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
+                                    <td>
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
 
-                            <td>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
-
-                            <td>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Diabetes, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Diabetes, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
+                                    <td>
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Diabetes, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Diabetes, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
 
 
 
-                            <td>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Temperature, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
+                                    <td>
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Temperature, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Temperature, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
 
 
-                        </tr>
+                                </tr>
 
-                        <tr>
-                            <th>Blood Type</th>
-                            <th>Blood Pressure</th>
-                        </tr>
+                                <tr>
+                                    <th>Blood Type</th>
+                                    <th>Blood Pressure</th>
+                                    <th> Habits</th>
+                                    <th>Allergies</th>
+                                </tr>
 
-                        <tr>
-                            <td>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Blood_Type, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Blood_Type, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
+                                <tr>
+                                    <td>
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Blood_Type, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Blood_Type, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
 
-                            <td>
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Blood_Pressure, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Blood_Pressure, "", new { @class = "text-danger" })
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>  
-                            
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-info" style="width:100px">   Save   </button>
-                                    <hr />
-                                </div>
+                                    <td>
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.Blood_Pressure, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Blood_Pressure, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
 
-                        </tr>
-                        <tr>
-                            <th> Habits</th>
-                            <th>Allergies</th>
-                        </tr>
-                    }
-                        <tr>
-                            
-                            <td>
-                                @Html.ActionLink("Show","Show_Habits","Doctor",new { id = Model.Patient_Id},new { @class="btn btn-outline-primary"})
-                            </td>
+                                    <td>
+                                        @Html.ActionLink("Show", "Show_Habits", "Doctor", new { id = Model.Patient_Id }, new { @class = "btn btn-outline-primary" })
+                                    </td>
 
-                            <td>
-                               
-                            </td>
-                        </tr>
-                    </table>
-                   
-                    <hr />
+                                    <td>
+                                        @Html.ActionLink("Show", "Show_Allergies", "Doctor", new { id = Model.Patient_Id }, new { @class = "btn btn-outline-primary" })
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-info" style="width:100px">   Save   </button>
+                                        <button class="btn btn-info" style="text-align:center; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+                                        <hr />
+                                    </div>
+
+                                </tr>
+                                <tr></tr>
+                            }
+                        </table>
+
+                        <hr />
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>

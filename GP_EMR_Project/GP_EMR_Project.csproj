@@ -375,6 +375,9 @@
     <Content Include="Views\Doctor\Index_Patients.cshtml" />
     <Content Include="Views\Doctor\Examine.cshtml" />
     <Content Include="Views\Doctor\Show_Habits.cshtml" />
+    <Content Include="Views\Doctor\Show_Allergies.cshtml" />
+    <Content Include="Views\Doctor\Family_History.cshtml" />
+    <Content Include="Views\Doctor\Diseases.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

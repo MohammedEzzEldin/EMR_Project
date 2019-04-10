@@ -31,23 +31,6 @@
                         <span class="h">Health</span><span class="c">Care</span>
                     </div>
                 </div>
-                @*
-        <div class=" f col-lg-6 col-sm-7">
-
-            @using (Html.BeginForm("Search", "Admin", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
-            {
-                @Html.DropDownList("Filter_by",new List<SelectListItem>
-               {
-                   new SelectListItem(){Text ="Hospitals",Value="Hospitals"},
-                   new SelectListItem(){Text="Doctors",Value="Doctors"},
-                    new SelectListItem(){Text="Patients",Value="Patients"},
-               },"Filter by", new { @class = "ml-auto form-control mr-sm-2" })
-                @Html.Editor("Search", new { htmlAttributes = new { @class = " ml-auto form-control mr-sm-2", type = "search", name = "Search", placeholder = "email or name" } })
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            }
-
-        </div>
-                *@
             </div>
         </div>
     </div>
