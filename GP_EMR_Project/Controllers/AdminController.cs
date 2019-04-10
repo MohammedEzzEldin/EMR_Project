@@ -60,34 +60,7 @@ namespace GP_EMR_Project.Controllers
             return View(us);
         }
 
-        // GET: Admin/Create
-        public ActionResult Create()
-        {
-            ViewBag.Person_Id = new SelectList(db.Doctors, "Doctor_Id", "Acadimic_Degree");
-            ViewBag.Person_Id = new SelectList(db.Patients, "Patient_Id", "Learning_Status");
-            ViewBag.Person_Id = new SelectList(db.Users, "User_Id", "Email");
-            return View();
-        }
-
-        // POST: Admin/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Person_Id,First_Name,Last_Name,Birth_Date,National_Id,Nationality,Gender")] Person person)
-        {
-            if (ModelState.IsValid)
-            {
-                db.People.Add(person);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Person_Id = new SelectList(db.Doctors, "Doctor_Id", "Acadimic_Degree", person.Person_Id);
-            ViewBag.Person_Id = new SelectList(db.Patients, "Patient_Id", "Learning_Status", person.Person_Id);
-            ViewBag.Person_Id = new SelectList(db.Users, "User_Id", "Email", person.Person_Id);
-            return View(person);
-        }
+   
 
         // GET: Admin/Edit/5
         public ActionResult Edit(long? id)
@@ -185,32 +158,6 @@ namespace GP_EMR_Project.Controllers
                 return RedirectToAction("Index","Admin");
             }
             return View(user);
-        }
-
-        // GET: Admin/Delete/5
-        public ActionResult Delete(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Person person = db.People.Find(id);
-            if (person == null)
-            {
-                return HttpNotFound();
-            }
-            return View(person);
-        }
-
-        // POST: Admin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
-        {
-            Person person = db.People.Find(id);
-            db.People.Remove(person);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -555,6 +502,42 @@ namespace GP_EMR_Project.Controllers
             else if (us.User_Type == 4)
             {
                 return RedirectToAction("Index_Patients");
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public ActionResult Delete()
+        {
+            if(Session["UserID"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if(ModelState.IsValid)
+            {
+                long? id = Int64.Parse(Request.Form["Id"]);
+                if(id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var user = db.Users.Find(id);
+                if(user == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                if(user.User_Type == 2)
+                {
+                    db.Medical_Organization.Remove(user.Medical_Organization);
+                    db.SaveChanges();
+                }
+                if(user.User_Type == 3)
+                {
+                    db.Doctors.Remove(user.Person.Doctor);
+                    db.SaveChanges();
+                    db.People.Remove(user.Person);
+                    db.SaveChanges();
+                }
+                db.Users.Remove(user);
+                db.SaveChanges();
             }
             return RedirectToAction("Index");
         }

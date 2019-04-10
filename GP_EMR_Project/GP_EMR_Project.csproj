@@ -312,8 +312,6 @@
     <Content Include="Views\Home\Partial_Doctors.cshtml" />
     <Content Include="Views\Home\Partial_Medical_Organizations.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
-    <Content Include="Views\Admin\Create.cshtml" />
-    <Content Include="Views\Admin\Delete.cshtml" />
     <Content Include="Views\Admin\Details.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />

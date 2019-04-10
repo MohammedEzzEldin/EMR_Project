@@ -170,7 +170,13 @@
 
                     @if (item.Person.User.Status_Of_Account == 0)
                     {
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Doctor_Id }, new { @class = "btn btn-outline-danger" })
+
+                    using (Html.BeginForm("Delete", "Admin", FormMethod.Post,new { style="display:inline-block"}))
+                    {
+                        @Html.Hidden("Id",item.Person.Doctor.Doctor_Id)
+                        <button type="submit" class = "btn btn-outline-danger">Delete</button>
+                    }
+
                     }
 
                 </td>

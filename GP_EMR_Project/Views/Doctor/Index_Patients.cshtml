@@ -5,48 +5,80 @@
     Layout = "~/Views/Shared/_Doctor.cshtml";
 }
 
-<h2>Index_Patients</h2>
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey;">BOOKINGS</h3>
+    <hr />
+    <div class="text-center" style="">
+        <div class="col-4" style="width:40%; display:inline-block; border:5px solid silver; padding:10px;">
+            @using (Html.BeginForm("Search_In_Pateint", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Doctor_Id", (long?)ViewBag.Doctor_Id)
+                @Html.DropDownList("Search_By",
+                    new SelectList(new List<SelectListItem>
+                    {
+                        new SelectListItem{Value="NID",Text="National ID",Selected=true},
+                        new SelectListItem{Value="Fname",Text="First Name"},
+                        new SelectListItem{Value="Lname",Text="Last Name"}
+                    },"value","text"),"Search by",new { @class="form-control",required="true"})
+                <input class=" ml-auto form-control mr-sm-auto" type="search" name="Search" placeholder="Search" style="text-align:center" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
+        </div>
+        <div style="display:inline-block; border:5px solid silver; padding:10px">
+            <!--Search by date-->
+            @using (Html.BeginForm("Search_Date_Patients", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
+            {
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Booking_Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.hour)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Doctor.Acadimic_Degree)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Patient.Learning_Status)
-        </th>
-        <th></th>
-    </tr>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Doctor_Id", (long?)ViewBag.Doctor_Id)
+                <input class=" ml-auto form-control mr-sm-2" type="date" id="Search" name="Search" placeholder="Select Date" style="text-align:center" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
+        </div>
+    </div>
+    <hr />
+    <button class="btn btn-outline-info my-2 my-sm-0" style=" margin-left: 45%; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+    <hr>
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered table-hover text-center">
+                <tr>
+                    <th>Date</th>
+                    <th>Hour</th>
+                    <th>Patient</th>
+                    <th>National Id</th>
+                    <th>Manage</th>
+                </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Booking_Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.hour)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Doctor.Acadimic_Degree)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patient.Learning_Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Permission_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Permission_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Permission_Id })
-        </td>
-    </tr>
-}
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="font-weight:bold">@item.Booking_Date.ToShortDateString()</td>
+                        <td style=" font-weight:bold">@item.hour</td>
+                        <td style=" font-weight:bold">@item.Patient.Person.First_Name @item.Patient.Person.Last_Name</td>
+                        <td style=" font-weight:bold">@item.Patient.Person.National_Id</td>
+                        <td>
+                            @Html.ActionLink("Examine", "Doctor", new { id = item.Patient_Id }, new { @class = "btn btn-outline-primary" })
 
-</table>
+                            @using (Html.BeginForm("End_Examination", "Admin", FormMethod.Post, new { style = "display:inline-block" }))
+                            {
+                                @Html.Hidden("Patient_Id", item.Patient_Id)
+                                @Html.Hidden("Doctor_Id", item.Doctor_Id)
+                                @Html.Hidden("date", item.Booking_Date)
+                                <button class="btn btn-danger">End Examination</button>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <hr />
+            <br />
+        </div>
+    </div>
+</div>
+

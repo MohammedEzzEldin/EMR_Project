@@ -53,6 +53,10 @@ namespace GP_EMR_Project.Controllers
         // GET: Doctor/Details/5
         public ActionResult Details(long? id)
         {
+            if(!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -65,36 +69,15 @@ namespace GP_EMR_Project.Controllers
             return View(doctor);
         }
 
-        // GET: Doctor/Create
-        public ActionResult Create()
-        {
-            ViewBag.Department_Id = new SelectList(db.Departments, "Department_Id", "Department_Name");
-            ViewBag.Doctor_Id = new SelectList(db.People, "Person_Id", "First_Name");
-            return View();
-        }
-
-        // POST: Doctor/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Doctor_Id,Medium_Rate,Acadimic_Degree,Functional_Degree,Spacialization,Medical_Org_Id,Department_Id")] Doctor doctor)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Doctors.Add(doctor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Department_Id = new SelectList(db.Departments, "Department_Id", "Department_Name", doctor.Department_Id);
-            ViewBag.Doctor_Id = new SelectList(db.People, "Person_Id", "First_Name", doctor.Doctor_Id);
-            return View(doctor);
-        }
-
+       
         // GET: Doctor/Edit/5
         public ActionResult Edit(long? id)
         {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -154,32 +137,7 @@ namespace GP_EMR_Project.Controllers
             return View(doctor);
         }
 
-        // GET: Doctor/Delete/5
-        public ActionResult Delete(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Doctor doctor = db.Doctors.Find(id);
-            if (doctor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(doctor);
-        }
-
-        // POST: Doctor/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
-        {
-            Doctor doctor = db.Doctors.Find(id);
-            db.Doctors.Remove(doctor);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+ 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -191,7 +149,12 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Manage_Account(long?id)
         {
-          if(id ==null)
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (id ==null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -205,7 +168,11 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Schedule(long? id)
         {
-            if(id == null)
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -214,12 +181,19 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
+            var med = db.Medical_Organization.Find(doctor.Medical_Org_Id);
+            ViewBag.Medical_Organization_Photo = med.User.Photo_Url.Split(' ')[0];
             var schedule = db.Doctor_Schedule.Where(model => model.doctor_id == id);
             return View(schedule.ToList());
         }
 
         public ActionResult Index_Patients(long? id)
         {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -229,8 +203,97 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            var bookings = db.Permissions.Where(model => model.Doctor_Id == id);
-            return View(bookings.ToList().OrderByDescending(model => model.Booking_Date));
+            var bookings = db.Permissions.Where(model => model.Doctor_Id == id).ToList();
+            bookings = DeletePastBookings(bookings);
+            bookings = db.Permissions.Where(model => model.Booking_Date.Year == DateTime.Now.Year && model.Booking_Date.Month == DateTime.Now.Month && model.Booking_Date.Day == DateTime.Now.Day).ToList();
+            bookings = bookings.OrderBy(model => model.hour).ToList();
+
+            ViewBag.Doctor_Id = doctor.Doctor_Id;
+            return View(bookings);
+        }
+        [NonAction]
+        public List<Permission> DeletePastBookings(List<Permission> pr)
+        {
+            if(pr == null)
+            {
+                return pr;
+            }
+            foreach(var item in pr)
+            {
+                if(item.Booking_Date.Year <= DateTime.Now.Year)
+                {
+                    if (item.Booking_Date.Month <= DateTime.Now.Month)
+                    {
+                        if (item.Booking_Date.Day < DateTime.Now.Day)
+                        {
+                            pr.ToList().Remove(item);
+                            db.Permissions.Remove(item);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+            }
+            return pr;
+        }
+        
+        [HttpPost]
+        public ActionResult Search_In_Pateint(string Search)
+        {
+            if (Request.Form["Doctor_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Doctor doctor = db.Doctors.Find(Int64.Parse(Request.Form["Doctor_Id"]));
+            if (doctor == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Doctor_Id = doctor.Doctor_Id;
+            var patients = db.Permissions.Where(model => model.Doctor_Id == doctor.Doctor_Id);
+            switch (Request.Form["Search_By"])
+            {
+                case "NID":
+                    return View("Index_Patients", patients.Where(pr => pr.Patient.Person.National_Id.Contains(Search)).OrderBy(model => model.hour));
+                case "Fname":
+                    return View("Index_Patients", patients.Where(pr => pr.Patient.Person.First_Name.Contains(Search)).OrderBy(model => model.hour));
+                case "Lname":
+                    return View("Index_Patients", patients.Where(pr => pr.Patient.Person.Last_Name.Contains(Search)).OrderBy(model => model.hour));
+                default:
+                    break;
+            }
+            return RedirectToAction("Index_Patients",new { id = doctor.Doctor_Id});
+        }
+
+        [HttpPost]
+        public ActionResult Search_Date_Patients(DateTime Search)
+        {
+            if (Request.Form["Doctor_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Doctor doctor = db.Doctors.Find(Int64.Parse(Request.Form["Doctor_Id"]));
+            if (doctor == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Doctor_Id = doctor.Doctor_Id;
+
+            if (Search.Year <= DateTime.Now.Year)
+            {
+                if(Search.Month <= DateTime.Now.Month)
+                {
+                    if(Search.Day < DateTime.Now.Day)
+                    {
+                        ModelState.AddModelError("Search", "Date In The Past");
+                        return View("Index_Patients", db.Permissions.Where(model => model.Booking_Date.Year == DateTime.Now.Year &&
+                         model.Booking_Date.Month == DateTime.Now.Month &&
+                         model.Booking_Date.Day == DateTime.Now.Day).OrderBy(model => model.hour).ToList());
+                    }
+                }
+            }
+            return View("Index_Patients", db.Permissions.Where(model => model.Booking_Date.Year == Search.Year &&
+                          model.Booking_Date.Month ==Search.Month &&
+                          model.Booking_Date.Day == Search.Day).OrderBy(model => model.hour).ToList());
         }
 
         [HttpPost]
