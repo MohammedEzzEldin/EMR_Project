@@ -51,6 +51,10 @@
         <AssociationConnector Association="EMR_GP_DBModel.FK_Permission_Patient" ManuallyRouted="false" />
         <AssociationConnector Association="EMR_GP_DBModel.FK_Reviews_Patient_Id" ManuallyRouted="false" />
         <AssociationConnector Association="EMR_GP_DBModel.FK_Person_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Allergy" Width="1.5" PointX="9.75" PointY="26.625" />
+        <EntityTypeShape EntityType="EMR_GP_DBModel.Habit" Width="1.5" PointX="9.75" PointY="29.125" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Allergies_Patient" />
+        <AssociationConnector Association="EMR_GP_DBModel.FK_Habits_Patient" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

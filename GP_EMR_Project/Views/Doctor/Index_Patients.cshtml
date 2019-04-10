@@ -62,14 +62,14 @@
                         <td style=" font-weight:bold">@item.Patient.Person.First_Name @item.Patient.Person.Last_Name</td>
                         <td style=" font-weight:bold">@item.Patient.Person.National_Id</td>
                         <td>
-                            @Html.ActionLink("Examine", "Doctor", new { id = item.Patient_Id }, new { @class = "btn btn-outline-primary" })
+                            @Html.ActionLink("Examine", "Examine", "Doctor", new { id = item.Patient_Id }, new { @class = "btn btn-outline-primary" })
 
-                            @using (Html.BeginForm("End_Examination", "Admin", FormMethod.Post, new { style = "display:inline-block" }))
+                            @using (Html.BeginForm("End_Examination", "Doctor", FormMethod.Post, new { style = "display:inline-block" }))
                             {
                                 @Html.Hidden("Patient_Id", item.Patient_Id)
                                 @Html.Hidden("Doctor_Id", item.Doctor_Id)
                                 @Html.Hidden("date", item.Booking_Date)
-                                <button class="btn btn-danger">End Examination</button>
+                                <button type="submit" class="btn btn-danger">End Examination</button>
                             }
                         </td>
                     </tr>

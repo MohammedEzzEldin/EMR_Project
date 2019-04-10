@@ -297,6 +297,70 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult End_Examination()
+        {
+            long? patient_id = Int64.Parse(Request.Form["Patient_Id"]);
+            long? doctor_id = Int64.Parse(Request.Form["Doctor_Id"]);
+            DateTime date = DateTime.Parse(Request.Form["date"]);
+            if(patient_id == null || doctor_id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var pr = db.Permissions.Where(model => model.Doctor_Id == doctor_id && model.Patient_Id == patient_id);
+            pr = pr.Where(model => model.Booking_Date.Year == date.Year && model.Booking_Date.Month == date.Month && model.Booking_Date.Day == date.Day);
+            if(pr == null)
+            {
+                return RedirectToAction("Index_Patients", new { id = doctor_id });
+            }
+            var item = pr.First();
+            db.Permissions.Remove(item);
+            db.SaveChanges();
+            return RedirectToAction("Index_Patients",new { id = doctor_id});
+        }
+
+        public ActionResult Examine(long? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            General_Examination g = db.General_Examination.Where(model => model.Patient_Id == id).SingleOrDefault();
+
+          
+
+            return View(g);
+        }
+
+        [HttpPost]
+        public ActionResult Examine()
+        {
+            return RedirectToAction("Logout", "Home");
+        }
+
+        public ActionResult Show_Habits(long?id)
+        {
+            if(id ==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            General_Examination g = db.General_Examination.Find(id);
+            ViewBag.Patient_Id = id;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add_New_Habit()
+        {
+          
+            return RedirectToAction("Examine");
+        }
+        [HttpPost]
         public ActionResult Upload_Photo(HttpPostedFileBase file)
         {
             User u = db.Users.Find((long)Int64.Parse(Request.Form["Doctor_Id"]));

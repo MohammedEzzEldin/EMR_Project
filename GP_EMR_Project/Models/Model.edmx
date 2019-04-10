@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EMR_GP_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Allergies">
+          <Key>
+            <PropertyRef Name="Allergies_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Allergies_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Allergies_Name" Type="nchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Child_FollowUp_Form">
           <Key>
             <PropertyRef Name="Patient_Id" />
@@ -103,9 +111,15 @@
           <Property Name="Blood_Type" Type="nchar" MaxLength="3" />
           <Property Name="Blood_Pressure" Type="nchar" MaxLength="50" />
           <Property Name="Diabetes" Type="int" />
-          <Property Name="Habits" Type="nchar" MaxLength="200" />
           <Property Name="Temperature" Type="int" />
-          <Property Name="Allergies" Type="nchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Habits">
+          <Key>
+            <PropertyRef Name="Habit_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="bigint" Nullable="false" />
+          <Property Name="Habit_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Habit_Name" Type="nchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Labs">
           <Key>
@@ -201,6 +215,18 @@
           <Property Name="City" Type="nchar" MaxLength="20" />
           <Property Name="Photo_Url" Type="nchar" MaxLength="500" />
         </EntityType>
+        <Association Name="FK_Allergies_Patient">
+          <End Role="General_Examination" Type="Self.General_Examination" Multiplicity="1" />
+          <End Role="Allergies" Type="Self.Allergies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="General_Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Allergies">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Child_FollowUp_Form_Patient">
           <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
           <End Role="Child_FollowUp_Form" Type="Self.Child_FollowUp_Form" Multiplicity="0..1" />
@@ -381,6 +407,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Habits_Patient">
+          <End Role="General_Examination" Type="Self.General_Examination" Multiplicity="1" />
+          <End Role="Habits" Type="Self.Habits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="General_Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Habits">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Labs_Org">
           <End Role="Medical_Organization" Type="Self.Medical_Organization" Multiplicity="1" />
           <End Role="Labs" Type="Self.Labs" Multiplicity="*" />
@@ -538,6 +576,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="EMR_GP_DBModelStoreContainer">
+          <EntitySet Name="Allergies" EntityType="Self.Allergies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Child_FollowUp_Form" EntityType="Self.Child_FollowUp_Form" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diseases" EntityType="Self.Diseases" Schema="dbo" store:Type="Tables" />
@@ -548,6 +587,7 @@
           <EntitySet Name="Examination" EntityType="Self.Examination" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Family_History" EntityType="Self.Family_History" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="General_Examination" EntityType="Self.General_Examination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Habits" EntityType="Self.Habits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Labs" EntityType="Self.Labs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Medical_Organization" EntityType="Self.Medical_Organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Operations" EntityType="Self.Operations" Schema="dbo" store:Type="Tables" />
@@ -556,6 +596,10 @@
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Allergies_Patient" Association="Self.FK_Allergies_Patient">
+            <End Role="General_Examination" EntitySet="General_Examination" />
+            <End Role="Allergies" EntitySet="Allergies" />
+          </AssociationSet>
           <AssociationSet Name="FK_Child_FollowUp_Form_Patient" Association="Self.FK_Child_FollowUp_Form_Patient">
             <End Role="Patient" EntitySet="Patient" />
             <End Role="Child_FollowUp_Form" EntitySet="Child_FollowUp_Form" />
@@ -615,6 +659,10 @@
           <AssociationSet Name="FK_General_Examination_Patient" Association="Self.FK_General_Examination_Patient">
             <End Role="Patient" EntitySet="Patient" />
             <End Role="General_Examination" EntitySet="General_Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Habits_Patient" Association="Self.FK_Habits_Patient">
+            <End Role="General_Examination" EntitySet="General_Examination" />
+            <End Role="Habits" EntitySet="Habits" />
           </AssociationSet>
           <AssociationSet Name="FK_Labs_Org" Association="Self.FK_Labs_Org">
             <End Role="Medical_Organization" EntitySet="Medical_Organization" />
@@ -792,10 +840,10 @@
           <Property Name="Blood_Type" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
           <Property Name="Blood_Pressure" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Diabetes" Type="Int32" />
-          <Property Name="Habits" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
           <Property Name="Temperature" Type="Int32" />
-          <Property Name="Allergies" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_General_Examination_Patient" FromRole="General_Examination" ToRole="Patient" />
+          <NavigationProperty Name="Allergies1" Relationship="EMR_GP_DBModel.FK_Allergies_Patient" FromRole="General_Examination" ToRole="Allergy" />
+          <NavigationProperty Name="Habits1" Relationship="EMR_GP_DBModel.FK_Habits_Patient" FromRole="General_Examination" ToRole="Habit" />
         </EntityType>
         <EntityType Name="Lab">
           <Key>
@@ -1392,7 +1440,59 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Person" EntitySet="People" />
           </AssociationSet>
+          <EntitySet Name="Allergies" EntityType="EMR_GP_DBModel.Allergy" />
+          <EntitySet Name="Habits" EntityType="EMR_GP_DBModel.Habit" />
+          <AssociationSet Name="FK_Allergies_Patient" Association="EMR_GP_DBModel.FK_Allergies_Patient">
+            <End Role="General_Examination" EntitySet="General_Examination" />
+            <End Role="Allergy" EntitySet="Allergies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Habits_Patient" Association="EMR_GP_DBModel.FK_Habits_Patient">
+            <End Role="General_Examination" EntitySet="General_Examination" />
+            <End Role="Habit" EntitySet="Habits" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Allergy">
+          <Key>
+            <PropertyRef Name="Allergies_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Allergies_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Allergies_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="General_Examination" Relationship="EMR_GP_DBModel.FK_Allergies_Patient" FromRole="Allergy" ToRole="General_Examination" />
+        </EntityType>
+        <EntityType Name="Habit">
+          <Key>
+            <PropertyRef Name="Habit_Id" />
+          </Key>
+          <Property Name="Patient_Id" Type="Int64" Nullable="false" />
+          <Property Name="Habit_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Habit_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="General_Examination" Relationship="EMR_GP_DBModel.FK_Habits_Patient" FromRole="Habit" ToRole="General_Examination" />
+        </EntityType>
+        <Association Name="FK_Allergies_Patient">
+          <End Type="EMR_GP_DBModel.General_Examination" Role="General_Examination" Multiplicity="1" />
+          <End Type="EMR_GP_DBModel.Allergy" Role="Allergy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="General_Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Allergy">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Habits_Patient">
+          <End Type="EMR_GP_DBModel.General_Examination" Role="General_Examination" Multiplicity="1" />
+          <End Type="EMR_GP_DBModel.Habit" Role="Habit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="General_Examination">
+              <PropertyRef Name="Patient_Id" />
+            </Principal>
+            <Dependent Role="Habit">
+              <PropertyRef Name="Patient_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1505,9 +1605,7 @@
                 <ScalarProperty Name="Blood_Type" ColumnName="Blood_Type" />
                 <ScalarProperty Name="Blood_Pressure" ColumnName="Blood_Pressure" />
                 <ScalarProperty Name="Diabetes" ColumnName="Diabetes" />
-                <ScalarProperty Name="Habits" ColumnName="Habits" />
                 <ScalarProperty Name="Temperature" ColumnName="Temperature" />
-                <ScalarProperty Name="Allergies" ColumnName="Allergies" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1610,6 +1708,24 @@
                 <ScalarProperty Name="Status_Of_Account" ColumnName="Status_Of_Account" />
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="Photo_Url" ColumnName="Photo_Url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Allergies">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Allergy">
+              <MappingFragment StoreEntitySet="Allergies">
+                <ScalarProperty Name="Allergies_Name" ColumnName="Allergies_Name" />
+                <ScalarProperty Name="Allergies_Id" ColumnName="Allergies_Id" />
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Habits">
+            <EntityTypeMapping TypeName="EMR_GP_DBModel.Habit">
+              <MappingFragment StoreEntitySet="Habits">
+                <ScalarProperty Name="Habit_Name" ColumnName="Habit_Name" />
+                <ScalarProperty Name="Habit_Id" ColumnName="Habit_Id" />
+                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

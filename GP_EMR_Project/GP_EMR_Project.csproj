@@ -143,6 +143,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Allergy.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Child_FollowUp_Form.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -171,6 +174,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\General_Examination.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Habit.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Lab.cs">
@@ -367,6 +373,8 @@
     <Content Include="Views\Medical_Organization\Register_Doctor.cshtml" />
     <Content Include="Views\Doctor\Schedule.cshtml" />
     <Content Include="Views\Doctor\Index_Patients.cshtml" />
+    <Content Include="Views\Doctor\Examine.cshtml" />
+    <Content Include="Views\Doctor\Show_Habits.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

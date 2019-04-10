@@ -43,5 +43,7 @@ namespace GP_EMR_Project.Models
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Allergy> Allergies { get; set; }
+        public virtual DbSet<Habit> Habits { get; set; }
     }
 }
