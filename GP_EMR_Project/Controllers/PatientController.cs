@@ -669,7 +669,7 @@ namespace GP_EMR_Project.Controllers
                 default:
                     break;
             }
-            return RedirectToAction("Examinations");
+            return RedirectToAction("Examinations",new { id = pt.Patient_Id});
         }
 
         [HttpPost]

@@ -1,0 +1,51 @@
+﻿@model GP_EMR_Project.Models.Disease
+
+@{
+    ViewBag.Title = "Add_Diseases";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+<br />
+<div class="text-center">
+    <h2 style="color:gray">Add New</h2>
+    <hr />
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Hidden("Patient_Id", (long)ViewBag.Patient_Id)
+
+            <div class="form-group">
+                <h3>Disease Name</h3>
+                <div style="width:50%; margin-left:25%">
+                    @Html.EditorFor(model => model.Disease_Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Disease Name" } })
+                    @Html.ValidationMessageFor(model => model.Disease_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <h3>Disease Type</h3>
+                <div style="width:50%; margin-left:25%">
+                    @Html.EditorFor(model => model.Disease_Type, new { htmlAttributes = new { @class = "form-control", placeholder = "Disease Type" } })
+                    @Html.ValidationMessageFor(model => model.Disease_Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div>
+                    <input type="submit" value="Add " class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Diseases", new { id = (long)ViewBag.Patient_Id })
+    </div>
+    <br />
+</div>

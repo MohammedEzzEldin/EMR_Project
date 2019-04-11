@@ -1,0 +1,94 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Examination>
+
+@{
+    ViewBag.Title = "Examinations";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey">Medical Examinations</h3>
+    <hr />
+    <div class="" style="width:100%;">
+        <div class="" style="width:40%; display:inline-block; margin-left:8%; border:5px solid silver; padding:10px;">
+            @using (Html.BeginForm("Search_In_Medical_Examinations", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
+                @Html.DropDownList("Search_By", new SelectList(new List<SelectListItem>{
+                                                                         new SelectListItem{Value = "Hospital",  Text = "Hospital Name" },
+                                                                         new SelectListItem{Value = "Doctor",  Text = "Doctor Name" },
+                                                                         new SelectListItem{Value= "Diagnosis",Text="Diagnosis"},
+                                                                         new SelectListItem{Value="Treatments",Text="Treatments"}
+                                                                         }, "value", "text"), "Search By", new { @class = "form-control",required = true })
+                <input class=" ml-auto form-control mr-sm-auto" type="search" id="Search" name="Search" placeholder="Search" style="text-align:center;" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
+        </div>
+        <div class="" style="display:inline-block; border:5px solid silver; padding:10px">
+            <!--order by hospital or doctor or date or alpha diagnosis or alpha treatment-->
+            @using (Html.BeginForm("Order_Examination", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
+                @Html.DropDownList("Order_By",new SelectList(new List<SelectListItem> {
+                                                                       new SelectListItem{Value = "Hospital",  Text = "Hospital" },
+                                                                       new SelectListItem{Value = "Doctor",  Text = "Doctor" },
+                                                                       new SelectListItem{Value= "Recent_Dates",Text="Recent Dates"},
+                                                                       new SelectListItem{Value="Old_Dates",Text="Old Dates"}
+                  }, "value", "text"), "Order By", new { @class = "form-control", required = true })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" style="margin-left:5px" value="Arrange" type="submit">
+            }
+        </div>
+        <div style="display:inline-block; border:5px solid silver; padding:10px">
+            <!--Search by date-->
+            @using (Html.BeginForm("Search_Date_Examination", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
+                <input class=" ml-auto form-control mr-sm-2" type="date" id="Search" name="Search" placeholder="Select Date" style="text-align:center" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="text-center">
+        <button class="btn btn-outline-info my-2 my-sm-0" style=" width:150px;" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+        @Html.ActionLink("Add New", "Add_Examination", new { id = (long)ViewBag.Patient_Id }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Back to List", "Examine", new { id = (long)ViewBag.Patient_Id }, new { @class = "btn btn-outline-info" })
+    </div>
+    <hr />
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered table-hover text-center">
+                <tr>
+                    <th>The Diagnosis</th>
+                    <th>The Treatments</th>
+                    <th>Date</th>
+                    <th>Hospital</th>
+                    <th>Doctor</th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.exm_description_result</td>
+                        <td>@item.exm_midicine</td>
+                        <td>@item.exm_date.ToShortDateString()</td>
+                        <td>@item.Medical_Organization.Medical_Org_Name</td>
+                        <td>@item.Doctor.Person.First_Name @item.Doctor.Person.Last_Name</td>
+                    </tr>
+                }
+
+
+            </table>
+            <hr />
+        </div>
+    </div>
+</div>
+
+
