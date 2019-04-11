@@ -603,7 +603,7 @@ namespace GP_EMR_Project.Controllers
                 default:
                     break;
             }
-            return RedirectToAction("Family_History");
+            return RedirectToAction("Family_History",new { id = pt.Patient_Id });
         }
 
         [HttpPost]

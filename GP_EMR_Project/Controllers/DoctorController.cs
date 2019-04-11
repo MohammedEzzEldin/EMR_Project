@@ -265,6 +265,45 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult Search_In_Family_History(string Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            IQueryable<Family_History> fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id);
+
+            var items = fm.Select(model => model.Disease_Type).Distinct().ToList();
+            List<SelectListItem> list_item = new List<SelectListItem>();
+            foreach (var item in items)
+            {
+                list_item.Add(new SelectListItem
+                {
+                    Value = item,
+                    Text = item
+                });
+            }
+            SelectList types = new SelectList(list_item, "Value", "Text");
+            ViewBag.types = types;
+
+            if (Request.Form["Search_By"] == "Name")
+            {
+                fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && f.Disease_Name.Equals(Search,StringComparison.InvariantCultureIgnoreCase));
+            }
+            else if (Request.Form["Search_By"] == "Type")
+            {
+                fm = fm.Where(f => f.Disease_Type.Equals(Search,StringComparison.InvariantCultureIgnoreCase));
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+
+            return View("Family_History", fm.ToList());
+        }
+        [HttpPost]
         public ActionResult Search_Date_Patients(DateTime Search)
         {
             if (Request.Form["Doctor_Id"] == null)
@@ -335,8 +374,6 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             General_Examination g = db.General_Examination.Where(model => model.Patient_Id == id).SingleOrDefault();
-
-          
 
             return View(g);
         }
@@ -420,6 +457,28 @@ namespace GP_EMR_Project.Controllers
             ViewBag.Allergies = allergies;
             return View();
         }
+
+     
+        public ActionResult Add_Family_History(long? id)
+        {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = id;
+
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Add_New_Habit()
         {
@@ -458,6 +517,23 @@ namespace GP_EMR_Project.Controllers
             db.Allergies.Add(h);
             db.SaveChanges();
             return RedirectToAction("Show_Allergies", new { id = Id });
+        }
+
+        [HttpPost]
+        public ActionResult Add_Family_History([Bind(Include = "Disease_Name,Disease_Type")] Family_History fm)
+        {
+            if(Int64.Parse(Request.Form["Patient_Id"]) == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            long Id = Int64.Parse(Request.Form["Patient_Id"]); 
+            if (ModelState.IsValid)
+            {
+                fm.Patient_Id = Id;
+                db.Family_History.Add(fm);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Family_History", new { id =  Id});
         }
 
         [HttpPost]
@@ -522,8 +598,39 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Family_History(long?id)
         {
-            return View();
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            List<Family_History> f = db.Family_History.Where(model => model.Patient_Id == id).ToList();
+            ViewBag.Patient_Id = id;
+
+            var items = f.Select(model => model.Disease_Type).Distinct().ToList();
+            List<SelectListItem> list_item = new List<SelectListItem>();
+            foreach (var item in items)
+            {
+                list_item.Add(new SelectListItem
+                {
+                    Value = item,
+                    Text = item
+                });
+            }
+            SelectList types = new SelectList(list_item, "Value", "Text");
+            ViewBag.types = types;
+
+            return View(f);
         }
+
         [HttpPost]
         public ActionResult Family_History()
         {
@@ -594,6 +701,86 @@ namespace GP_EMR_Project.Controllers
         public ActionResult Child_FollowUp_Form()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Order_By_Family_History()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            List<Family_History> fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id).ToList();
+            var items = fm.Select(model => model.Disease_Type).Distinct().ToList();
+            List<SelectListItem> list_item = new List<SelectListItem>();
+            foreach (var item in items)
+            {
+                list_item.Add(new SelectListItem
+                {
+                    Value = item,
+                    Text = item
+                });
+            }
+            SelectList types = new SelectList(list_item, "Value", "Text");
+            ViewBag.types = types;
+
+
+            switch (Request.Form["Order_By"])
+            {
+                case "Desc_Disease":
+                    return View("Family_History", fm.OrderByDescending(f => f.Disease_Name));
+
+                case "Desc_Type":
+                    return View("Family_History", fm.OrderByDescending(f => f.Disease_Type));
+
+                case "Asc_Disease":
+                    return View("Family_History", fm.OrderBy(f => f.Disease_Name));
+
+                case "Asc_Type":
+                    return View("Family_History", fm.OrderBy(f => f.Disease_Type));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Family_History",new { id = pt.Patient_Id });
+        }
+
+        [HttpPost]
+        public ActionResult Filter_Family_History()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            string str = Request["Filter"]; // for solve NotSupport Exception
+            List<Family_History> fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id).ToList();
+            var items = fm.Select(model => model.Disease_Type).Distinct().ToList();
+            List<SelectListItem> list_item = new List<SelectListItem>();
+            foreach (var item in items)
+            {
+                list_item.Add(new SelectListItem
+                {
+                    Value = item,
+                    Text = item
+                });
+            }
+            SelectList types = new SelectList(list_item, "Value", "Text");
+            ViewBag.types = types;
+
+            fm =fm.Where(f => String.Compare(f.Disease_Type, str, true) == 0).ToList();
+            return View("Family_History", fm.ToList());
         }
     }
 }
