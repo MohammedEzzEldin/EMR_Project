@@ -2,12 +2,11 @@
 
 @{
     ViewBag.Title = "Details_Lab_Radio";
-    Layout = "~/Views/Shared/_Patient.cshtml";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
 }
-
 <br />
 
-<h2  style="text-align:center; font-style:italic;color:gray">Details</h2>
+<h2 style="text-align:center; font-style:italic;color:gray">Details</h2>
 
 <div style="text-align:center">
     <hr />
@@ -25,7 +24,7 @@
             Result
         </dt>
 
-        <dd  style="color:blue">
+        <dd style="color:blue">
             @Html.DisplayFor(model => model.Lab_Description_Result)
         </dd>
 
@@ -35,7 +34,7 @@
             Date
         </dt>
 
-        <dd  style="color:blue">
+        <dd style="color:blue">
             @Model.Lab_Date.ToShortDateString()
         </dd>
 
@@ -45,7 +44,7 @@
             Medical Organizations
         </dt>
 
-        <dd  style="color:blue">
+        <dd style="color:blue">
             @Html.DisplayFor(model => model.Medical_Organization.Medical_Org_Name)
         </dd>
 
@@ -54,7 +53,7 @@
     </dl>
 </div>
 <p style="text-align:center">
-    @Html.ActionLink("Back", "Laboratories_Radiology", new {  id = Model.Patient_Id  }) 
+    @Html.ActionLink("Back", "Laboratories_Radiology", new { id = Model.Patient_Id })
 </p>
 
 <br />

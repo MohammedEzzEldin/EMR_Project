@@ -118,9 +118,9 @@
                                                          <div class="stat hospitals">
                                                              <!--we seperate Allergies from each others by  (,) -->
                                                              <h5 style="text-decoration:underline;">The Allergies</h5>
-                                                             @if (Model.General_Examination.Allergies1 != null)
+                                                             @if (Model.General_Examination.Allergies != null)
                                                              {
-                                                                 foreach (var item in Model.General_Examination.Allergies1)
+                                                                 foreach (var item in Model.General_Examination.Allergies)
                                                                  {
                                                                      <h6 >@item.Allergies_Name</h6>
                                                                  }
@@ -136,9 +136,9 @@
                                                          <div class="stat hospitals">
                                                              <!--we seperate habits from each others by (,) -->
                                                              <h5 style="text-decoration:underline;">The Habits</h5>
-                                                             @if (Model.General_Examination.Habits1 != null)
+                                                             @if (Model.General_Examination.Habits!= null)
                                                              {
-                                                                 foreach (var item in Model.General_Examination.Habits1)
+                                                                 foreach (var item in Model.General_Examination.Habits)
                                                                  {
                                                                      <h6 href="">@item.Habit_Name</h6>
                                                                  }

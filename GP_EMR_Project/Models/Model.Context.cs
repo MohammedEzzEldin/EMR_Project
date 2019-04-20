@@ -25,6 +25,7 @@ namespace GP_EMR_Project.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Allergy> Allergies { get; set; }
         public virtual DbSet<Child_FollowUp_Form> Child_FollowUp_Form { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Disease> Diseases { get; set; }
@@ -35,6 +36,7 @@ namespace GP_EMR_Project.Models
         public virtual DbSet<Examination> Examinations { get; set; }
         public virtual DbSet<Family_History> Family_History { get; set; }
         public virtual DbSet<General_Examination> General_Examination { get; set; }
+        public virtual DbSet<Habit> Habits { get; set; }
         public virtual DbSet<Lab> Labs { get; set; }
         public virtual DbSet<Medical_Organization> Medical_Organization { get; set; }
         public virtual DbSet<Operation> Operations { get; set; }
@@ -43,7 +45,5 @@ namespace GP_EMR_Project.Models
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Allergy> Allergies { get; set; }
-        public virtual DbSet<Habit> Habits { get; set; }
     }
 }

@@ -1,0 +1,73 @@
+﻿@model GP_EMR_Project.Models.Operation
+
+@{
+    ViewBag.Title = "Add_Operation";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+<br />
+
+<div class="text-center">
+    <h2 style="color:gray">Add Operation</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr style="width:50%" />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.Hidden("Patient_Id", (long)ViewBag.Patient_Id)
+            @Html.Hidden("Doctor_Id", (long)ViewBag.Doctor_Id)
+            @Html.Hidden("Medical_Org_Id", (long)ViewBag.Medical_Org_Id)
+
+            <div style="margin-left:5px;margin-right:5px;">
+                <table class="main-table table table-bordered table-hover text-center" style="text-align:center;">
+                    <tr>
+
+                        <th>
+                            <h3>Name</h3>
+                        </th>
+
+                        <th>
+                            <h3>Type</h3>
+                        </th>
+
+                        <th>
+                            <h3>Date</h3>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.EditorFor(model => model.Op_Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Op_Name, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Op_Type, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Op_Type, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            @Html.EditorFor(model => model.Op_Date, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                            @Html.ValidationMessageFor(model => model.Op_Date, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="text-center">
+                <input type="submit" value="Add" style="width:150px" class="btn btn-danger" />
+            </div>
+
+        </div>
+    }
+    <br />
+    <div>
+        @Html.ActionLink("Back to List", "Operations", new { id = (long)ViewBag.Patient_Id })
+    </div>
+</div>
+<br />
+
+
+

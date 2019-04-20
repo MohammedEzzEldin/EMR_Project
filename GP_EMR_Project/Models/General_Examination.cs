@@ -17,8 +17,8 @@ namespace GP_EMR_Project.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public General_Examination()
         {
-            this.Allergies1 = new HashSet<Allergy>();
-            this.Habits1 = new HashSet<Habit>();
+            this.Allergies = new HashSet<Allergy>();
+            this.Habits = new HashSet<Habit>();
         }
     
         public long Patient_Id { get; set; }
@@ -27,12 +27,12 @@ namespace GP_EMR_Project.Models
         public string Blood_Type { get; set; }
         public string Blood_Pressure { get; set; }
         public Nullable<int> Diabetes { get; set; }
-        public Nullable<int> Temperature { get; set; }
+        public Nullable<double> Temperature { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Allergy> Allergies { get; set; }
         public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Allergy> Allergies1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Habit> Habits1 { get; set; }
+        public virtual ICollection<Habit> Habits { get; set; }
     }
 }

@@ -1,17 +1,17 @@
-﻿@model  IEnumerable<GP_EMR_Project.Models.Lab>
+﻿@model IEnumerable<GP_EMR_Project.Models.Lab>
 
 @{
     ViewBag.Title = "Laboratories_Radiology";
-    Layout = "~/Views/Shared/_Patient.cshtml";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
 }
 
 <br />
 <div class="contentt">
-    <h3 class="text-center" style="color:grey">Laboratories & Radiology</h3>
+    <h3 class="text-center" style="color:grey">Laboratories Radiology</h3>
     <hr />
     <div class="" style="width:100%;">
         <div class="" style="width:40%; display:inline-block; margin-left:8%; border:5px solid silver; padding:10px;">
-            @using (Html.BeginForm("Search_In_Laboratories_Radiology", "Patient", FormMethod.Post, new { @class = "form-inline" }))
+            @using (Html.BeginForm("Search_In_Laboratories_Radiology", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
             {
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.Hidden("Patient_Id", (long?)ViewBag.Patient_Id)
@@ -27,7 +27,7 @@
         </div>
         <div class="" style="display:inline-block; border:5px solid silver; padding:10px">
             <!--order by hospital or doctor or date or alpha diagnosis or alpha treatment-->
-            @using (Html.BeginForm("Order_Laboratories_Radiology", "Patient", FormMethod.Post, new { @class = "form-inline" }))
+            @using (Html.BeginForm("Order_Laboratories_Radiology", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
             {
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -44,7 +44,7 @@
         </div>
         <div style="display:inline-block; border:5px solid silver; padding:10px">
             <!--Search by date-->
-            @using (Html.BeginForm("Search_Date_Laboratories_Radiology", "Patient", FormMethod.Post, new { @class = "form-inline" }))
+            @using (Html.BeginForm("Search_Date_Laboratories_Radiology", "Doctor", FormMethod.Post, new { @class = "form-inline" }))
             {
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -56,7 +56,11 @@
         </div>
     </div>
     <hr />
-    <button class="btn btn-outline-info my-2 my-sm-0" style=" margin-left: 45%; width:150px;" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+    <div class="text-center">
+        <button class="btn btn-outline-info my-2 my-sm-0" style=" width:150px;" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+        @Html.ActionLink("Add New", "Add_Laboratories_Radiology", new { id = (long)ViewBag.Patient_Id }, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Back to List", "Examine", new { id = (long)ViewBag.Patient_Id }, new { @class = "btn btn-outline-info" })
+    </div>
     <hr />
     <div class="container">
         <div class="table-responsive">
@@ -64,29 +68,28 @@
                 <tr>
                     <th>Name</th>
                     <th>Type</th>
-                    <th>Date</th>
                     <th>Hospital</th>
+                    <th>Date</th>
                     <th></th>
                 </tr>
 
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td style="font-weight:bold">@item.Lab_Name</td>
-                        <td style="font-weight:bold">@item.Lab_Type</td>
-                        <td style="color:brown">@item.Lab_Date.ToShortDateString()</td>
-                        <td style="color:blue">@item.Medical_Organization.Medical_Org_Name</td>
-                        <td>
-                            <a href=@Url.Action("Details_Lab_Radio","Patient", new {id = item.Lab_Id }) class="btn btn-outline-primary">Details</a>
-                            <a href=@Url.Action("Show_Lab_Radio","Patient",   new  {id = item.Lab_Id }) class="btn btn-outline-info" target="_blank">Show File</a>
-                            <a href=@Url.Action("Download_Lab_File","Patient",new { id = item.Lab_Id }) class="btn btn-outline-danger">Download File</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td style="font-weight:bold">@item.Lab_Name</td>
+                    <td style="font-weight:bold">@item.Lab_Type</td>
+                    <td style="color:brown">@item.Medical_Organization.Medical_Org_Name</td>
+                    <td style="color:blue">@item.Lab_Date.ToShortDateString()</td>
+                    <td>
+                        <a href=@Url.Action("Details_Lab_Radio","Doctor", new {id = item.Lab_Id }) class="btn btn-outline-primary">Details</a>
+                        <a href=@Url.Action("Show_Lab_Radio","Doctor",   new  {id = item.Lab_Id  }) class="btn btn-outline-info" target="_blank">Show File</a>
+                        <a href=@Url.Action("Download_Lab_File","Doctor",new { id = item.Lab_Id }) class="btn btn-outline-danger">Download File</a>
+                        <a href=@Url.Action("Edit_Upload_Lab_File","Doctor",new { id = item.Lab_Id }) class="btn btn-outline-warning">Upload File</a>
+                    </td>
+                </tr>
                 }
             </table>
             <hr />
         </div>
     </div>
 </div>
-
-

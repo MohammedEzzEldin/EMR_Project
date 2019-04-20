@@ -113,25 +113,25 @@ namespace GP_EMR_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Details_Lab_Radio(long? id ,string name,DateTime date)
+        public ActionResult Details_Lab_Radio(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient pt = db.Patients.Find(id);
-            if(pt == null)
+            Lab lab = db.Labs.Find(id);
+            if(lab == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            Lab lab = db.Labs.Where(lb => lb.Patient_Id == id && lb.Lab_Date == date && lb.Lab_Name == name).Single();
                 return View(lab);
         }
-        public void Show_Lab_Radio(long? id, string name, DateTime date)
+
+        public void Show_Lab_Radio(long? id)
         {
             if (id != null)
             {
-                Lab lab = db.Labs.Where(lb => lb.Patient_Id == id && lb.Lab_Date == date && lb.Lab_Name == name).Single();
+                Lab lab = db.Labs.Find(id);
                 if(lab != null)
                 {
                     string filePath = Server.MapPath(lab.Lab_File);
@@ -951,13 +951,13 @@ namespace GP_EMR_Project.Controllers
             return RedirectToAction("Manage_Account");
         }
 
-        public ActionResult Download_Lab_File(long? id, string name, DateTime date)
+        public ActionResult Download_Lab_File(long? id)
         {
             if(id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lab lab = db.Labs.Where(lb => lb.Patient_Id == id && lb.Lab_Date == date && lb.Lab_Name == name).Single();
+            Lab lab = db.Labs.Find(id);
             if(lab == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);

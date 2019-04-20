@@ -362,7 +362,6 @@
     <Content Include="Views\Medical_Organization\Delete_Department.cshtml" />
     <Content Include="Views\Medical_Organization\Edit_Department.cshtml" />
     <Content Include="Views\Patient\Details_Lab_Radio.cshtml" />
-    <Content Include="Views\Patient\Show_Lab_Radio.cshtml" />
     <Content Include="Views\Patient\Book.cshtml" />
     <Content Include="Views\Patient\Select_Doctor_For_Book.cshtml" />
     <Content Include="Views\Patient\Final_Booking.cshtml" />
@@ -382,6 +381,13 @@
     <Content Include="Views\Doctor\Add_Diseases.cshtml" />
     <Content Include="Views\Doctor\Examinations.cshtml" />
     <Content Include="Views\Doctor\Add_Examination.cshtml" />
+    <Content Include="Views\Doctor\Reviews.cshtml" />
+    <Content Include="Views\Doctor\Add_Review.cshtml" />
+    <Content Include="Views\Doctor\Operations.cshtml" />
+    <Content Include="Views\Doctor\Add_Operation.cshtml" />
+    <Content Include="Views\Doctor\Laboratories_Radiology.cshtml" />
+    <Content Include="Views\Doctor\Details_Lab_Radio.cshtml" />
+    <Content Include="Views\Doctor\Edit_Upload_Lab_File.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

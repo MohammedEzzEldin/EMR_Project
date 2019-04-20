@@ -32,14 +32,14 @@ namespace GP_EMR_Project.Controllers
         // GET: Doctor
         public ActionResult Index(long? id)
         {
-            if(Check_Login())
+            if (Check_Login())
             {
-                if(id == null)
+                if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-               var doctors = db.Doctors.Find(id);
-                if(doctors == null)
+                var doctors = db.Doctors.Find(id);
+                if (doctors == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.NotFound);
                 }
@@ -53,7 +53,7 @@ namespace GP_EMR_Project.Controllers
         // GET: Doctor/Details/5
         public ActionResult Details(long? id)
         {
-            if(!Check_Login())
+            if (!Check_Login())
             {
                 return RedirectToAction("Login", "Home");
             }
@@ -69,7 +69,7 @@ namespace GP_EMR_Project.Controllers
             return View(doctor);
         }
 
-       
+
         // GET: Doctor/Edit/5
         public ActionResult Edit(long? id)
         {
@@ -117,7 +117,7 @@ namespace GP_EMR_Project.Controllers
                     doctor.Acadimic_Degree = Request.Form["Acadimic_Degree"];
                     doctor.Spacialization = Request.Form["Spacialization"];
                     doctor.Functional_Degree = Request.Form["Functional_Degree"];
-                    if(Request.Form["Person.User.Password"].Split(' ')[0] != doctor.Person.User.Password.Split(' ')[0])
+                    if (Request.Form["Person.User.Password"].Split(' ')[0] != doctor.Person.User.Password.Split(' ')[0])
                     {
                         if (Request.Form["Person.User.Password"].Split(' ')[0] == Request.Form["Confirm_Password"].Split(' ')[0])
                         {
@@ -128,16 +128,16 @@ namespace GP_EMR_Project.Controllers
                             ModelState.AddModelError("Confirm_Password", "Password do not Match Confirm Password, Password do not change");
                             return View(doctor);
                         }
-                    }   
+                    }
                     db.Entry(doctor).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index",new { id = doctor.Doctor_Id});
+                    return RedirectToAction("Index", new { id = doctor.Doctor_Id });
                 }
             }
             return View(doctor);
         }
 
- 
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -147,23 +147,23 @@ namespace GP_EMR_Project.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Manage_Account(long?id)
+        public ActionResult Manage_Account(long? id)
         {
             if (!Check_Login())
             {
                 return RedirectToAction("Login", "Home");
             }
 
-            if (id ==null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Doctor doctor = db.Doctors.Find(id);
-            if(doctor == null)
+            if (doctor == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            return RedirectToAction("Edit",new { id = doctor.Doctor_Id });
+            return RedirectToAction("Edit", new { id = doctor.Doctor_Id });
         }
 
         public ActionResult Schedule(long? id)
@@ -177,7 +177,7 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Doctor doctor = db.Doctors.Find(id);
-            if(doctor == null)
+            if (doctor == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
@@ -214,13 +214,13 @@ namespace GP_EMR_Project.Controllers
         [NonAction]
         public List<Permission> DeletePastBookings(List<Permission> pr)
         {
-            if(pr == null)
+            if (pr == null)
             {
                 return pr;
             }
-            foreach(var item in pr)
+            foreach (var item in pr)
             {
-                if(item.Booking_Date.Year <= DateTime.Now.Year)
+                if (item.Booking_Date.Year <= DateTime.Now.Year)
                 {
                     if (item.Booking_Date.Month <= DateTime.Now.Month)
                     {
@@ -235,7 +235,7 @@ namespace GP_EMR_Project.Controllers
             }
             return pr;
         }
-        
+
         [HttpPost]
         public ActionResult Search_In_Pateint(string Search)
         {
@@ -261,7 +261,7 @@ namespace GP_EMR_Project.Controllers
                 default:
                     break;
             }
-            return RedirectToAction("Index_Patients",new { id = doctor.Doctor_Id});
+            return RedirectToAction("Index_Patients", new { id = doctor.Doctor_Id });
         }
 
         [HttpPost]
@@ -293,11 +293,11 @@ namespace GP_EMR_Project.Controllers
 
             if (Request.Form["Search_By"] == "Name")
             {
-                fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && f.Disease_Name.Equals(Search,StringComparison.InvariantCultureIgnoreCase));
+                fm = db.Family_History.Where(f => f.Patient_Id == pt.Patient_Id && f.Disease_Name.Equals(Search, StringComparison.InvariantCultureIgnoreCase));
             }
             else if (Request.Form["Search_By"] == "Type")
             {
-                fm = fm.Where(f => f.Disease_Type.Equals(Search,StringComparison.InvariantCultureIgnoreCase));
+                fm = fm.Where(f => f.Disease_Type.Equals(Search, StringComparison.InvariantCultureIgnoreCase));
             }
             ViewBag.Patient_Id = pt.Patient_Id;
 
@@ -369,7 +369,7 @@ namespace GP_EMR_Project.Controllers
                     }
                     else
                     {
-                        return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && ex.Doctor.Person.First_Name.Equals(Search,StringComparison.InvariantCultureIgnoreCase)));
+                        return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && ex.Doctor.Person.First_Name.Equals(Search, StringComparison.InvariantCultureIgnoreCase)));
                     }
                 case "Diagnosis":
                     return View("Examinations", db.Examinations.Where(ex => ex.Patient_Id == pt.Patient_Id && ex.exm_description_result.Contains(Search)));
@@ -379,6 +379,108 @@ namespace GP_EMR_Project.Controllers
                     break;
             }
             return View("Examinations", ds.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Search_In_Reviews(string Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IQueryable<Review> rev = db.Reviews.Where(d => d.Patient_Id == pt.Patient_Id);
+            switch (Request.Form["Search_By"])
+            {
+                case "Hospital":
+                    return View("Reviews", db.Reviews.Where(rv => rv.Patient_Id == pt.Patient_Id && rv.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                case "Doctor":
+                    if (Search.Split(' ').Length > 1)
+                    {
+                        return View("Reviews", db.Reviews.Where(rv => rv.Patient_Id == pt.Patient_Id && (rv.Doctor.Person.First_Name + rv.Doctor.Person.Last_Name).Contains(Search)));
+                    }
+                    else
+                    {
+                        return View("Reviews", db.Reviews.Where(rv => rv.Patient_Id == pt.Patient_Id && rv.Doctor.Person.First_Name.Equals(Search, StringComparison.InvariantCultureIgnoreCase)));
+                    }
+                case "Diagnosis":
+                    return View("Reviews", db.Reviews.Where(rv => rv.Patient_Id == pt.Patient_Id && rv.rev_description_result.Contains(Search)));
+                case "Treatments":
+                    return View("Reviews", db.Reviews.Where(rv => rv.Patient_Id == pt.Patient_Id && rv.rev_midicine.Contains(Search)));
+                default:
+                    break;
+            }
+            return View("Reviews", rev.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Search_In_Operations(string Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IQueryable<Operation> opr = db.Operations.Where(d => d.Patient_Id == pt.Patient_Id);
+            switch (Request.Form["Search_By"])
+            {
+                case "Hospital":
+                    return View("Operations", db.Operations.Where(op => op.Patient_Id == pt.Patient_Id && op.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                case "Doctor":
+                    if (Search.Split(' ').Length > 1)
+                    {
+                        return View("Operations", db.Operations.Where(op => op.Patient_Id == pt.Patient_Id && (op.Doctor.Person.First_Name + op.Doctor.Person.Last_Name).Contains(Search)));
+                    }
+                    else
+                    {
+                        return View("Operations", db.Operations.Where(op => op.Patient_Id == pt.Patient_Id && op.Doctor.Person.First_Name.Equals(Search, StringComparison.InvariantCultureIgnoreCase)));
+                    }
+                case "Name":
+                    return View("Operations", db.Operations.Where(op => op.Patient_Id == pt.Patient_Id && op.Op_Name.Contains(Search)));
+                case "Type":
+                    return View("Operations", db.Operations.Where(op => op.Patient_Id == pt.Patient_Id && op.Op_Type.Contains(Search)));
+                default:
+                    break;
+            }
+            return View("Operations", opr.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Search_In_Laboratories_Radiology(string Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            IQueryable<Lab> lab = db.Labs.Where(d => d.Patient_Id == pt.Patient_Id);
+            switch (Request.Form["Search_By"])
+            {
+                case "Hospital":
+                    return View("Laboratories_Radiology", db.Labs.Where(lb => lb.Patient_Id == pt.Patient_Id && lb.Medical_Organization.Medical_Org_Name.Contains(Search)));
+                case "Name":
+                    return View("Laboratories_Radiology", db.Labs.Where(lb => lb.Patient_Id == pt.Patient_Id && lb.Lab_Name.Contains(Search)));
+                case "Type":
+                    return View("Laboratories_Radiology", db.Labs.Where(lb => lb.Patient_Id == pt.Patient_Id && lb.Lab_Type.Contains(Search)));
+                default:
+                    break;
+            }
+            return View("Laboratories_Radiology", lab.ToList());
         }
 
         [HttpPost]
@@ -397,9 +499,9 @@ namespace GP_EMR_Project.Controllers
 
             if (Search.Year <= DateTime.Now.Year)
             {
-                if(Search.Month <= DateTime.Now.Month)
+                if (Search.Month <= DateTime.Now.Month)
                 {
-                    if(Search.Day < DateTime.Now.Day)
+                    if (Search.Day < DateTime.Now.Day)
                     {
                         ModelState.AddModelError("Search", "Date In The Past");
                         return View("Index_Patients", db.Permissions.Where(model => model.Booking_Date.Year == DateTime.Now.Year &&
@@ -409,7 +511,7 @@ namespace GP_EMR_Project.Controllers
                 }
             }
             return View("Index_Patients", db.Permissions.Where(model => model.Booking_Date.Year == Search.Year &&
-                          model.Booking_Date.Month ==Search.Month &&
+                          model.Booking_Date.Month == Search.Month &&
                           model.Booking_Date.Day == Search.Day).OrderBy(model => model.hour).ToList());
         }
 
@@ -430,25 +532,73 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult Search_Date_Reviews(DateTime Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            return View("Reviews", db.Reviews.Where(rv => rv.Patient_Id == pt.Patient_Id && rv.rev_date.Year == Search.Year && rv.rev_date.Month == Search.Month && rv.rev_date.Day == Search.Day));
+        }
+
+        [HttpPost]
+        public ActionResult Search_Date_Operations(DateTime Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            return View("Operations", db.Operations.Where(op => op.Patient_Id == pt.Patient_Id && op.Op_Date.Year == Search.Year && op.Op_Date.Month == Search.Month && op.Op_Date.Day == Search.Day));
+        }
+
+        [HttpPost]
+        public ActionResult Search_Date_Laboratories_Radiology(DateTime Search)
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            return View("Laboratories_Radiology", db.Labs.Where(lb => lb.Patient_Id == pt.Patient_Id && lb.Lab_Date.Year == Search.Year && lb.Lab_Date.Month == Search.Month && lb.Lab_Date.Day == Search.Day));
+        }
+
+        [HttpPost]
         public ActionResult End_Examination()
         {
             long? patient_id = Int64.Parse(Request.Form["Patient_Id"]);
             long? doctor_id = Int64.Parse(Request.Form["Doctor_Id"]);
             DateTime date = DateTime.Parse(Request.Form["date"]);
-            if(patient_id == null || doctor_id == null)
+            if (patient_id == null || doctor_id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var pr = db.Permissions.Where(model => model.Doctor_Id == doctor_id && model.Patient_Id == patient_id);
             pr = pr.Where(model => model.Booking_Date.Year == date.Year && model.Booking_Date.Month == date.Month && model.Booking_Date.Day == date.Day);
-            if(pr == null)
+            if (pr == null)
             {
                 return RedirectToAction("Index_Patients", new { id = doctor_id });
             }
             var item = pr.First();
             db.Permissions.Remove(item);
             db.SaveChanges();
-            return RedirectToAction("Index_Patients",new { id = doctor_id});
+            return RedirectToAction("Index_Patients", new { id = doctor_id });
         }
 
         public ActionResult Examine(long? id)
@@ -463,7 +613,7 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Patient pt = db.Patients.Find(id);
-            if(pt == null)
+            if (pt == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
@@ -475,48 +625,48 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Examine()
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 General_Examination g = db.General_Examination.Find(Int64.Parse(Request.Form["Patient_Id"]));
-                g.Length =Int32.Parse(Request.Form["Length"]);
+                g.Length = Int32.Parse(Request.Form["Length"]);
                 g.Weight = Int32.Parse(Request.Form["Weight"]);
                 g.Diabetes = Int32.Parse(Request.Form["Diabetes"]);
-                g.Temperature = Int32.Parse(Request.Form["Temperature"]);
+                g.Temperature = float.Parse(Request.Form["Temperature"]);
                 g.Blood_Type = Request.Form["Blood_Type"];
                 g.Blood_Pressure = Request.Form["Blood_Pressure"];
                 db.Entry(g).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            return RedirectToAction("Examine",new { id = Int64.Parse(Request.Form["Patient_Id"]) });
+            return RedirectToAction("Examine", new { id = Int64.Parse(Request.Form["Patient_Id"]) });
         }
 
-        public ActionResult Show_Habits(long?id)
+        public ActionResult Show_Habits(long? id)
         {
-            if(!Check_Login())
+            if (!Check_Login())
             {
                 return RedirectToAction("Login", "Home");
             }
-            if(id ==null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Patient pt = db.Patients.Find(id);
-            if(pt == null)
+            if (pt == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             ViewBag.Patient_Id = id;
             List<Habit> h = db.Habits.Where(model => model.Patient_Id == id).ToList();
             List<SelectListItem> list = new List<SelectListItem>();
-            foreach(var item in h)
+            foreach (var item in h)
             {
                 list.Add(new SelectListItem { Text = item.Habit_Name, Value = item.Habit_Id.ToString() });
             }
-            if(list.Count() == 0)
+            if (list.Count() == 0)
             {
                 list.Add(new SelectListItem { Text = "Empty", Value = "-1" });
             }
-            SelectList habits = new SelectList(list,"Value","Text");
+            SelectList habits = new SelectList(list, "Value", "Text");
             ViewBag.Habits = habits;
             return View();
         }
@@ -552,7 +702,7 @@ namespace GP_EMR_Project.Controllers
             return View();
         }
 
-     
+
         public ActionResult Add_Family_History(long? id)
         {
             if (!Check_Login())
@@ -573,7 +723,7 @@ namespace GP_EMR_Project.Controllers
             return View();
         }
 
-        public ActionResult Add_Diseases(long?id)
+        public ActionResult Add_Diseases(long? id)
         {
             if (!Check_Login())
             {
@@ -593,7 +743,49 @@ namespace GP_EMR_Project.Controllers
             return View();
         }
 
-        public ActionResult Add_Examination(long?id)
+        public ActionResult Add_Examination(long? id)
+        {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = id;
+            ViewBag.Doctor_Id = ((User)Session["UserID"]).User_Id;
+            ViewBag.Medical_Org_Id = ((User)Session["UserID"]).Person.Doctor.Medical_Org_Id;
+            return View();
+        }
+
+        public ActionResult Add_Review(long? id)
+        {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = id;
+            ViewBag.Doctor_Id = ((User)Session["UserID"]).User_Id;
+            ViewBag.Medical_Org_Id = ((User)Session["UserID"]).Person.Doctor.Medical_Org_Id;
+            return View();
+        }
+
+        public ActionResult Add_Operation(long? id)
         {
             if (!Check_Login())
             {
@@ -617,8 +809,8 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Add_New_Habit()
         {
-            long Id = Int64.Parse( Request.Form["Patient_Id"]);
-            if(Id == 0)
+            long Id = Int64.Parse(Request.Form["Patient_Id"]);
+            if (Id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -631,7 +823,7 @@ namespace GP_EMR_Project.Controllers
             h.Patient_Id = Id;
             db.Habits.Add(h);
             db.SaveChanges();
-            return RedirectToAction("Show_Habits", new { id = Id});
+            return RedirectToAction("Show_Habits", new { id = Id });
         }
 
         [HttpPost]
@@ -657,18 +849,18 @@ namespace GP_EMR_Project.Controllers
         [HttpPost]
         public ActionResult Add_Family_History([Bind(Include = "Disease_Name,Disease_Type")] Family_History fm)
         {
-            if(Int64.Parse(Request.Form["Patient_Id"]) == 0)
+            if (Int64.Parse(Request.Form["Patient_Id"]) == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            long Id = Int64.Parse(Request.Form["Patient_Id"]); 
+            long Id = Int64.Parse(Request.Form["Patient_Id"]);
             if (ModelState.IsValid)
             {
                 fm.Patient_Id = Id;
                 db.Family_History.Add(fm);
                 db.SaveChanges();
             }
-            return RedirectToAction("Family_History", new { id =  Id});
+            return RedirectToAction("Family_History", new { id = Id });
         }
 
         [HttpPost]
@@ -711,10 +903,53 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
+        public ActionResult Add_Review([Bind(Include = "rev_description_result,rev_midicine")] Review rev)
+        {
+            if (Int64.Parse(Request.Form["Patient_Id"]) == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            long Patient_Id = Int64.Parse(Request.Form["Patient_Id"]);
+            long Doctor_Id = Int64.Parse(Request.Form["Doctor_Id"]);
+            long Medical_Org_Id = Int64.Parse(Request.Form["Medical_Org_Id"]);
+            if (ModelState.IsValid)
+            {
+                rev.Patient_Id = Patient_Id;
+                rev.Doctor_Id = Doctor_Id;
+                rev.Organization_Id = Medical_Org_Id;
+                rev.rev_date = DateTime.Now;
+                db.Reviews.Add(rev);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Reviews", new { id = Patient_Id });
+        }
+
+        [HttpPost]
+        public ActionResult Add_Operation([Bind(Include = "Op_Name,Op_Type,Op_Date")] Operation opr)
+        {
+            if (Int64.Parse(Request.Form["Patient_Id"]) == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            long Patient_Id = Int64.Parse(Request.Form["Patient_Id"]);
+            long Doctor_Id = Int64.Parse(Request.Form["Doctor_Id"]);
+            long Medical_Org_Id = Int64.Parse(Request.Form["Medical_Org_Id"]);
+            if (ModelState.IsValid)
+            {
+                opr.Patient_Id = Patient_Id;
+                opr.Doctor_Id = Doctor_Id;
+                opr.Organization_Id = Medical_Org_Id;
+                db.Operations.Add(opr);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Operations", new { id = Patient_Id });
+        }
+
+        [HttpPost]
         public ActionResult Delete_Habit()
         {
-            long Id =Int64.Parse(Request.Form["Habits"]);
-            if(Id != -1)
+            long Id = Int64.Parse(Request.Form["Habits"]);
+            if (Id != -1)
             {
                 Habit h = db.Habits.Find(Id);
                 db.Habits.Remove(h);
@@ -745,7 +980,7 @@ namespace GP_EMR_Project.Controllers
             {
                 if (file == null)
                 {
-                    return RedirectToAction("Manage_Account", "Doctor",new { id = Int64.Parse(Request.Form["Doctor_Id"]) });
+                    return RedirectToAction("Manage_Account", "Doctor", new { id = Int64.Parse(Request.Form["Doctor_Id"]) });
                 }
 
                 if (u != null)
@@ -770,7 +1005,7 @@ namespace GP_EMR_Project.Controllers
             return RedirectToAction("Manage_Account", new { id = Int64.Parse(Request.Form["Doctor_Id"]) });
         }
 
-        public ActionResult Family_History(long?id)
+        public ActionResult Family_History(long? id)
         {
             if (!Check_Login())
             {
@@ -843,7 +1078,7 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Examinations(long? id)
         {
-            if(!Check_Login())
+            if (!Check_Login())
             {
                 return RedirectToAction("Login", "Home");
             }
@@ -861,43 +1096,65 @@ namespace GP_EMR_Project.Controllers
             return View(exm.ToList());
         }
 
-        [HttpPost]
-        public ActionResult Examinations()
-        {
-            return View();
-        }
-
         public ActionResult Reviews(long? id)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Reviews()
-        {
-            return View();
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            var rev = db.Reviews.Where(ex => ex.Patient_Id == pt.Patient_Id);
+            return View(rev.ToList());
         }
 
         public ActionResult Operations(long? id)
         {
-            return View();
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            var opr = db.Operations.Where(op => op.Patient_Id == pt.Patient_Id);
+            return View(opr.ToList());
         }
 
-        [HttpPost]
-        public ActionResult Operations()
-        {
-            return View();
-        }
 
         public ActionResult Laboratories_Radiology(long? id)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Laboratories_Radiology()
-        {
-            return View();
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            var lab = db.Labs.Where(lb => lb.Patient_Id == pt.Patient_Id);
+            return View(lab.ToList());
         }
 
         public ActionResult Child_FollowUp_Form(long? id)
@@ -956,7 +1213,7 @@ namespace GP_EMR_Project.Controllers
                 default:
                     break;
             }
-            return RedirectToAction("Family_History",new { id = pt.Patient_Id });
+            return RedirectToAction("Family_History", new { id = pt.Patient_Id });
         }
 
         [HttpPost]
@@ -1037,7 +1294,109 @@ namespace GP_EMR_Project.Controllers
                 default:
                     break;
             }
-            return RedirectToAction("Examinations",new { id = pt.Patient_Id});
+            return RedirectToAction("Examinations", new { id = pt.Patient_Id });
+        }
+
+        [HttpPost]
+        public ActionResult Order_Reviews()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            switch (Request.Form["Order_By"])
+            {
+                case "Hospital":
+                    return View("Reviews", db.Reviews.ToList().Where(rv => rv.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(rv => rv.Medical_Organization.Medical_Org_Name));
+
+                case "Doctor":
+                    return View("Reviews", db.Reviews.ToList().Where(rv => rv.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(rv => rv.Doctor.Person.First_Name + rv.Doctor.Person.Last_Name));
+
+                case "Recent_Dates":
+                    return View("Reviews", db.Reviews.ToList().Where(rv => rv.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(rv => rv.rev_date));
+
+                case "Old_Dates":
+                    return View("Reviews", db.Reviews.ToList().Where(rv => rv.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(rv => rv.rev_date));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Reviews", new { id = pt.Patient_Id });
+        }
+
+        [HttpPost]
+        public ActionResult Order_Operations()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            switch (Request.Form["Order_By"])
+            {
+                case "Hospital":
+                    return View("Operations", db.Operations.ToList().Where(op => op.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(op => op.Medical_Organization.Medical_Org_Name));
+
+                case "Doctor":
+                    return View("Operations", db.Operations.ToList().Where(op => op.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(op => op.Doctor.Person.First_Name + op.Doctor.Person.Last_Name));
+
+                case "Recent_Dates":
+                    return View("Operations", db.Operations.ToList().Where(op => op.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(op => op.Op_Date));
+
+                case "Old_Dates":
+                    return View("Operations", db.Operations.ToList().Where(op => op.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(op => op.Op_Date));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Operations", new { id = pt.Patient_Id });
+        }
+
+        [HttpPost]
+        public ActionResult Order_Laboratories_Radiology()
+        {
+            if (Request.Form["Patient_Id"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = pt.Patient_Id;
+            switch (Request.Form["Order_By"])
+            {
+                case "Hospital":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lb => lb.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(lb => lb.Medical_Organization.Medical_Org_Name));
+
+                case "Name":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lb => lb.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(lb => lb.Lab_Name));
+
+                case "Type":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lb => lb.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(lb => lb.Lab_Type));
+
+                case "Recent_Dates":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lb => lb.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderByDescending(lb => lb.Lab_Date));
+
+                case "Old_Dates":
+                    return View("Laboratories_Radiology", db.Labs.ToList().Where(lb => lb.Patient_Id == Int64.Parse(Request.Form["Patient_Id"])).OrderBy(lb => lb.Lab_Date));
+
+                default:
+                    break;
+            }
+            return RedirectToAction("Laboratories_Radiology", new { id = pt.Patient_Id });
         }
 
         [HttpPost]
@@ -1068,7 +1427,7 @@ namespace GP_EMR_Project.Controllers
             SelectList types = new SelectList(list_item, "Value", "Text");
             ViewBag.types = types;
 
-            fm =fm.Where(f => String.Compare(f.Disease_Type, str, true) == 0).ToList();
+            fm = fm.Where(f => String.Compare(f.Disease_Type, str, true) == 0).ToList();
             return View("Family_History", fm.ToList());
         }
 
@@ -1100,8 +1459,182 @@ namespace GP_EMR_Project.Controllers
             SelectList types = new SelectList(list_item, "Value", "Text");
             ViewBag.types = types;
 
-            d = d.Where(f => f.Disease_Type.Equals(str,StringComparison.InvariantCultureIgnoreCase)).ToList();
+            d = d.Where(f => f.Disease_Type.Equals(str, StringComparison.InvariantCultureIgnoreCase)).ToList();
             return View("Diseases", d.ToList());
         }
+
+        public ActionResult Details_Lab_Radio(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Lab lab = db.Labs.Find(id);
+            if (lab == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return View(lab);
+        }
+
+        public void Show_Lab_Radio(long? id)
+        {
+            if (id != null)
+            {
+                Lab lab = db.Labs.Find(id);
+                if (lab != null)
+                {
+                    string filePath = Server.MapPath(lab.Lab_File);
+                    string ext = System.IO.Path.GetExtension(filePath);
+                    string type = "";
+
+                    if (ext != null)
+                    {
+                        switch (ext.ToLower())
+                        {
+                            case ".txt":
+                                type = "text/plain";
+                                break;
+
+                            case ".GIF":
+                                type = "image/GIF";
+                                break;
+
+                            case ".pdf":
+                                type = "Application/pdf";
+                                break;
+
+                            case ".doc":
+                            case ".rtf":
+                                type = "Application/msword";
+                                break;
+                        }
+                        WebClient client = new WebClient();
+                        byte[] filebuffer = client.DownloadData(filePath);
+                        if (filebuffer != null && type != "")
+                        {
+                            Response.ContentType = type;
+                            Response.AddHeader("content-length", filebuffer.Length.ToString());
+                            Response.BinaryWrite(filebuffer);
+                        }
+                    }
+                }
+            }
+        }
+
+        public ActionResult Download_Lab_File(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Lab lab = db.Labs.Find(id);
+            if (lab == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            string path = Server.MapPath(lab.Lab_File);
+            string filename = System.IO.Path.GetFileName(path);
+            string type = "";
+            string ext = System.IO.Path.GetExtension(path);
+            if (ext != null)
+            {
+                switch (ext.ToLower())
+                {
+                    case ".txt":
+                        type = "text/plain";
+                        break;
+
+                    case ".GIF":
+                        type = "image/GIF";
+                        break;
+
+                    case ".pdf":
+                        type = "Application/pdf";
+                        break;
+
+                    case ".doc":
+                    case ".rtf":
+                        type = "Application/msword";
+                        break;
+                }
+            }
+            System.IO.FileInfo file = new System.IO.FileInfo(path);
+
+            if (file.Exists && type != "")
+            {
+                Response.Clear();
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name);
+                Response.AddHeader("Content-Length", file.Length.ToString());
+                Response.ContentType = "application/octet-stream";
+                Response.WriteFile(file.FullName);
+                Response.End();
+            }
+            return RedirectToAction("Laboratories_Radiology", new { id = lab.Patient_Id });
+        }
+
+        public ActionResult Edit_Upload_Lab_File(long?id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Lab lab = db.Labs.Find(id);
+            if (lab == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return View(lab);
+        }
+
+        [HttpPost]
+        public ActionResult Edit_Upload_Lab_File(HttpPostedFileBase Lab_File)
+        {
+            Lab lab = db.Labs.Find(Int64.Parse(Request.Form["Lab_Id"]));
+            if(lab == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            if (ModelState.IsValid)
+            {
+                if (Lab_File == null)
+                {
+                    return RedirectToAction("Laboratories_Radiology", new { id = lab.Lab_Id });
+                }
+
+                if (Lab_File.FileName != null)
+                {
+
+                    string ext = System.IO.Path.GetExtension(Lab_File.FileName);
+                    if (ext != null)
+                    {
+                        switch (ext.ToLower())
+                        {
+                            case ".txt":
+                                break;
+
+                            case ".GIF":
+                                break;
+
+                            case ".pdf":
+                                break;
+
+                            case ".doc":
+                            case ".rtf":
+                                break;
+                            default:
+                                ModelState.AddModelError("Lab_File", "This Extension Not Allowed");
+                                return View(lab);
+                        }
+                        Lab_File.SaveAs(Server.MapPath("~/Content/Lab_Radio/") + lab.Patient_Id + ext);
+                        lab.Lab_File = "~/Content/Lab_Radio/" + lab.Patient_Id + ext;
+                        db.Entry(lab).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            return View(lab);
+        }
+
     }
 }

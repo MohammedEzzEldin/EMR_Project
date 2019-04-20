@@ -1,0 +1,42 @@
+﻿@model GP_EMR_Project.Models.Lab
+
+@{
+    ViewBag.Title = "Edit_Upload_Lab_File";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey">Upload File or Replace File</h3>
+    <hr />
+    <div class="text-center">
+        @Html.ActionLink("Back to List", "Laboratories_Radiology", new { id = (long)ViewBag.Patient_Id }, new { @class = "btn btn-outline-info" })
+    </div>
+    <hr />
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered table-hover text-center">
+                <tr>
+                    <th>Select File</th>
+                    <th></th>
+                </tr>
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Lab_Id)
+                    <tr>
+                        <td>
+                            @Html.EditorFor(model => model.Lab_File, new { htmlAttributes = new { @class = "form-control",name= "Lab_File", type = "file", maxlength = "100" } })
+                            @Html.ValidationMessageFor(model => model.Lab_File, "", new { @class = "text-danger" })
+                        </td>
+
+                        <td>
+                            <button type="submit" class="btn btn-primary btn-lg "> Save </button>
+                        </td>   
+                    </tr>
+                }
+                </table>
+            <hr />
+        </div>
+    </div>
+</div>
