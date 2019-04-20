@@ -335,9 +335,6 @@
     <Content Include="Views\Shared\_Medical_Organization.cshtml" />
     <Content Include="Views\Shared\_Doctor.cshtml" />
     <Content Include="Views\Shared\_Patient.cshtml" />
-    <Content Include="Views\Doctor\Create.cshtml" />
-    <Content Include="Views\Doctor\Delete.cshtml" />
-    <Content Include="Views\Doctor\Details.cshtml" />
     <Content Include="Views\Doctor\Edit.cshtml" />
     <Content Include="Views\Doctor\Index.cshtml" />
     <Content Include="Views\Medical_Organization\Add_New_Department.cshtml" />
@@ -388,6 +385,8 @@
     <Content Include="Views\Doctor\Laboratories_Radiology.cshtml" />
     <Content Include="Views\Doctor\Details_Lab_Radio.cshtml" />
     <Content Include="Views\Doctor\Edit_Upload_Lab_File.cshtml" />
+    <Content Include="Views\Doctor\Add_Laboratories_Radiology.cshtml" />
+    <Content Include="Views\Doctor\Child_FollowUp_Form.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -618,7 +618,12 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             General_Examination g = db.General_Examination.Where(model => model.Patient_Id == id).SingleOrDefault();
-
+            if(g == null)
+            {
+                g = new General_Examination();
+                g.Patient_Id = pt.Patient_Id;
+                g.Patient = pt;
+            }
             return View(g);
         }
 
@@ -806,6 +811,26 @@ namespace GP_EMR_Project.Controllers
             return View();
         }
 
+        public ActionResult Add_Laboratories_Radiology(long?id)
+        {
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Patient_Id = id;
+            ViewBag.Medical_Org_Id = ((User)Session["UserID"]).Person.Doctor.Medical_Org_Id;
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Add_New_Habit()
         {
@@ -943,6 +968,28 @@ namespace GP_EMR_Project.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("Operations", new { id = Patient_Id });
+        }
+        [HttpPost]
+        public ActionResult Add_Laboratories_Radiology([Bind(Include = "Lab_Name,Lab_Type,Lab_Date,Lab_Description_Result")] Lab lab)
+        {
+ 
+            if (Int64.Parse(Request.Form["Patient_Id"]) == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            long Patient_Id = Int64.Parse(Request.Form["Patient_Id"]);
+            long Medical_Org_Id = Int64.Parse(Request.Form["Medical_Org_Id"]);
+            if (ModelState.IsValid)
+            {
+                lab.Patient_Id = Patient_Id;
+                lab.Org_Id = Medical_Org_Id;
+                db.Labs.Add(lab);
+                db.SaveChanges();
+                return RedirectToAction("Edit_Upload_Lab_File", new { id = lab.Lab_Id });
+            }
+            ViewBag.Patient_Id = Patient_Id;
+            ViewBag.Medical_Org_Id = Medical_Org_Id;
+            return View();
         }
 
         [HttpPost]
@@ -1159,13 +1206,65 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Child_FollowUp_Form(long? id)
         {
-            return View();
+            if (!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            var child = db.Child_FollowUp_Form.Find(pt.Patient_Id);
+            if(child == null)
+            {
+                child = new Child_FollowUp_Form();
+                child.Patient_Id = pt.Patient_Id;
+                child.Feed_Type = "";
+                child.Age_In_Month = (DateTime.Now.Year -  pt.Person.Birth_Date.Year)*12;
+            }
+            return View(child);
         }
-
         [HttpPost]
         public ActionResult Child_FollowUp_Form()
         {
-            return View();
+            var child = db.Child_FollowUp_Form.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if(ModelState.IsValid)
+            {
+                if (child == null)
+                {
+                    child = new Child_FollowUp_Form();
+                    child.Patient_Id = Int64.Parse(Request.Form["Patient_Id"]);
+                    child.Feed_Type = Request.Form["Feed_Type"];
+                    child.Age_In_Month = int.Parse(Request.Form["Age_In_Month"]);
+                    child.Vaccination_Type = Request.Form["Vaccination_Type"];
+                    child.Patient = db.Patients.Find(child.Patient_Id);
+                    if (Request.Form["Vaccination_Date"].ToString() != "")
+                    {
+                        child.Vaccination_Date = DateTime.Parse(Request.Form["Vaccination_Date"]);
+                    }
+                    db.Child_FollowUp_Form.Add(child);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    child.Feed_Type = Request.Form["Feed_Type"];
+                    child.Age_In_Month = int.Parse(Request.Form["Age_In_Month"]);
+                    child.Vaccination_Type = Request.Form["Vaccination_Type"];
+                    child.Patient = db.Patients.Find(child.Patient_Id);
+                    if (Request.Form["Vaccination_Date"].ToString() != "")
+                    {
+                        child.Vaccination_Date = DateTime.Parse(Request.Form["Vaccination_Date"]);
+                    }
+                    db.Entry(child).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Child_FollowUp_Form", new { id = child.Patient_Id });
         }
 
         [HttpPost]
@@ -1484,38 +1583,41 @@ namespace GP_EMR_Project.Controllers
                 Lab lab = db.Labs.Find(id);
                 if (lab != null)
                 {
-                    string filePath = Server.MapPath(lab.Lab_File);
-                    string ext = System.IO.Path.GetExtension(filePath);
-                    string type = "";
-
-                    if (ext != null)
+                    if (lab.Lab_File != null)
                     {
-                        switch (ext.ToLower())
+                        string filePath = Server.MapPath(lab.Lab_File);
+                        string ext = System.IO.Path.GetExtension(filePath);
+                        string type = "";
+
+                        if (ext != null)
                         {
-                            case ".txt":
-                                type = "text/plain";
-                                break;
+                            switch (ext.ToLower())
+                            {
+                                case ".txt":
+                                    type = "text/plain";
+                                    break;
 
-                            case ".GIF":
-                                type = "image/GIF";
-                                break;
+                                case ".GIF":
+                                    type = "image/GIF";
+                                    break;
 
-                            case ".pdf":
-                                type = "Application/pdf";
-                                break;
+                                case ".pdf":
+                                    type = "Application/pdf";
+                                    break;
 
-                            case ".doc":
-                            case ".rtf":
-                                type = "Application/msword";
-                                break;
-                        }
-                        WebClient client = new WebClient();
-                        byte[] filebuffer = client.DownloadData(filePath);
-                        if (filebuffer != null && type != "")
-                        {
-                            Response.ContentType = type;
-                            Response.AddHeader("content-length", filebuffer.Length.ToString());
-                            Response.BinaryWrite(filebuffer);
+                                case ".doc":
+                                case ".rtf":
+                                    type = "Application/msword";
+                                    break;
+                            }
+                            WebClient client = new WebClient();
+                            byte[] filebuffer = client.DownloadData(filePath);
+                            if (filebuffer != null && type != "")
+                            {
+                                Response.ContentType = type;
+                                Response.AddHeader("content-length", filebuffer.Length.ToString());
+                                Response.BinaryWrite(filebuffer);
+                            }
                         }
                     }
                 }
@@ -1575,6 +1677,11 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Edit_Upload_Lab_File(long?id)
         {
+            if(Check_Login() == false)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -1584,28 +1691,31 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
+            ViewBag.Patient_Id = lab.Patient_Id;
             return View(lab);
         }
 
         [HttpPost]
-        public ActionResult Edit_Upload_Lab_File(HttpPostedFileBase Lab_File)
+        public ActionResult Edit_Upload_Lab_File(HttpPostedFileBase file)
         {
             Lab lab = db.Labs.Find(Int64.Parse(Request.Form["Lab_Id"]));
-            if(lab == null)
+            if (lab == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
+            ViewBag.Patient_Id = lab.Patient_Id;
             if (ModelState.IsValid)
             {
-                if (Lab_File == null)
+                if (file == null)
                 {
-                    return RedirectToAction("Laboratories_Radiology", new { id = lab.Lab_Id });
+                    ModelState.AddModelError("Lab_File", "Some Problems occures !");
+                    return View(lab);
                 }
 
-                if (Lab_File.FileName != null)
+                if (file.FileName != null)
                 {
 
-                    string ext = System.IO.Path.GetExtension(Lab_File.FileName);
+                    string ext = System.IO.Path.GetExtension(file.FileName);
                     if (ext != null)
                     {
                         switch (ext.ToLower())
@@ -1620,13 +1730,12 @@ namespace GP_EMR_Project.Controllers
                                 break;
 
                             case ".doc":
-                            case ".rtf":
                                 break;
                             default:
                                 ModelState.AddModelError("Lab_File", "This Extension Not Allowed");
                                 return View(lab);
                         }
-                        Lab_File.SaveAs(Server.MapPath("~/Content/Lab_Radio/") + lab.Patient_Id + ext);
+                        file.SaveAs(Server.MapPath("~/Content/Lab_Radio/") + lab.Patient_Id + ext);
                         lab.Lab_File = "~/Content/Lab_Radio/" + lab.Patient_Id + ext;
                         db.Entry(lab).State = EntityState.Modified;
                         db.SaveChanges();

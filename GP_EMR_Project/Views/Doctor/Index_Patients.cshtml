@@ -61,6 +61,10 @@
                         <td style=" font-weight:bold">@item.hour</td>
                         <td style=" font-weight:bold">@item.Patient.Person.First_Name @item.Patient.Person.Last_Name</td>
                         <td style=" font-weight:bold">@item.Patient.Person.National_Id</td>
+                        <td style=" font-weight:bold">
+                            @{int age = DateTime.Now.Year - item.Patient.Person.Birth_Date.Year;}
+                           @age
+                        </td>
                         <td>
                             @Html.ActionLink("Examine", "Examine", "Doctor", new { id = item.Patient_Id }, new { @class = "btn btn-outline-primary" })
 

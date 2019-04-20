@@ -1,0 +1,91 @@
+﻿@model GP_EMR_Project.Models.Child_FollowUp_Form
+
+@{
+    ViewBag.Title = "Child_FollowUp_Form";
+    Layout = "~/Views/Shared/_Doctor.cshtml";
+}
+
+
+<br />
+<div class="contentt">
+    <h3 class="text-center" style="color:grey">Child Follow Up Form</h3>
+    <hr />
+    <br />
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered table-hover text-center">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Patient_Id)
+
+                    <tr>
+                        <th>Age In Month</th>
+                        <th>Feed Type</th>
+                        <th>Vaccination Date</th>
+                        <th> Vaccination Type</th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Age_In_Month, new { htmlAttributes = new { @class = "form-control",type="number" } })
+                                @Html.ValidationMessageFor(model => model.Age_In_Month, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Feed_Type, new { htmlAttributes = new { @class = "form-control", maxlength="100" } })
+                                @Html.ValidationMessageFor(model => model.Feed_Type, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="col-md-10">
+                                @if(Model.Vaccination_Date != null)
+                                {
+                                <h6>
+                                    @Model.Vaccination_Date.Value.ToShortDateString()
+                                </h6>
+                                }
+                            </div>
+
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Vaccination_Date, new { htmlAttributes = new { @class = "form-control",type="date" } })
+                                @Html.ValidationMessageFor(model => model.Vaccination_Date, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+
+
+
+                        <td>
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Vaccination_Type, new { htmlAttributes = new { @class = "form-control", maxlength="100" } })
+                                @Html.ValidationMessageFor(model => model.Vaccination_Type, "", new { @class = "text-danger" })
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-info" style="width:100px">   Save   </button>
+                            <button class="btn btn-info" style="text-align:center; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
+                            @Html.ActionLink("Back", "Examine", new { id = Model.Patient_Id }, new { @class = "btn btn-info" })
+                            <hr />
+                        </div>
+
+                    </tr>
+
+                }
+            </table>
+
+            <hr />
+        </div>
+    </div>
+</div>
+
+

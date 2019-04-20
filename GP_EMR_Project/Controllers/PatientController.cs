@@ -904,6 +904,10 @@ namespace GP_EMR_Project.Controllers
 
         public ActionResult Child_Followup(long?id)
         {
+            if(Check_Login() == false)
+            {
+                return RedirectToAction("Login", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -913,7 +917,15 @@ namespace GP_EMR_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            Child_FollowUp_Form child_followUp_form = db.Child_FollowUp_Form.Find(pt.Patient_Id);
+            var child_followUp_form = db.Child_FollowUp_Form.Find(pt.Patient_Id);
+            if (child_followUp_form == null)
+            {
+                child_followUp_form = new Child_FollowUp_Form();
+                child_followUp_form.Age_In_Month = 0;
+                child_followUp_form.Feed_Type = "";
+                child_followUp_form.Patient_Id = pt.Patient_Id;
+                child_followUp_form.Patient = pt;
+            }
             return View(child_followUp_form);
         }
 
