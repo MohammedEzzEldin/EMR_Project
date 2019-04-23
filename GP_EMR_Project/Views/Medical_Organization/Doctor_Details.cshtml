@@ -1,0 +1,127 @@
+﻿@model GP_EMR_Project.Models.User
+
+@{
+    ViewBag.Title = "Doctor_Details";
+    Layout = "~/Views/Shared/_Medical_Organization.cshtml";
+}
+
+<h2 class="text-center" style="font-family:'Bookman Old Style'">Doctor Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal col-6" style="font-family:'Bookman Old Style';margin-left:10px;font-size:30px">
+        <dt>
+            @Html.DisplayName("Doctor Name")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.First_Name)
+            @Html.DisplayFor(model => model.Person.Last_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("User ID")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Birth Date")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Birth_Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Nationality)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Nationality)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("National ID")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.National_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Academic Degree")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Doctor.Acadimic_Degree)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Functional Degree")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Doctor.Functional_Degree)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.Doctor.Spacialization)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Doctor.Spacialization)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Department")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.Doctor.Department.Department_Name)
+        </dd>
+
+    </dl>
+</div>

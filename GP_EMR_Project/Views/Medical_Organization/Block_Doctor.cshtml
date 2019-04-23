@@ -1,0 +1,65 @@
+﻿@model GP_EMR_Project.Models.User
+
+@{
+    ViewBag.Title = "Block_Doctor";
+    Layout = "~/Views/Shared/_Medical_Organization.cshtml";
+}
+
+<h2 class="text-center" style="font-family:'Bookman Old Style'">Block Doctor</h2>
+<br />
+<h3 style="font-family:'Bookman Old Style';margin-left:20px">Are you sure you want to Block this doctor?</h3>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal" style="margin-left:20px;font-family:'Bookman Old Style'">
+
+
+        <dt>
+            @Html.DisplayName("User ID")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User_Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Doctor Name")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.First_Name)
+            @Html.DisplayFor(model => model.Person.Last_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.User_Id)
+        @Html.HiddenFor(model => model.User_Type)
+        @Html.HiddenFor(model => model.Password)
+        @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.Photo_Url)
+        @Html.HiddenFor(model => model.Last_Date_Of_Login)
+        @Html.HiddenFor(model => model.Address)
+        @Html.HiddenFor(model => model.City)
+        @Html.HiddenFor(model => model.Status_Of_Account, new { @Value = 2 })
+        <div class="form-actions no-color" style="margin-left:20px">
+            <input type="submit" value="Block" class="btn btn-default" />
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

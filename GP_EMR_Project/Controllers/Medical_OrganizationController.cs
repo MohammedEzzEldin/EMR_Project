@@ -30,44 +30,44 @@ namespace GP_EMR_Project.Controllers
         }
 
         // GET: Medical_Organization/Details/5
-        public ActionResult Details(long? id)
+        public ActionResult Doctor_Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medical_Organization medical_Organization = db.Medical_Organization.Find(id);
-            if (medical_Organization == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(medical_Organization);
+            return View(user);
         }
 
         // GET: Medical_Organization/Create
-        public ActionResult Create()
-        {
-            ViewBag.Medical_Org_Id = new SelectList(db.Users, "User_Id", "Email");
-            return View();
-        }
+        //public ActionResult Create()
+        //{
+        //    ViewBag.Medical_Org_Id = new SelectList(db.Users, "User_Id", "Email");
+        //    return View();
+        //}
 
-        // POST: Medical_Organization/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Medical_Org_Id,Medical_Org_Name,Medium_Rate")] Medical_Organization medical_Organization)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Medical_Organization.Add(medical_Organization);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+        //// POST: Medical_Organization/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "Medical_Org_Id,Medical_Org_Name,Medium_Rate")] Medical_Organization medical_Organization)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Medical_Organization.Add(medical_Organization);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
 
-            ViewBag.Medical_Org_Id = new SelectList(db.Users, "User_Id", "Email", medical_Organization.Medical_Org_Id);
-            return View(medical_Organization);
-        }
+        //    ViewBag.Medical_Org_Id = new SelectList(db.Users, "User_Id", "Email", medical_Organization.Medical_Org_Id);
+        //    return View(medical_Organization);
+        //}
 
         // GET: Medical_Organization/Edit/5
         public ActionResult Edit(long? id)
@@ -104,7 +104,7 @@ namespace GP_EMR_Project.Controllers
                 medical_Organization.User.Phone = Request.Form["User.Phone"];
                 medical_Organization.User.City = Request.Form["User.City"];
                 medical_Organization.User.Address = Request.Form["User.Address"];
-                if(Request.Form["User.Password"] != medical_Organization.User.Password.Split(' ')[0])
+                if (Request.Form["User.Password"] != medical_Organization.User.Password.Split(' ')[0])
                 {
                     if (Request.Form["Confirm_Password"].Equals(Request.Form["User.Password"]))
                     {
@@ -116,7 +116,7 @@ namespace GP_EMR_Project.Controllers
                         ModelState.AddModelError("Confirm_Password", "Password do not match Confirm Password Feild");
                         return View(medical_Organization);
                     }
-                }    
+                }
                 db.Entry(medical_Organization).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -124,31 +124,107 @@ namespace GP_EMR_Project.Controllers
             return View(medical_Organization);
         }
 
-        // GET: Medical_Organization/Delete/5
-        public ActionResult Delete(long? id)
+        public ActionResult Edit_Doctor(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Medical_Organization medical_Organization = db.Medical_Organization.Find(id);
-            if (medical_Organization == null)
+            Doctor doctor = db.Doctors.Find(id);
+            if (doctor == null)
             {
                 return HttpNotFound();
             }
-            return View(medical_Organization);
+
+            if (id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Medical_Organization medical_Organization = db.Medical_Organization.Find(doctor.Medical_Org_Id);
+            var getdepartmentslist = medical_Organization.Departments.ToList();
+            getdepartmentslist.Insert(0, new Department { Department_Id = 0, Department_Name = "Select" });
+            ViewBag.ListOfDepartments = getdepartmentslist;
+            return View(doctor);
         }
 
-        // POST: Medical_Organization/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id)
+        public ActionResult Edit_Doctor()
         {
-            Medical_Organization medical_Organization = db.Medical_Organization.Find(id);
-            db.Medical_Organization.Remove(medical_Organization);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Doctor doctor = null;
+            doctor = db.Doctors.Find(long.Parse(Request.Form["Doctor_Id"]));
+            if (doctor != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    doctor.Acadimic_Degree = Request.Form["Acadimic_Degree"];
+                    doctor.Functional_Degree = Request.Form["Functional_Degree"];
+                    doctor.Medical_Org_Id = Int32.Parse(Request.Form["Medical_Org_Id"]);
+                    doctor.Medium_Rate = Int32.Parse(Request.Form["Medium_Rate"]);
+                    doctor.Spacialization = Request.Form["Spacialization"];
+                    doctor.Department_Id = Int32.Parse(Request.Form["Department_Id"]);
+                    doctor.Person.First_Name = Request.Form["Person.First_Name"];
+                    doctor.Person.Last_Name = Request.Form["Person.Last_Name"];
+                    doctor.Person.Nationality = Request.Form["Person.Nationality"];
+                    doctor.Person.National_Id = Request.Form["Person.National_Id"];
+                    doctor.Person.Gender = Request.Form["Person.Gender"];
+                    doctor.Person.Birth_Date = DateTime.Parse(Request.Form["Person.Birth_Date"]);
+                    doctor.Person.User.Email = Request.Form["[0]"];
+                    doctor.Person.User.Phone = Request.Form["Person.User.Phone"];
+                    doctor.Person.User.Address = Request.Form["Person.User.Address"];
+                    doctor.Person.User.City = Request.Form["Person.User.City"];
+
+
+                    if (Request.Form["Person.User.Password"].Split(' ')[0] != doctor.Person.User.Password.Split(' ')[0])
+                    {
+                        if (Request.Form["Confirm_Password"].Split(' ')[0] == (Request.Form["Person.User.Password"]).Split(' ')[0])
+                        {
+                            doctor.Person.User.Password = Request.Form["Person.User.Password"];
+                        }
+
+                        else
+                        {
+                            ModelState.AddModelError("Confirm_Password", "Password and Confirm Password does not match");
+                            return View(doctor);
+                        }
+
+
+                    }
+                    db.Entry(doctor).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Manage_Doctors");
+                }
+            }
+            return View(doctor);
         }
+
+
+        // GET: Medical_Organization/Delete/5
+        //public ActionResult Delete(long? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Medical_Organization medical_Organization = db.Medical_Organization.Find(id);
+        //    if (medical_Organization == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(medical_Organization);
+        //}
+
+        //// POST: Medical_Organization/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(long id)
+        //{
+        //    Medical_Organization medical_Organization = db.Medical_Organization.Find(id);
+        //    db.Medical_Organization.Remove(medical_Organization);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -200,9 +276,17 @@ namespace GP_EMR_Project.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
-                db.SaveChanges();
-                return RedirectToAction("Doctor_Personal_Data", new { id = user.User_Id });
+                if (Request.Form["Confirm_Password"].Equals(Request.Form["Password"]))
+                {
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    return RedirectToAction("Doctor_Personal_Data", new { id = user.User_Id });
+                }
+                else
+                {
+                    ModelState.AddModelError("Confirm_Password", "Password and Confirm Password does not match");
+                    return View(user);
+                }
             }
             return View(user);
         }
@@ -281,6 +365,97 @@ namespace GP_EMR_Project.Controllers
             return View(doctor);
         }
 
+        public ActionResult Block_Doctor(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Block_Doctor(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Manage_Doctors");
+            }
+            return View(user);
+        }
+
+        public ActionResult Unblock_Doctor(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Unblock_Doctor(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Manage_Doctors");
+            }
+            return View(user);
+        }
+
+        public ActionResult Delete_Doctor(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        [HttpPost, ActionName("Delete_Doctor")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete_Doctor_Confirmed(long id)
+        {
+            User user = db.Users.Find(id);
+            db.Users.Remove(user);
+            Person person = db.People.Find(id);
+            db.People.Remove(person);
+            Doctor doctor = db.Doctors.Find(id);
+            db.Doctors.Remove(doctor);
+            db.SaveChanges();
+            return RedirectToAction("Manage_Doctors");
+        }
         public ActionResult Manage_Department()
         {
             User user = (User)Session["UserID"];

@@ -387,6 +387,11 @@
     <Content Include="Views\Doctor\Edit_Upload_Lab_File.cshtml" />
     <Content Include="Views\Doctor\Add_Laboratories_Radiology.cshtml" />
     <Content Include="Views\Doctor\Child_FollowUp_Form.cshtml" />
+    <Content Include="Views\Medical_Organization\Block_Doctor.cshtml" />
+    <Content Include="Views\Medical_Organization\Delete_Doctor.cshtml" />
+    <Content Include="Views\Medical_Organization\Doctor_Details.cshtml" />
+    <Content Include="Views\Medical_Organization\Edit_Doctor.cshtml" />
+    <Content Include="Views\Medical_Organization\Unblock_Doctor.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -33,7 +33,7 @@
             <table class=" main-table table table-bordered text-center">
                 <tr>
                     <th>Doctor Name</th>
-                    <th>Doctor Speciality</th>
+                    <th>Doctor Department</th>
                     <th>Control Doctor</th>
                 </tr>
                 <tr>
@@ -44,11 +44,21 @@
                             @Html.DisplayFor(modelItem => item.Person.First_Name)
                         @Html.DisplayFor(modelItem => item.Person.Last_Name)
                     </td>
-                    <td>@Html.DisplayFor(modelItem => item.Spacialization)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Department.Department_Name)</td>
                     <td>
-                        @Html.ActionLink("Details", "#", "", new { @class = "btn btn-success" })
-                        @Html.ActionLink("Edit", "#", "", new { @class = "btn btn-secondary" })
-                        @Html.ActionLink("Delete", "#", "", new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Details", "Doctor_Details", new { id = item.Doctor_Id }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("Edit", "Edit_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-secondary" })
+                        @if (item.Person.User.Status_Of_Account != 2)
+                        {
+                            @Html.ActionLink("Block", "Block_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Unblock", "Unblock_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+
+                        }
+                        @Html.ActionLink("Delete", "Delete_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+
                     </td>
                 </tr>
             }
