@@ -579,5 +579,42 @@ namespace GP_EMR_Project.Controllers
             return RedirectToAction("Manage_Account");
         }
 
+        public ActionResult Manage_Schedule(long? id)
+        {
+            User user = (User)Session["UserID"];
+            if(user == null)
+            {
+                return RedirectToAction("Login","Home");
+            }
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var schedule = db.Doctor_Schedule.Where(model => model.doctor_id == id);
+            ViewBag.Doctor_Id = id;
+            return View(schedule.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Delete_Schedule(long? Id)
+        {
+            long? doctor_Id = null;
+            if(ModelState.IsValid)
+            {
+                long s = Int64.Parse(Request.Form["Id"]);
+                if(Id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                }
+                Doctor_Schedule schedule = db.Doctor_Schedule.Find(Id);
+                if(schedule != null)
+                {
+                    doctor_Id = schedule.doctor_id;
+                    db.Doctor_Schedule.Remove(schedule);
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Manage_Schedule", new { id = doctor_Id });
+        }
     }
 }

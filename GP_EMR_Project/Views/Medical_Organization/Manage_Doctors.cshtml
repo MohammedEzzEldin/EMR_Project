@@ -18,10 +18,6 @@
             </div>
             <div class="col-4">
 
-                <select class="custom-select">
-                    <option selected>Filter by Governorate</option>
-                    <option></option>
-                </select>
             </div>
         </div>
     </div>
@@ -48,6 +44,7 @@
                     <td>
                         @Html.ActionLink("Details", "Doctor_Details", new { id = item.Doctor_Id }, new { @class = "btn btn-success" })
                         @Html.ActionLink("Edit", "Edit_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-secondary" })
+                        @Html.ActionLink("Manage Schedule", "Manage_Schedule", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
                         @if (item.Person.User.Status_Of_Account != 2)
                         {
                             @Html.ActionLink("Block", "Block_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
