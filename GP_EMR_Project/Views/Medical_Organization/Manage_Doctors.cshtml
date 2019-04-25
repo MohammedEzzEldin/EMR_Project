@@ -44,7 +44,7 @@
                     <td>
                         @Html.ActionLink("Details", "Doctor_Details", new { id = item.Doctor_Id }, new { @class = "btn btn-success" })
                         @Html.ActionLink("Edit", "Edit_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-secondary" })
-                        @Html.ActionLink("Manage Schedule", "Manage_Schedule", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Manage Schedule", "Manage_Schedule", new { id = item.Doctor_Id }, new { @class = "btn btn-info" })
                         @if (item.Person.User.Status_Of_Account != 2)
                         {
                             @Html.ActionLink("Block", "Block_Doctor", new { id = item.Doctor_Id }, new { @class = "btn btn-danger" })

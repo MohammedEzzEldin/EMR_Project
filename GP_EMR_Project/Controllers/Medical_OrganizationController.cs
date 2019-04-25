@@ -596,17 +596,17 @@ namespace GP_EMR_Project.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete_Schedule(long? Id)
+        public ActionResult Delete_Schedule(long Schedule_Id)
         {
             long? doctor_Id = null;
             if(ModelState.IsValid)
             {
-                long s = Int64.Parse(Request.Form["Id"]);
-                if(Id == null)
+                long s = Int64.Parse(Request.Form["Schedule_Id"]);
+                if(Schedule_Id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.NotFound);
                 }
-                Doctor_Schedule schedule = db.Doctor_Schedule.Find(Id);
+                Doctor_Schedule schedule = db.Doctor_Schedule.Find(Schedule_Id);
                 if(schedule != null)
                 {
                     doctor_Id = schedule.doctor_id;

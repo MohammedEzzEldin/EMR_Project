@@ -43,13 +43,13 @@
                         </td>
 
                         <td>
-                            @Html.ActionLink("Edit", "Edit_Schedule", new { id = item.Schedule_Id }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Edit", "Edit_Schedule", new { id = item.Schedule_Id }, new { @class = "btn btn-info" })
                             @using (Html.BeginForm("Delete_Schedule", "Medical_Organization", FormMethod.Post, new { style = "display : inline-block" }))
                             {
                                 @Html.AntiForgeryToken();
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                @Html.Hidden("Id", item.Schedule_Id)
-                                <button type="submit" class="btn btn-info"> Delete </button>
+                                @Html.Hidden("Schedule_Id", item.Schedule_Id)
+                                <button type="submit" class="btn btn-danger"> Delete </button>
                             }
                         </td>
                     </tr>
