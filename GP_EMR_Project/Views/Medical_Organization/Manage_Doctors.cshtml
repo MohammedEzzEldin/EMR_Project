@@ -9,21 +9,24 @@
 <div class="contentt">
     <div class="t container">
         <h1 class="text-center">Doctors</h1>
-        <div class="row justify-content-between">
-            <div class="col-4">
-                <form class="form-inline">
-                    <input class=" ml-auto form-control mr-sm-2" type="search" placeholder="Search By Name" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
-            <div class="col-4">
-
-            </div>
+        <div class="" style=" display:inline-block; margin-left:8%; border:5px solid silver; padding:10px;">
+            @using (Html.BeginForm("Search_In_Doctors", "Medical_Organization", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.DropDownList("Search_By", new SelectList(new List<SelectListItem>{
+                                                                         new SelectListItem{Value = "Department",  Text = "Department Name" },
+                                                                         new SelectListItem{Value = "Doctor_F",  Text = "Doctor First Name" },
+                                                                         new SelectListItem{Value = "Doctor-L",  Text = "Doctor Last Name" },
+                                                                         new SelectListItem{Value= "National_Id",Text="National Id of Doctor"}
+                                                                         }, "value", "text"), "Search By", new { @class = "form-control",required = true })
+                <input class=" ml-auto form-control mr-sm-auto" type="search" id="Search" name="Search" placeholder="Search" style="text-align:center;" aria-label="Search" required>
+                @Html.ValidationMessage("Search", "", new { @class = "text-danger" })
+                <input class="btn btn-outline-secondary my-2 my-sm-0" value="Search" type="submit">
+            }
         </div>
+        <a href="@Url.Action("Add_New_Doctor","Medical_Organization")" style="margin-left:5px" class="btn btn-dark e"><i class="fa fa-plus"></i>Add New Doctor</a>
     </div>
-    <p>
-        <a href="@Url.Action("Add_New_Doctor","Medical_Organization")" class="btn btn-dark e"><i class="fa fa-plus"></i>Add New Doctor</a>
-    </p>
+
     <div class="container">
         <div class="table-responsive">
             <table class=" main-table table table-bordered text-center">

@@ -714,5 +714,34 @@ namespace GP_EMR_Project.Controllers
             }
             return View(schedule);
         }
+
+        [HttpPost]
+        public ActionResult Search_In_Doctors(string Search)
+        {
+            User user = (User)Session["UserID"];
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (user.User_Type != 2)
+            {
+                return RedirectToAction("Logout", "Home");
+            }
+            IEnumerable<Doctor> doctors = db.Doctors.Where(d => d.Medical_Org_Id == user.User_Id).ToList();
+            switch (Request.Form["Search_By"])
+            {
+                case "Department":
+                    return View("Manage_Doctors", doctors.Where(d => d.Department.Department_Name.Contains(Search)).OrderByDescending(model => model.Department.Department_Name));
+                case "Doctor_F":
+                    return View("Manage_Doctors", doctors.Where(d => d.Person.First_Name.Contains(Search)).OrderByDescending(model => model.Person.First_Name));
+                case "Doctor_L":
+                    return View("Manage_Doctors", doctors.Where(d => d.Person.Last_Name.Contains(Search)).OrderBy(model => model.Person.Last_Name));
+                case "National_Id":
+                    return View("Manage_Doctors", doctors.Where(d=> d.Person.National_Id.Equals(Search)));
+                default:
+                    break;
+            }
+            return View("Manage_Doctors",doctors);
+        }
     }
 }
