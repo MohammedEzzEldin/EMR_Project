@@ -602,7 +602,7 @@ namespace GP_EMR_Project.Controllers
             if(ModelState.IsValid)
             {
                 long s = Int64.Parse(Request.Form["Schedule_Id"]);
-                if(Schedule_Id == null)
+                if(Schedule_Id == 0)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.NotFound);
                 }
@@ -615,6 +615,104 @@ namespace GP_EMR_Project.Controllers
                 }
             }
             return RedirectToAction("Manage_Schedule", new { id = doctor_Id });
+        }
+
+        public ActionResult Edit_Schedule(long? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Doctor_Schedule schedule = db.Doctor_Schedule.Find(id);
+            if(schedule == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            var doctor = db.Doctors.Find(schedule.doctor_id);
+            if(doctor == null)
+            {
+                ViewBag.DoctorName = "";
+            }
+            else
+            {
+                ViewBag.DoctorName = doctor.Person.First_Name + " " + doctor.Person.Last_Name;
+            }
+            return View(schedule);
+        }
+        [HttpPost]
+        public ActionResult Edit_Schedule([Bind(Include ="doctor_id,Schedule_Id,day,from,to")]Doctor_Schedule schedule)
+        {
+            var doctor = db.Doctors.Find(schedule.doctor_id);
+            if (doctor == null)
+            {
+                ViewBag.DoctorName = "";
+                ModelState.AddModelError("to", "doctor not found");
+                return View(schedule);
+            }
+            else
+            {
+                ViewBag.DoctorName = doctor.Person.First_Name + " " + doctor.Person.Last_Name;
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    db.Entry(schedule).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Manage_Schedule", new { id = schedule.doctor_id });
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError("to", ex.Message);
+                }
+            }
+            return View(schedule);
+        }
+        public ActionResult Add_New_Schedule(long?id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Doctor doctor = db.Doctors.Find(id);
+            if(doctor == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            ViewBag.Doctor_Id = doctor.Doctor_Id;
+            ViewBag.DoctorName = doctor.Person.First_Name + " " + doctor.Person.Last_Name;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Add_New_Schedule([Bind(Include = "doctor_id,day,from,to")] Doctor_Schedule schedule)
+        {
+            var doctor = db.Doctors.Find(schedule.doctor_id);
+            if (doctor == null)
+            {
+                ViewBag.DoctorName = "";
+                ViewBag.Doctor_Id = 0;
+                ModelState.AddModelError("to", "doctor not found");
+                return View(schedule);
+            }
+            else
+            {
+                ViewBag.DoctorName = doctor.Person.First_Name + " " + doctor.Person.Last_Name;
+                ViewBag.Doctor_Id = doctor.Doctor_Id;
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    db.Doctor_Schedule.Add(schedule);
+                    db.SaveChanges();
+                    return RedirectToAction("Manage_Schedule", new { id = schedule.doctor_id });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("to", ex.InnerException);
+                }
+            }
+            return View(schedule);
         }
     }
 }

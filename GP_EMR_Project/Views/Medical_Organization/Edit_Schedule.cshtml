@@ -1,0 +1,60 @@
+﻿@model GP_EMR_Project.Models.Doctor_Schedule
+
+@{
+    ViewBag.Title = "Edit_Schedule";
+    Layout = "~/Views/Shared/_Medical_Organization.cshtml";
+}
+<br />
+<h2 class="text-center" style="font-family:'Bookman Old Style'">Edit Schedule of Dr. @ViewBag.DoctorName</h2>
+<div class="text-center">
+    <a href=@Url.Action("Manage_Schedule","Medical_Organization",new { id = (long) Model.doctor_id}) class="btn btn-outline-info">Back</a>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.doctor_id)
+    @Html.HiddenFor(model => model.Schedule_Id)
+
+    <div class="form-horizontal" style="font-family:'Bookman Old Style';margin-left:10px">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Day", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.day.Split(' ')[0], new { htmlAttributes = new { @class = "form-control",maxlength = "9" } })
+                @Html.ValidationMessageFor(model => model.day, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            @Html.Label("From", htmlAttributes: new { @class = "control-label col-md-2" })  : (@Model.from)
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.from, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.from, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            @Html.Label("To", htmlAttributes: new { @class = "control-label col-md-2" }) : (@Model.to)
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.to, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.to, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <hr />
+
+        <div class="text-center">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+     
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Manage_Schedule";
-    Layout = "~/Views/Shared/_Doctor.cshtml";
+    Layout = "~/Views/Shared/_Medical_Organization.cshtml";
 }
 
 <br />
@@ -11,12 +11,12 @@
         <h1 class="text-center">Schedule</h1>
         <div class="row justify-content-between">
             <div class="col-4">
-
             </div>
         </div>
     </div>
     <p>
         <a href="@Url.Action("Add_New_Schedule","Medical_Organization",new { id = (long) ViewBag.Doctor_Id })" class="btn btn-dark e"><i class="fa fa-plus"></i>Add New Schedule</a>
+        <a href=@Url.Action("Manage_Doctors","Medical_Organization") class="btn btn-outline-info">Back</a>
     </p>
     <div class="container">
         <div class="table-responsive">
