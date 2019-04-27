@@ -395,6 +395,7 @@
     <Content Include="Views\Medical_Organization\Manage_Schedule.cshtml" />
     <Content Include="Views\Medical_Organization\Edit_Schedule.cshtml" />
     <Content Include="Views\Medical_Organization\Add_New_Schedule.cshtml" />
+    <Content Include="Views\Doctor\Death_Registration.cshtml" />
     <None Include="Views\Shared\_Main.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

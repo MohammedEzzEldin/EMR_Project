@@ -41,6 +41,37 @@
                                 @Html.HiddenFor(model => model.Patient_Id)
 
                                 <tr>
+                                    <th>@Html.LabelFor(model => model.Patient.Job)</th>
+                                    <th>@Html.Label("Learning Status")</th>
+                                    <th>@Html.Label("Social Status")</th>
+                                    <th>@Html.Label("Death Date")</th>
+                                    <th>@Html.Label("Reason Death")</th>
+                                </tr>
+
+                                <tr>
+                                    <td>@Model.Patient.Job</td>
+                                    <td>@Model.Patient.Learning_Status</td>
+                                    <td>@Model.Patient.Social_Status</td>
+                                    <td>
+                                        @if(Model.Patient.Death_Date == null)
+                                        {
+                                            <label>Still Live</label>
+                                        }
+                                        else
+                                        {
+                                            <label>@Model.Patient.Death_Date.Value.ToShortDateString()</label>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if(Model.Patient.Reason_Death != null)
+                                        {
+                                            <label>@Model.Patient.Reason_Death</label>
+                                        }
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <th>@Html.LabelFor(model => model.Length)</th>
                                     <th>@Html.LabelFor(model => model.Weight)</th>
                                     <th>@Html.LabelFor(model => model.Diabetes)</th>
@@ -112,7 +143,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-info" style="width:100px">   Save   </button>
                                         <button class="btn btn-info" style="text-align:center; width:150px" id="printButton" runat="server" Text="Print" OnClick="javascript:window.print();">Print</button>
@@ -120,8 +150,24 @@
                                     </div>
 
                                 </tr>
-                                <tr></tr>
                             }
+                                <tr>
+                                    <div class="text-center">
+                                        @if (Model.Patient.Death_Date != null)
+                                        {
+                                            using (Html.BeginForm("Delete_Death_Registration", "Doctor", null, FormMethod.Post, new { style = "display:inline-block" }))
+                                            {
+                                                @Html.HiddenFor(model => model.Patient_Id)
+                                                <button type="submit" class="btn btn-info">Delete Death Registration</button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-danger" href=@Url.Action("Death_Registration",new { id = Model.Patient_Id  })>Death Registration</a>
+                                        }
+                                        </div>
+                                    <hr />
+                                </tr>
                         </table>
 
                         <hr />

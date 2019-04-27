@@ -51,6 +51,7 @@
                     <th>Hour</th>
                     <th>Patient</th>
                     <th>National Id</th>
+                    <th>Status</th>
                     <th>Manage</th>
                 </tr>
 
@@ -62,9 +63,33 @@
                         <td style=" font-weight:bold">@item.Patient.Person.First_Name @item.Patient.Person.Last_Name</td>
                         <td style=" font-weight:bold">@item.Patient.Person.National_Id</td>
                         <td style=" font-weight:bold">
-                            @{int age = DateTime.Now.Year - item.Patient.Person.Birth_Date.Year;}
-                           @age
+                            @{
+                                int age = 0;
+                                bool live = true;
+                                if (item.Patient.Death_Date == null)
+                                {
+                                    age = DateTime.Now.Year - item.Patient.Person.Birth_Date.Year;
+                                }
+                                else
+                                {
+                                    age = item.Patient.Death_Date.Value.Year - item.Patient.Person.Birth_Date.Year;
+                                    live = false;
+                                }
+                            }
+                            <label>@age</label>
                         </td>
+
+                        <td>
+                            @if(live == true)
+                            {
+                                <label>Live</label>
+                            }
+                            else
+                            {
+                                <label>Died</label>
+                            }
+                        </td>
+
                         <td>
                             @Html.ActionLink("Examine", "Examine", "Doctor", new { id = item.Patient_Id }, new { @class = "btn btn-outline-primary" })
 

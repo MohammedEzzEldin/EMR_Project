@@ -1745,5 +1745,86 @@ namespace GP_EMR_Project.Controllers
             return View(lab);
         }
 
+        [HttpPost]
+        public ActionResult Delete_Death_Registration()
+        {
+            var pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if (pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (ModelState.IsValid)
+            {
+                try { 
+                pt.Death_Date = null;
+                pt.Reason_Death = null;
+                db.Entry(pt).State = EntityState.Modified;
+                db.SaveChanges();
+                 return RedirectToAction("Examine", new { id = pt.Patient_Id });
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError("Patient_Id", ex.Message);
+                }
+            }
+            General_Examination g = db.General_Examination.Find(pt.Patient_Id);
+            if (g == null)
+            {
+                g = new General_Examination();
+                g.Patient_Id = pt.Patient_Id;
+                g.Patient = pt;
+            }
+            return View("Examine",g);
+        }
+        public ActionResult Death_Registration(long?id)
+        {
+            if(!Check_Login())
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Patient pt = db.Patients.Find(id);
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            return View(pt);
+        }
+
+        [HttpPost]
+        public ActionResult Death_Registration()
+        {
+            var pt = db.Patients.Find(Int64.Parse(Request.Form["Patient_Id"]));
+            if(pt == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    pt.Death_Date = DateTime.Parse(Request.Form["Death_Date"]);
+                    pt.Reason_Death = Request.Form["Reason_Death"];
+                    db.Entry(pt).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Examine", new { id = pt.Patient_Id });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Reason_Death", ex.Message);
+                }
+            }
+            General_Examination g = db.General_Examination.Find(pt.Patient_Id);
+            if (g == null)
+            {
+                g = new General_Examination();
+                g.Patient_Id = pt.Patient_Id;
+                g.Patient = pt;
+            }
+            return View("Examine", g);
+        }
     }
 }
