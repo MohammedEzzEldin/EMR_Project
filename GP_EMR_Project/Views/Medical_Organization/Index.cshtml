@@ -84,12 +84,11 @@
                         <span>
                             <a href="">
                                 @{
-                                    IEnumerable<GP_EMR_Project.Models.Doctor> list = new List<GP_EMR_Project.Models.Doctor>();
-
-                                    list = list.Where(dc => dc.Medical_Org_Id == Model.User_Id);
-
+                                    GP_EMR_Project.Models.EMR_GP_DBEntities db = new GP_EMR_Project.Models.EMR_GP_DBEntities();
+                                    IEnumerable<GP_EMR_Project.Models.Doctor> list = db.Doctors.Where(dc => dc.Medical_Org_Id == Model.User_Id).ToList();
                                 }
                                 @list.Count()
+                               
                             </a>
                         </span>
                     </div>
