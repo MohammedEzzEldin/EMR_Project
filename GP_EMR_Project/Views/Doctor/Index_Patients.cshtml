@@ -51,7 +51,7 @@
                     <th>Hour</th>
                     <th>Patient</th>
                     <th>National Id</th>
-                    <th>Status</th>
+                    <th>Age</th>
                     <th>Manage</th>
                 </tr>
 
@@ -79,16 +79,7 @@
                             <label>@age</label>
                         </td>
 
-                        <td>
-                            @if(live == true)
-                            {
-                                <label>Live</label>
-                            }
-                            else
-                            {
-                                <label>Died</label>
-                            }
-                        </td>
+                       
 
                         <td>
                             @Html.ActionLink("Examine", "Examine", "Doctor", new { id = item.Patient_Id }, new { @class = "btn btn-outline-primary" })

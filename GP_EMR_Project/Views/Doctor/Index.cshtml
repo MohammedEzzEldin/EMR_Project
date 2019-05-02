@@ -68,7 +68,7 @@
     <div style="text-align:center">
         <div class="u">
             <div class="container stats text-center">
-                <h1>Hello Doctor</h1> <br />
+                <h1>Welcome</h1> <br />
                 <div class="row">
                     @if (Model.Department != null)
                     {
@@ -82,7 +82,7 @@
                     <div class="col-md-3">
                         <div class="stat hospitals">
                             Medical Organization Name
-                            <span><h2>@Html.Display("Medical Organization Name", (string)ViewBag.Medical_Organization)</h2></span>
+                            <span><h2>@Model.Department.Medical_Organization.Medical_Org_Name</h2></span>
                         </div>
                     </div>
 
