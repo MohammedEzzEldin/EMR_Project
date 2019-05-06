@@ -277,8 +277,20 @@ namespace GP_EMR_Project.Controllers
             {
                 if (Request.Form["Confirm_Password"].Equals(Request.Form["Password"]))
                 {
-                    db.Users.Add(user);
-                    db.SaveChanges();
+                    var u = db.Users.Where(m => m.Email.Contains(user.Email)).SingleOrDefault();
+                    if (u != null)
+                    {
+                        return RedirectToAction("Doctor_Personal_Data", new { id = u.User_Id });
+                    }
+                    try
+                    {
+                        db.Users.Add(user);
+                        db.SaveChanges();
+                    }
+                    catch(Exception ex)
+                    {
+                        RedirectToAction("Index");
+                    }
                     return RedirectToAction("Doctor_Personal_Data", new { id = user.User_Id });
                 }
                 else
@@ -320,9 +332,23 @@ namespace GP_EMR_Project.Controllers
                 }
                 else
                 {
-                    db.People.Add(pr);
-                    db.SaveChanges();
-                    return RedirectToAction("Register_Doctor", new { id = pr.Person_Id });
+                    var p = db.People.Find(pr.Person_Id);
+                    if(p != null)
+                    {
+                        return RedirectToAction("Register_Doctor", new { id = p.Person_Id });
+                    }
+                    try
+                    {
+                        db.People.Add(pr);
+                        db.SaveChanges();
+                        return RedirectToAction("Register_Doctor", new { id = pr.Person_Id });
+                    }
+                    catch(Exception ex)
+                    {
+                        ModelState.AddModelError("First_Name", ex.Message);
+                        return View(pr);
+                    }
+
                 }
             }
             return View(pr);
@@ -353,15 +379,27 @@ namespace GP_EMR_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register_Doctor(Doctor doctor)
+        public ActionResult Register_Doctor([Bind(Include = "Medium_Rate,Medical_Org_Id,Doctor_Id,Acadimic_Degree,Functional_Degree,Spacialization,Department_Id")] Doctor doctor)
         {
             if (ModelState.IsValid)
             {
-                db.Doctors.Add(doctor);
-                db.SaveChanges();
-                return RedirectToAction("Manage_Doctors");
+                var d = db.Doctors.Find(doctor.Doctor_Id);
+                if(d != null)
+                {
+                    return RedirectToAction("Manage_Doctors");
+                }
+                try
+                {
+                    db.Doctors.Add(doctor);
+                    db.SaveChanges();
+                    return RedirectToAction("Manage_Doctors");
+                }
+                catch(Exception ex)
+                {
+                    return RedirectToAction("Register_Doctor",new { id = doctor.Doctor_Id});
+                }           
             }
-            return View(doctor);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Block_Doctor(long? id)
