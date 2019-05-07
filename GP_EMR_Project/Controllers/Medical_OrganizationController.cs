@@ -780,11 +780,12 @@ namespace GP_EMR_Project.Controllers
             {
                 return RedirectToAction("Manage_Department");
             }
-            ViewBag.Dep_Name = dep.Department_Name; 
+            ViewBag.Dep_Name = dep.Department_Name;
+            ViewBag.Dep_Id = dep.Department_Id;
             return View(doctors);
         }
 
-        public ActionResult Assing_Doctors_Department(long? id)
+        public ActionResult Assign_Doctors_Department(long? id)
         {
             if (id == null)
             {
@@ -803,6 +804,64 @@ namespace GP_EMR_Project.Controllers
             ViewBag.Dep_Name = dep.Department_Name;
             ViewBag.Dep_Id = dep.Department_Id;
             return View(doctors.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Assign_Doctors_Department()
+        {
+            long doc_id = Int64.Parse(Request.Form["Doctor_Id"]);
+            var doctor = db.Doctors.Find(doc_id);
+            if (doctor == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            long dep_id = Int64.Parse(Request.Form["Dep_Id"]);
+            if (dep_id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    doctor.Department_Id = dep_id;
+                    db.Entry(doctor).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch(Exception)
+                {
+                    return RedirectToAction("Assign_Doctors_Department", new { id = dep_id });
+                }
+               
+            }
+            return RedirectToAction("Assign_Doctors_Department", new { id = dep_id });
+        }
+
+        [HttpPost]
+        public ActionResult UnAssign_Doctors_Department()
+        {
+            long doc_id = Int64.Parse(Request.Form["Doctor_Id"]);
+            long dep_id = Int64.Parse(Request.Form["Dep_Id"]);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var doctor = db.Doctors.Find(doc_id);
+                    if (doctor == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    doctor.Department_Id = null;
+                    db.Entry(doctor).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Show_Doctors_Department", new { id = dep_id });
+                }
+
+            }
+            return RedirectToAction("Show_Doctors_Department", new { id = dep_id });
         }
     }
 }

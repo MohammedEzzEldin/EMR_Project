@@ -30,6 +30,12 @@
 
                         <td>
                             <!--Assign to department-->
+                            @using (Html.BeginForm("Assign_Doctors_Department", "Medical_Organization", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.Hidden("Dep_Id",(long) ViewBag.Dep_Id)
+                                @Html.Hidden("Doctor_Id",item.Doctor_Id)
+                                <button class="btn btn-danger" type="submit">Assign</button>
+                            }
                         </td>
                     </tr>
                 }

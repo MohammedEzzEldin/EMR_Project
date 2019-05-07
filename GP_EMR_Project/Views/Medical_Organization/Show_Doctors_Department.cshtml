@@ -31,7 +31,13 @@
                         </td>
 
                         <td>
-                           <!--Un Assign from department-->
+                            <!--Un Assign from department-->
+                            @using (Html.BeginForm("UnAssign_Doctors_Department", "Medical_Organization", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                @Html.Hidden("Dep_Id", (long)ViewBag.Dep_Id)
+                                @Html.Hidden("Doctor_Id", item.Doctor_Id)
+                                <button class="btn btn-danger" type="submit">Un Assign</button>
+                            }
                         </td>
                     </tr>
                 }
