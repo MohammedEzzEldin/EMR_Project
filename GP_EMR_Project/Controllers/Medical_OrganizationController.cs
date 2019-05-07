@@ -140,10 +140,6 @@ namespace GP_EMR_Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Medical_Organization medical_Organization = db.Medical_Organization.Find(doctor.Medical_Org_Id);
-            var getdepartmentslist = medical_Organization.Departments.ToList();
-            getdepartmentslist.Insert(0, new Department { Department_Id = 0, Department_Name = "Select" });
-            ViewBag.ListOfDepartments = getdepartmentslist;
             return View(doctor);
         }
 
@@ -154,44 +150,30 @@ namespace GP_EMR_Project.Controllers
             Doctor doctor = null;
             doctor = db.Doctors.Find(long.Parse(Request.Form["Doctor_Id"]));
             if (doctor != null)
-            {
+            {     
                 if (ModelState.IsValid)
                 {
                     doctor.Acadimic_Degree = Request.Form["Acadimic_Degree"];
                     doctor.Functional_Degree = Request.Form["Functional_Degree"];
-                    doctor.Medical_Org_Id = Int32.Parse(Request.Form["Medical_Org_Id"]);
-                    doctor.Medium_Rate = Int32.Parse(Request.Form["Medium_Rate"]);
                     doctor.Spacialization = Request.Form["Spacialization"];
-                    doctor.Department_Id = Int32.Parse(Request.Form["Department_Id"]);
                     doctor.Person.First_Name = Request.Form["Person.First_Name"];
                     doctor.Person.Last_Name = Request.Form["Person.Last_Name"];
                     doctor.Person.Nationality = Request.Form["Person.Nationality"];
                     doctor.Person.National_Id = Request.Form["Person.National_Id"];
                     doctor.Person.Gender = Request.Form["Person.Gender"];
-                    doctor.Person.Birth_Date = DateTime.Parse(Request.Form["Person.Birth_Date"]);
+                    DateTime dateTemp = Convert.ToDateTime(Request.Form["Person.Birth_Date.Day"] + "/" + Request.Form["Person.Birth_Date.Month"] + "/" + Request.Form["Person.Birth_Date.Year"]);
+                    doctor.Person.Birth_Date = dateTemp;
                     doctor.Person.User.Email = Request.Form["[0]"];
-                    doctor.Person.User.Phone = Request.Form["Person.User.Phone"];
-                    doctor.Person.User.Address = Request.Form["Person.User.Address"];
-                    doctor.Person.User.City = Request.Form["Person.User.City"];
-
-
-                    if (Request.Form["Person.User.Password"].Split(' ')[0] != doctor.Person.User.Password.Split(' ')[0])
-                    {
-                        if (Request.Form["Confirm_Password"].Split(' ')[0] == (Request.Form["Person.User.Password"]).Split(' ')[0])
-                        {
-                            doctor.Person.User.Password = Request.Form["Person.User.Password"];
-                        }
-
-                        else
-                        {
-                            ModelState.AddModelError("Confirm_Password", "Password and Confirm Password does not match");
-                            return View(doctor);
-                        }
-
-
-                    }
+                    doctor.Person.User.Phone = Request.Form["Person.User.Phone"];    
+                    try { 
                     db.Entry(doctor).State = EntityState.Modified;
                     db.SaveChanges();
+                    }
+                    catch(Exception ex)
+                    {
+                        ModelState.AddModelError("", ex.Message);
+                        return View(doctor);
+                    }
                     return RedirectToAction("Manage_Doctors");
                 }
             }
@@ -780,6 +762,47 @@ namespace GP_EMR_Project.Controllers
                     break;
             }
             return View("Manage_Doctors",doctors);
+        }
+
+        public ActionResult Show_Doctors_Department(long? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var dep = db.Departments.Find(id);
+            if(dep == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            var doctors = dep.Doctors.ToList();
+            if(doctors == null)
+            {
+                return RedirectToAction("Manage_Department");
+            }
+            ViewBag.Dep_Name = dep.Department_Name; 
+            return View(doctors);
+        }
+
+        public ActionResult Assing_Doctors_Department(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var dep = db.Departments.Find(id);
+            if (dep == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            var doctors = db.Doctors.Where(model => model.Medical_Org_Id == dep.Medical_Org_Id && (model.Department_Id == null || model.Department_Id == 0));
+            if (doctors == null)
+            {
+                return RedirectToAction("Manage_Department");
+            }
+            ViewBag.Dep_Name = dep.Department_Name;
+            ViewBag.Dep_Id = dep.Department_Id;
+            return View(doctors.ToList());
         }
     }
 }

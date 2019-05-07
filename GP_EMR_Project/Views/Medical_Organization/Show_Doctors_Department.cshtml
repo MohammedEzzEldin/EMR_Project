@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GP_EMR_Project.Models.Doctor>
+
+@{
+    ViewBag.Title = "Show_Doctors_Department";
+    Layout = "~/Views/Shared/_Medical_Organization.cshtml";
+}
+
+<div class="contentt">
+    <h3 class="text-center">Show Doctors of @ViewBag.Dep_Name Department</h3>
+
+    <p>
+        <a href="@Url.Action("Manage_Department","Medical_Organization")" class="btn btn-primary">Back</a>
+    </p>
+    <div class="container">
+        <div class="table-responsive">
+            <table class=" main-table table table-bordered table-hover text-center">
+                <tr>
+                    <th>Doctor name</th>
+                    <th>Age</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Person.First_Name  @item.Person.Last_Name </td>
+                        
+                        <td>
+                            @{ 
+                                var age = DateTime.Now.Year - item.Person.Birth_Date.Year;
+                            }
+                            @age
+                        </td>
+
+                        <td>
+                           <!--Un Assign from department-->
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+    </div>
+</div>
+
+

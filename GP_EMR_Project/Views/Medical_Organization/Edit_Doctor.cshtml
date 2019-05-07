@@ -12,8 +12,6 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model=>model.Doctor_Id)
-    @Html.HiddenFor(model=>model.Medium_Rate)
-    @Html.HiddenFor(model=>model.Medical_Org_Id)
 
 <div class="form-horizontal" style="font-family:'Bookman Old Style';margin-left:10px">
     <hr />
@@ -37,18 +35,12 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Person.User.Email, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Person.User.Email, new { htmlAttributes = new { @class = "form-control", type = "email",maxlength="100",required=true } })
+            @Html.EditorFor(model => model.Person.User.Email.Split(' ')[0], new { htmlAttributes = new { @class = "form-control", type = "email",maxlength="100",required=true } })
             @Html.ValidationMessageFor(model => model.Person.User.Email, "", new { @class = "text-danger" })
         </div>
     </div>
     <hr />
-    <div class="form-group">
-        @Html.LabelFor(model => model.Person.User.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Person.User.Address, new { htmlAttributes = new { @class = "form-control",maxlength="100", required = true } })
-            @Html.ValidationMessageFor(model => model.Person.User.Address, "", new { @class = "text-danger" })
-        </div>
-    </div>
+  
     <hr />
     <div class="form-group">
         @Html.LabelFor(model => model.Person.User.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -57,30 +49,7 @@
             @Html.ValidationMessageFor(model => model.Person.User.Phone, "", new { @class = "text-danger" })
         </div>
     </div>
-    <hr />
-    <div class="form-group">
-        @Html.LabelFor(model => model.Person.User.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Person.User.Password, new { htmlAttributes = new { @class = "form-control", type = "password",required=true,maxlength="15" } })
-            @Html.ValidationMessageFor(model => model.Person.User.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <hr />
-    <div class="form-group">
-        @Html.Label("Confirm Password", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.Editor("Confirm_Password", new { htmlAttributes = new { @class = "form-control", type = "password",maxlength="15", required = true } })
-            @Html.ValidationMessage("Confirm_Password", "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <hr />
-    <div class="form-group">
-        @Html.LabelFor(model => model.Person.User.City, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Person.User.City, new { htmlAttributes = new { @class = "form-control",maxlength="20" } })
-            @Html.ValidationMessageFor(model => model.Person.User.City, "", new { @class = "text-danger" })
-        </div>
-    </div>
+  
     <hr />
     <div class="form-group">
         @Html.Label("Gender", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -151,14 +120,7 @@
         </div>
     </div>
     <hr />
-    <div class="form-group">
-        @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Department_Id, new SelectList(ViewBag.ListOfDepartments, "Department_Id", "Department_Name"), new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Department_Id, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
+  
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Save" class="btn btn-default" />

@@ -26,7 +26,9 @@
                         <td>@Html.DisplayFor(modelItem => item.Department_Name)</td>
                         <td>
                             @Html.ActionLink("Edit", "Edit_Department", new { id = item.Department_Id }, new { @class = "btn btn-secondary" }) |
-                            @Html.ActionLink("Delete", "Delete_Department", new { id = item.Department_Id }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Delete", "Delete_Department", new { id = item.Department_Id }, new { @class = "btn btn-danger" }) |
+                            @Html.ActionLink("Assign Doctors", "Assing_Doctors_Department", new { id = item.Department_Id }, new { @class = "btn btn-outline-primary" }) |
+                            @Html.ActionLink("(Show / Un Assign) Doctors", "Show_Doctors_Department", new { id = item.Department_Id }, new { @class = "btn btn-warning" })
                         </td>
                     </tr>
                 }
