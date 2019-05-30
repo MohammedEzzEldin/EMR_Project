@@ -47,15 +47,7 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Department</label>
-        <div class="col-md-10">
-            @Html.DropDownListFor(model=>model.Department_Id, new SelectList(ViewBag.ListOfDepartments, "Department_Id", "Department_Name"),new { @class="form-control",required=true})
-            @Html.ValidationMessageFor(model => model.Department_Id, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-
+   
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Create" class="btn btn-default" />

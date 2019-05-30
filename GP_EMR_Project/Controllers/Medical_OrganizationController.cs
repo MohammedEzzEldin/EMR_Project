@@ -343,9 +343,11 @@ namespace GP_EMR_Project.Controllers
             var medicalOrgID = user.User_Id;
             ViewData["medicalOrgID"] = medicalOrgID;
             Medical_Organization medical_Organization = db.Medical_Organization.Find(user.User_Id);
+            /*
             var getdepartmentslist = medical_Organization.Departments.ToList();
             getdepartmentslist.Insert(0, new Department { Department_Id = 0, Department_Name = "Select" });
             ViewBag.ListOfDepartments = getdepartmentslist;
+            */
             if (id <= 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -361,7 +363,7 @@ namespace GP_EMR_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register_Doctor([Bind(Include = "Medium_Rate,Medical_Org_Id,Doctor_Id,Acadimic_Degree,Functional_Degree,Spacialization,Department_Id")] Doctor doctor)
+        public ActionResult Register_Doctor([Bind(Include = "Medium_Rate,Medical_Org_Id,Doctor_Id,Acadimic_Degree,Functional_Degree,Spacialization")] Doctor doctor)
         {
             if (ModelState.IsValid)
             {
