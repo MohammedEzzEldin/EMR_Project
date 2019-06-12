@@ -623,6 +623,14 @@ namespace GP_EMR_Project.Controllers
                 g = new General_Examination();
                 g.Patient_Id = pt.Patient_Id;
                 g.Patient = pt;
+                try
+                {
+                    db.General_Examination.Add(g);
+                    db.SaveChanges();
+                }catch(Exception)
+                {
+
+                }
             }
             return View(g);
         }
@@ -632,6 +640,7 @@ namespace GP_EMR_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                try {
                 General_Examination g = db.General_Examination.Find(Int64.Parse(Request.Form["Patient_Id"]));
                 g.Length = Int32.Parse(Request.Form["Length"]);
                 g.Weight = Int32.Parse(Request.Form["Weight"]);
@@ -641,6 +650,10 @@ namespace GP_EMR_Project.Controllers
                 g.Blood_Pressure = Request.Form["Blood_Pressure"];
                 db.Entry(g).State = EntityState.Modified;
                 db.SaveChanges();
+                }
+                catch(Exception)
+                {  }
+
             }
             return RedirectToAction("Examine", new { id = Int64.Parse(Request.Form["Patient_Id"]) });
         }

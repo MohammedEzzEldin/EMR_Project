@@ -92,7 +92,11 @@
                 </td>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Person.User.Medical_Organization.Medical_Org_Name)
+                    @{
+                        GP_EMR_Project.Models.EMR_GP_DBEntities db = new GP_EMR_Project.Models.EMR_GP_DBEntities();
+                        var med = db.Medical_Organization.Where(md => md.Medical_Org_Id == item.Medical_Org_Id).SingleOrDefault();
+                        }
+                    @med.Medical_Org_Name
                 </td>
 
                 <td>
